@@ -32,6 +32,12 @@ public static class AdvLib
 	internal const string LIBRARY_ADVLIB_CORE32 = "AdvLib.Core32.dll";
 	internal const string LIBRARY_ADVLIB_CORE64 = "AdvLib.Core64.dll";
 
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryVersion")]
+	private static extern void GetLibraryVersion32([MarshalAs(UnmanagedType.LPArray)]byte[] version);
+
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryPlatformId")]
+	private static extern void GetLibraryPlatformId32([MarshalAs(UnmanagedType.LPArray)]byte[] platform);
+
 	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvNewFile")]
 	//void AdvNewFile(const char* fileName);
 	private static extern void AdvNewFile32(string fileName);
@@ -109,6 +115,11 @@ public static class AdvLib
 	private static extern void AdvEndFrame32();
 
 
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryVersion")]
+	private static extern void GetLibraryVersion64([MarshalAs(UnmanagedType.LPArray)]byte[] version);
+
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryPlatformId")]
+	private static extern void GetLibraryPlatformId64([MarshalAs(UnmanagedType.LPArray)]byte[] platform);
 
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvNewFile")]
 	//void AdvNewFile(const char* fileName);
@@ -338,7 +349,29 @@ public static class AdvLib
 			AdvEndFrame32();
 	}
 
-	private static bool Is64Bit()
+	public static string GetLibraryVersion()
+	{
+		byte[] version = new byte[256];
+		if (Is64Bit())
+			GetLibraryVersion64(version);
+		else
+			GetLibraryVersion32(version);
+
+		return Encoding.ASCII.GetString(version).Trim('\0');
+	}
+
+	public static string GetLibraryPlatformId()
+	{
+		byte[] platform = new byte[256];
+		if (Is64Bit())
+			GetLibraryPlatformId64(platform);
+		else
+			GetLibraryPlatformId32(platform);
+
+		return Encoding.ASCII.GetString(platform).Trim('\0');
+	}
+	
+	public static bool Is64Bit()
 	{
 		//Check whether we are running on a 32 or 64bit system.
 		if (IntPtr.Size == 8)

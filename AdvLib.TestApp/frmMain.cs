@@ -365,10 +365,17 @@ namespace AdvLibTestApp
 
 		private void btnVerifyLibrary_Click(object sender, EventArgs e)
 		{
-			if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+			try
 			{
+				string version = Library.GetVersion();
+				string platformId = Library.GetPlatformId();
+				bool is64Bit = Library.Is64BitProcess();
 
-
+				MessageBox.Show(this, string.Format("AdvLib.Core v.{0}\r\nPlatform: {1}\r\nCurrent process is {2} bit", version, platformId, is64Bit ? "64" : "32"), "AdvLib Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(this,ex.Message + "\r\n\r\n" + ex.StackTrace, ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 	}
