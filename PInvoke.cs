@@ -38,81 +38,81 @@ public static class AdvLib
 	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryPlatformId")]
 	private static extern void GetLibraryPlatformId32([MarshalAs(UnmanagedType.LPArray)]byte[] platform);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvNewFile")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_NewFile")]
 	//void AdvNewFile(const char* fileName);
-	private static extern void AdvNewFile32(string fileName);
+	private static extern void AdvVer1_NewFile32(string fileName);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvEndFile")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_EndFile")]
 	//void AdvEndFile();
-	private static extern void AdvEndFile32();
+	private static extern void AdvVer1_EndFile32();
 
 	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvGetCurrentFilePath")]
 	//char* AdvGetCurrentFilePath(void);
 	private static extern string AdvGetCurrentFilePath32();
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvDefineImageSection")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_DefineImageSection")]
 	//void AdvDefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
-	private static extern void AdvDefineImageSection32(ushort width, ushort height, byte dataBpp);
+	private static extern void AdvVer1_DefineImageSection32(ushort width, ushort height, byte dataBpp);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvDefineImageLayout")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_DefineImageLayout")]
 	//void AdvDefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp, int keyFrame, const char* diffCorrFromBaseFrame);
-	private static extern void AdvDefineImageLayout32(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp, int keyFrame, [MarshalAs(UnmanagedType.LPStr)]string diffCorrFromBaseFrame);
+	private static extern void AdvVer1_DefineImageLayout32(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp, int keyFrame, [MarshalAs(UnmanagedType.LPStr)]string diffCorrFromBaseFrame);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvDefineStatusSectionTag")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_DefineStatusSectionTag")]
 	//unsigned int AdvDefineStatusSectionTag(const char* tagName, int tagType);
-	private static extern uint AdvDefineStatusSectionTag32([MarshalAs(UnmanagedType.LPStr)]string tagName, AdvTagType tagType);
+	private static extern uint AdvVer1_DefineStatusSectionTag32([MarshalAs(UnmanagedType.LPStr)]string tagName, AdvTagType tagType);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvAddFileTag")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_AddFileTag")]
 	//unsigned int AdvAddFileTag(const char* tagName, const char* tagValue);
-	private static extern uint AdvAddFileTag32([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+	private static extern uint AdvVer1_AddFileTag32([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvAddOrUpdateImageSectionTag")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_AddOrUpdateImageSectionTag")]
 	//void AdvAddOrUpdateImageSectionTag(const char* tagName, const char* tagValue);
-	private static extern uint AdvAddOrUpdateImageSectionTag32([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+	private static extern uint AdvVer1_AddOrUpdateImageSectionTag32([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvBeginFrame")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_BeginFrame")]
 	//bool AdvBeginFrame(long long timeStamp, unsigned int elapsedTime, unsigned int exposure);
-	private static extern bool AdvBeginFrame32(long timeStamp, uint elapsedTime, uint exposure);
+	private static extern bool AdvVer1_BeginFrame32(long timeStamp, uint elapsedTime, uint exposure);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddImage")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddImage")]
 	//void AdvFrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
-	private static extern void AdvFrameAddImage32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
+	private static extern void AdvVer1_FrameAddImage32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddImageBytes")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddImageBytes")]
 	//void AdvFrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
-	private static extern void AdvFrameAddImageBytes32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
+	private static extern void AdvVer1_FrameAddImageBytes32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvFrameAddStatusTag")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_FrameAddStatusTag")]
 	//void AdvFrameAddStatusTag(unsigned int tagIndex, const char* tagValue);
-	private static extern void AdvFrameAddStatusTag32(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+	private static extern void AdvVer1_FrameAddStatusTag32(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvFrameAddStatusTagMessage")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_FrameAddStatusTagMessage")]
 	//void AdvFrameAddStatusTagMessage(unsigned int tagIndex, const char* tagValue);
-	private static extern void AdvFrameAddStatusTagMessage32(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+	private static extern void AdvVer1_FrameAddStatusTagMessage32(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddStatusTagUInt8")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddStatusTagUInt8")]
 	//void AdvFrameAddStatusTagUInt8(unsigned int tagIndex, unsigned char tagValue);
-	private static extern void AdvFrameAddStatusTagUInt832(uint tagIndex, byte tagValue);
+	private static extern void AdvVer1_FrameAddStatusTagUInt832(uint tagIndex, byte tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddStatusTag16")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddStatusTag16")]
 	//void AdvFrameAddStatusTag16(unsigned int tagIndex, unsigned short tagValue);
-	private static extern void AdvFrameAddStatusTag1632(uint tagIndex, ushort tagValue);
+	private static extern void AdvVer1_FrameAddStatusTag1632(uint tagIndex, ushort tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddStatusTagReal")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddStatusTagReal")]
 	//void AdvFrameAddStatusTagReal(unsigned int tagIndex, float tagValue);
-	private static extern void AdvFrameAddStatusTagReal32(uint tagIndex, float tagValue);
+	private static extern void AdvVer1_FrameAddStatusTagReal32(uint tagIndex, float tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddStatusTag32")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddStatusTag32")]
 	//void AdvFrameAddStatusTag32(unsigned int tagIndex, unsigned long tagValue);
-	private static extern void AdvFrameAddStatusTag3232(uint tagIndex, uint tagValue);
+	private static extern void AdvVer1_FrameAddStatusTag3232(uint tagIndex, uint tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddStatusTag64")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddStatusTag64")]
 	//void AdvFrameAddStatusTag64(unsigned int tagIndex, long long tagValue);
-	private static extern void AdvFrameAddStatusTag6432(uint tagIndex, ulong tagValue);
+	private static extern void AdvVer1_FrameAddStatusTag6432(uint tagIndex, ulong tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvEndFrame")]
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_EndFrame")]
 	//void AdvEndFrame();
-	private static extern void AdvEndFrame32();
+	private static extern void AdvVer1_EndFrame32();
 
 
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryVersion")]
@@ -121,96 +121,96 @@ public static class AdvLib
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryPlatformId")]
 	private static extern void GetLibraryPlatformId64([MarshalAs(UnmanagedType.LPArray)]byte[] platform);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvNewFile")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_NewFile")]
 	//void AdvNewFile(const char* fileName);
-	private static extern void AdvNewFile64(string fileName);
+	private static extern void AdvVer1_NewFile64(string fileName);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvEndFile")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_EndFile")]
 	//void AdvEndFile();
-	private static extern void AdvEndFile64();
+	private static extern void AdvVer1_EndFile64();
 
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvGetCurrentFilePath")]
 	//char* AdvGetCurrentFilePath(void);
 	private static extern string AdvGetCurrentFilePath64();
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvDefineImageSection")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_DefineImageSection")]
 	//void AdvDefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
-	private static extern void AdvDefineImageSection64(ushort width, ushort height, byte dataBpp);
+	private static extern void AdvVer1_DefineImageSection64(ushort width, ushort height, byte dataBpp);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvDefineImageLayout")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_DefineImageLayout")]
 	//void AdvDefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp, int keyFrame, const char* diffCorrFromBaseFrame);
-	private static extern void AdvDefineImageLayout64(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp, int keyFrame, [MarshalAs(UnmanagedType.LPStr)]string diffCorrFromBaseFrame);
+	private static extern void AdvVer1_DefineImageLayout64(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp, int keyFrame, [MarshalAs(UnmanagedType.LPStr)]string diffCorrFromBaseFrame);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvDefineStatusSectionTag")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_DefineStatusSectionTag")]
 	//unsigned int AdvDefineStatusSectionTag(const char* tagName, int tagType);
-	private static extern uint AdvDefineStatusSectionTag64([MarshalAs(UnmanagedType.LPStr)]string tagName, AdvTagType tagType);
+	private static extern uint AdvVer1_DefineStatusSectionTag64([MarshalAs(UnmanagedType.LPStr)]string tagName, AdvTagType tagType);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvAddFileTag")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_AddFileTag")]
 	//unsigned int AdvAddFileTag(const char* tagName, const char* tagValue);
-	private static extern uint AdvAddFileTag64([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+	private static extern uint AdvVer1_AddFileTag64([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvAddOrUpdateImageSectionTag")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_AddOrUpdateImageSectionTag")]
 	//void AdvAddOrUpdateImageSectionTag(const char* tagName, const char* tagValue);
-	private static extern uint AdvAddOrUpdateImageSectionTag64([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+	private static extern uint AdvVer1_AddOrUpdateImageSectionTag64([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvBeginFrame")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_BeginFrame")]
 	//bool AdvBeginFrame(long long timeStamp, unsigned int elapsedTime, unsigned int exposure);
-	private static extern bool AdvBeginFrame64(long timeStamp, uint elapsedTime, uint exposure);
+	private static extern bool AdvVer1_BeginFrame64(long timeStamp, uint elapsedTime, uint exposure);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddImage")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddImage")]
 	//void AdvFrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
-	private static extern void AdvFrameAddImage64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
+	private static extern void AdvVer1_FrameAddImage64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddImageBytes")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddImageBytes")]
 	//void AdvFrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
-	private static extern void AdvFrameAddImageBytes64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
+	private static extern void AdvVer1_FrameAddImageBytes64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvFrameAddStatusTag")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_FrameAddStatusTag")]
 	//void AdvFrameAddStatusTag(unsigned int tagIndex, const char* tagValue);
-	private static extern void AdvFrameAddStatusTag64(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+	private static extern void AdvVer1_FrameAddStatusTag64(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvFrameAddStatusTagMessage")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "AdvVer1_FrameAddStatusTagMessage")]
 	//void AdvFrameAddStatusTagMessage(unsigned int tagIndex, const char* tagValue);
-	private static extern void AdvFrameAddStatusTagMessage64(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+	private static extern void AdvVer1_FrameAddStatusTagMessage64(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddStatusTagUInt8")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddStatusTagUInt8")]
 	//void AdvFrameAddStatusTagUInt8(unsigned int tagIndex, unsigned char tagValue);
-	private static extern void AdvFrameAddStatusTagUInt864(uint tagIndex, byte tagValue);
+	private static extern void AdvVer1_FrameAddStatusTagUInt864(uint tagIndex, byte tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddStatusTag16")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddStatusTag16")]
 	//void AdvFrameAddStatusTag16(unsigned int tagIndex, unsigned short tagValue);
-	private static extern void AdvFrameAddStatusTag1664(uint tagIndex, ushort tagValue);
+	private static extern void AdvVer1_FrameAddStatusTag1664(uint tagIndex, ushort tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddStatusTagReal")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddStatusTagReal")]
 	//void AdvFrameAddStatusTagReal(unsigned int tagIndex, float tagValue);
-	private static extern void AdvFrameAddStatusTagReal64(uint tagIndex, float tagValue);
+	private static extern void AdvVer1_FrameAddStatusTagReal64(uint tagIndex, float tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddStatusTag32")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddStatusTag32")]
 	//void AdvFrameAddStatusTag32(unsigned int tagIndex, unsigned long tagValue);
-	private static extern void AdvFrameAddStatusTag3264(uint tagIndex, uint tagValue);
+	private static extern void AdvVer1_FrameAddStatusTag3264(uint tagIndex, uint tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvFrameAddStatusTag64")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_FrameAddStatusTag64")]
 	//void AdvFrameAddStatusTag64(unsigned int tagIndex, long long tagValue);
-	private static extern void AdvFrameAddStatusTag6464(uint tagIndex, ulong tagValue);
+	private static extern void AdvVer1_FrameAddStatusTag6464(uint tagIndex, ulong tagValue);
 
-	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvEndFrame")]
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_EndFrame")]
 	//void AdvEndFrame();
-	private static extern void AdvEndFrame64();
+	private static extern void AdvVer1_EndFrame64();
 
-	public static void AdvNewFile(string fileName)
+	public static void AdvVer1_NewFile(string fileName)
 	{
 		if (Is64Bit())
-			AdvNewFile64(fileName);
+			AdvVer1_NewFile64(fileName);
 		else
-			AdvNewFile32(fileName);
+			AdvVer1_NewFile32(fileName);
 	}
 
-	public static void AdvEndFile()
+	public static void AdvVer1_EndFile()
 	{
 		if (Is64Bit())
-			AdvEndFile64();
+			AdvVer1_EndFile64();
 		else
-			AdvEndFile32();		
+			AdvVer1_EndFile32();		
 	}
 
 	public static string AdvGetCurrentFilePath()
@@ -221,132 +221,132 @@ public static class AdvLib
 			return AdvGetCurrentFilePath32();
 	}
 
-	public static void AdvDefineImageSection(ushort width, ushort height, byte dataBpp)
+	public static void AdvVer1_DefineImageSection(ushort width, ushort height, byte dataBpp)
 	{
 		if (Is64Bit())
-			AdvDefineImageSection64(width, height, dataBpp);
+			AdvVer1_DefineImageSection64(width, height, dataBpp);
 		else
-			AdvDefineImageSection32(width, height, dataBpp);
+			AdvVer1_DefineImageSection32(width, height, dataBpp);
 	}
 
-	public static void AdvDefineImageLayout(byte layoutId, string layoutType, string compression, byte layoutBpp, int keyFrame, string diffCorrFromBaseFrame)
+	public static void AdvVer1_DefineImageLayout(byte layoutId, string layoutType, string compression, byte layoutBpp, int keyFrame, string diffCorrFromBaseFrame)
 	{
 		if (Is64Bit())
-			AdvDefineImageLayout64(layoutId, layoutType, compression, layoutBpp, keyFrame, diffCorrFromBaseFrame);
+			AdvVer1_DefineImageLayout64(layoutId, layoutType, compression, layoutBpp, keyFrame, diffCorrFromBaseFrame);
 		else
-			AdvDefineImageLayout32(layoutId, layoutType, compression, layoutBpp, keyFrame, diffCorrFromBaseFrame);
+			AdvVer1_DefineImageLayout32(layoutId, layoutType, compression, layoutBpp, keyFrame, diffCorrFromBaseFrame);
 	}
 
-	public static uint AdvDefineStatusSectionTag(string tagName, AdvTagType tagType)
+	public static uint AdvVer1_DefineStatusSectionTag(string tagName, AdvTagType tagType)
 	{
 		if (Is64Bit())
-			return AdvDefineStatusSectionTag64(tagName, tagType);
+			return AdvVer1_DefineStatusSectionTag64(tagName, tagType);
 		else
-			return AdvDefineStatusSectionTag32(tagName, tagType);
+			return AdvVer1_DefineStatusSectionTag32(tagName, tagType);
 	}
 
-	public static uint AdvAddFileTag(string tagName, string tagValue)
+	public static uint AdvVer1_AddFileTag(string tagName, string tagValue)
 	{
 		if (Is64Bit())
-			return AdvAddFileTag64(tagName, tagValue);
+			return AdvVer1_AddFileTag64(tagName, tagValue);
 		else
-			return AdvAddFileTag32(tagName, tagValue);
+			return AdvVer1_AddFileTag32(tagName, tagValue);
 	}
 
-	public static uint AdvAddOrUpdateImageSectionTag(string tagName, string tagValue)
+	public static uint AdvVer1_AddOrUpdateImageSectionTag(string tagName, string tagValue)
 	{
 		if (Is64Bit())
-			return AdvAddOrUpdateImageSectionTag64(tagName, tagValue);
+			return AdvVer1_AddOrUpdateImageSectionTag64(tagName, tagValue);
 		else
-			return AdvAddOrUpdateImageSectionTag32(tagName, tagValue);
+			return AdvVer1_AddOrUpdateImageSectionTag32(tagName, tagValue);
 	}
 
-	public static bool AdvBeginFrame(long timeStamp, uint elapsedTime, uint exposure)
+	public static bool AdvVer1_BeginFrame(long timeStamp, uint elapsedTime, uint exposure)
 	{
 		if (Is64Bit())
-			return AdvBeginFrame64(timeStamp, elapsedTime, exposure);
+			return AdvVer1_BeginFrame64(timeStamp, elapsedTime, exposure);
 		else
-			return AdvBeginFrame32(timeStamp, elapsedTime, exposure);
+			return AdvVer1_BeginFrame32(timeStamp, elapsedTime, exposure);
 	}
 
-	public static void AdvFrameAddImage(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp)
+	public static void AdvVer1_FrameAddImage(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp)
 	{
 		if (Is64Bit())
-			AdvFrameAddImage64(layoutId, pixels, pixelsBpp);
+			AdvVer1_FrameAddImage64(layoutId, pixels, pixelsBpp);
 		else
-			AdvFrameAddImage32(layoutId, pixels, pixelsBpp);
+			AdvVer1_FrameAddImage32(layoutId, pixels, pixelsBpp);
 	}
 
-	public static void AdvFrameAddImageBytes(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp)
+	public static void AdvVer1_FrameAddImageBytes(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp)
 	{
 		if (Is64Bit())
-			AdvFrameAddImageBytes64(layoutId, pixels, pixelsBpp);
+			AdvVer1_FrameAddImageBytes64(layoutId, pixels, pixelsBpp);
 		else
-			AdvFrameAddImageBytes32(layoutId, pixels, pixelsBpp);
+			AdvVer1_FrameAddImageBytes32(layoutId, pixels, pixelsBpp);
 	}
 
-	public static void AdvFrameAddStatusTag(uint tagIndex, string tagValue)
+	public static void AdvVer1_FrameAddStatusTag(uint tagIndex, string tagValue)
 	{
 		if (Is64Bit())
-			AdvFrameAddStatusTag64(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTag64(tagIndex, tagValue);
 		else
-			AdvFrameAddStatusTag32(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTag32(tagIndex, tagValue);
 	}
 
-	public static void AdvFrameAddStatusTagMessage(uint tagIndex, string tagValue)
+	public static void AdvVer1_FrameAddStatusTagMessage(uint tagIndex, string tagValue)
 	{
 		if (Is64Bit())
-			AdvFrameAddStatusTagMessage64(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTagMessage64(tagIndex, tagValue);
 		else
-			AdvFrameAddStatusTagMessage32(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTagMessage32(tagIndex, tagValue);
 	}
 
-	public static void AdvFrameAddStatusTagUInt8(uint tagIndex, byte tagValue)
+	public static void AdvVer1_FrameAddStatusTagUInt8(uint tagIndex, byte tagValue)
 	{
 		if (Is64Bit())
-			AdvFrameAddStatusTagUInt864(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTagUInt864(tagIndex, tagValue);
 		else
-			AdvFrameAddStatusTagUInt832(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTagUInt832(tagIndex, tagValue);
 	}
 
-	public static void AdvFrameAddStatusTag16(uint tagIndex, ushort tagValue)
+	public static void AdvVer1_FrameAddStatusTag16(uint tagIndex, ushort tagValue)
 	{
 		if (Is64Bit())
-			AdvFrameAddStatusTag1664(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTag1664(tagIndex, tagValue);
 		else
-			AdvFrameAddStatusTag1632(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTag1632(tagIndex, tagValue);
 	}
 
-	public static void AdvFrameAddStatusTagReal(uint tagIndex, float tagValue)
+	public static void AdvVer1_FrameAddStatusTagReal(uint tagIndex, float tagValue)
 	{
 		if (Is64Bit())
-			AdvFrameAddStatusTagReal64(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTagReal64(tagIndex, tagValue);
 		else
-			AdvFrameAddStatusTagReal32(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTagReal32(tagIndex, tagValue);
 	}
 
-	public static void AdvFrameAddStatusTag32(uint tagIndex, uint tagValue)
+	public static void AdvVer1_FrameAddStatusTag32(uint tagIndex, uint tagValue)
 	{
 		if (Is64Bit())
-			AdvFrameAddStatusTag3264(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTag3264(tagIndex, tagValue);
 		else
-			AdvFrameAddStatusTag3232(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTag3232(tagIndex, tagValue);
 	}
 
-	public static void AdvFrameAddStatusTag64(uint tagIndex, ulong tagValue)
+	public static void AdvVer1_FrameAddStatusTag64(uint tagIndex, ulong tagValue)
 	{
 		if (Is64Bit())
-			AdvFrameAddStatusTag6464(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTag6464(tagIndex, tagValue);
 		else
-			AdvFrameAddStatusTag6432(tagIndex, tagValue);
+			AdvVer1_FrameAddStatusTag6432(tagIndex, tagValue);
 	}
 
-	public static void AdvEndFrame()
+	public static void AdvVer1_EndFrame()
 	{
 		if (Is64Bit())
-			AdvEndFrame64();
+			AdvVer1_EndFrame64();
 		else
-			AdvEndFrame32();
+			AdvVer1_EndFrame32();
 	}
 
 	public static string GetLibraryVersion()

@@ -44,7 +44,7 @@ namespace AdvLibTestApp
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			AdvRecorder recorder = new AdvRecorder();
+			AdvRecorder_V1 recorder = new AdvRecorder_V1();
 
 			// First set the values of the standard file metadata
 			recorder.FileMetaData.RecorderName = "Genika";

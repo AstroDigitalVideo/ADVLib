@@ -79,7 +79,7 @@ public class AdvImageConfig
 	}
 }
 
-public class AdvRecorder
+public class AdvRecorder_V1
 {
 	private uint m_TAGID_SystemTime;
 	private uint m_TAGID_TrackedGPSSatellites;
@@ -147,64 +147,64 @@ public class AdvRecorder
 	/// <param name="fileName"></param>
 	public void StartRecordingNewFile(string fileName)
 	{
-		AdvLib.AdvNewFile(fileName);
+		AdvLib.AdvVer1_NewFile(fileName);
 
 		if (string.IsNullOrEmpty(FileMetaData.RecorderName)) throw new ArgumentException("FileMetaData.RecorderName must be specified.");
 		if (string.IsNullOrEmpty(FileMetaData.RecorderVersion)) throw new ArgumentException("FileMetaData.RecorderVersion must be specified.");
 		if (string.IsNullOrEmpty(FileMetaData.CameraModel)) throw new ArgumentException("FileMetaData.CameraModel must be specified.");
 		if (string.IsNullOrEmpty(FileMetaData.CameraSensorInfo)) throw new ArgumentException("FileMetaData.CameraSensorInfo must be specified.");
 
-		AdvLib.AdvAddFileTag("RECORDER-SOFTWARE-VERSION", EnsureStringLength(FileMetaData.RecorderVersion));
-		AdvLib.AdvAddFileTag("TIMER-FIRMWARE-VERSION", EnsureStringLength(FileMetaData.RecorderTimerFirmwareVersion));
-		AdvLib.AdvAddFileTag("ADVLIB-VERSION", "1.0");
+		AdvLib.AdvVer1_AddFileTag("RECORDER-SOFTWARE-VERSION", EnsureStringLength(FileMetaData.RecorderVersion));
+		AdvLib.AdvVer1_AddFileTag("TIMER-FIRMWARE-VERSION", EnsureStringLength(FileMetaData.RecorderTimerFirmwareVersion));
+		AdvLib.AdvVer1_AddFileTag("ADVLIB-VERSION", "1.0");
 
-		AdvLib.AdvAddFileTag("RECORDER", EnsureStringLength(FileMetaData.RecorderName));
-		AdvLib.AdvAddFileTag("FSTF-TYPE", "ADV");
-		AdvLib.AdvAddFileTag("ADV-VERSION", "1");
+		AdvLib.AdvVer1_AddFileTag("RECORDER", EnsureStringLength(FileMetaData.RecorderName));
+		AdvLib.AdvVer1_AddFileTag("FSTF-TYPE", "ADV");
+		AdvLib.AdvVer1_AddFileTag("ADV-VERSION", "1");
 
-		if (!string.IsNullOrEmpty(LocationData.LongitudeWgs84)) AdvLib.AdvAddFileTag("LONGITUDE-WGS84", LocationData.LongitudeWgs84);
-		if (!string.IsNullOrEmpty(LocationData.LatitudeWgs84)) AdvLib.AdvAddFileTag("LATITUDE-WGS84", LocationData.LatitudeWgs84);
-		if (!string.IsNullOrEmpty(LocationData.AltitudeMsl)) AdvLib.AdvAddFileTag("ALTITUDE-MSL", LocationData.AltitudeMsl);
-		if (!string.IsNullOrEmpty(LocationData.MslWgs84Offset)) AdvLib.AdvAddFileTag("MSL-WGS84-OFFSET", LocationData.MslWgs84Offset);
-		if (!string.IsNullOrEmpty(LocationData.GpsHdop)) AdvLib.AdvAddFileTag("GPS-HDOP", LocationData.GpsHdop);
+		if (!string.IsNullOrEmpty(LocationData.LongitudeWgs84)) AdvLib.AdvVer1_AddFileTag("LONGITUDE-WGS84", LocationData.LongitudeWgs84);
+		if (!string.IsNullOrEmpty(LocationData.LatitudeWgs84)) AdvLib.AdvVer1_AddFileTag("LATITUDE-WGS84", LocationData.LatitudeWgs84);
+		if (!string.IsNullOrEmpty(LocationData.AltitudeMsl)) AdvLib.AdvVer1_AddFileTag("ALTITUDE-MSL", LocationData.AltitudeMsl);
+		if (!string.IsNullOrEmpty(LocationData.MslWgs84Offset)) AdvLib.AdvVer1_AddFileTag("MSL-WGS84-OFFSET", LocationData.MslWgs84Offset);
+		if (!string.IsNullOrEmpty(LocationData.GpsHdop)) AdvLib.AdvVer1_AddFileTag("GPS-HDOP", LocationData.GpsHdop);
 
-		AdvLib.AdvAddFileTag("CAMERA-MODEL", EnsureStringLength(FileMetaData.CameraModel));
-		AdvLib.AdvAddFileTag("CAMERA-SERIAL-NO", EnsureStringLength(FileMetaData.CameraSerialNumber));
-		AdvLib.AdvAddFileTag("CAMERA-VENDOR-NAME", EnsureStringLength(FileMetaData.CameraVendorNumber));
-		AdvLib.AdvAddFileTag("CAMERA-SENSOR-INFO", EnsureStringLength(FileMetaData.CameraSensorInfo));
-		AdvLib.AdvAddFileTag("CAMERA-SENSOR-RESOLUTION", EnsureStringLength(FileMetaData.CameraSensorResolution));
-		AdvLib.AdvAddFileTag("CAMERA-FIRMWARE-VERSION", EnsureStringLength(FileMetaData.CameraFirmwareVersion));
-		AdvLib.AdvAddFileTag("CAMERA-FIRMWARE-BUILD-TIME", EnsureStringLength(FileMetaData.CameraFirmwareBuildTime));
-		AdvLib.AdvAddFileTag("CAMERA-DRIVER-VERSION", EnsureStringLength(FileMetaData.CameraDriverVersion));
+		AdvLib.AdvVer1_AddFileTag("CAMERA-MODEL", EnsureStringLength(FileMetaData.CameraModel));
+		AdvLib.AdvVer1_AddFileTag("CAMERA-SERIAL-NO", EnsureStringLength(FileMetaData.CameraSerialNumber));
+		AdvLib.AdvVer1_AddFileTag("CAMERA-VENDOR-NAME", EnsureStringLength(FileMetaData.CameraVendorNumber));
+		AdvLib.AdvVer1_AddFileTag("CAMERA-SENSOR-INFO", EnsureStringLength(FileMetaData.CameraSensorInfo));
+		AdvLib.AdvVer1_AddFileTag("CAMERA-SENSOR-RESOLUTION", EnsureStringLength(FileMetaData.CameraSensorResolution));
+		AdvLib.AdvVer1_AddFileTag("CAMERA-FIRMWARE-VERSION", EnsureStringLength(FileMetaData.CameraFirmwareVersion));
+		AdvLib.AdvVer1_AddFileTag("CAMERA-FIRMWARE-BUILD-TIME", EnsureStringLength(FileMetaData.CameraFirmwareBuildTime));
+		AdvLib.AdvVer1_AddFileTag("CAMERA-DRIVER-VERSION", EnsureStringLength(FileMetaData.CameraDriverVersion));
 
 		foreach (string key in FileMetaData.UserMetaData.Keys)
 		{
-			AdvLib.AdvAddFileTag(EnsureStringLength(key), EnsureStringLength(FileMetaData.UserMetaData[key]));				
+			AdvLib.AdvVer1_AddFileTag(EnsureStringLength(key), EnsureStringLength(FileMetaData.UserMetaData[key]));				
 		}
 
-        AdvLib.AdvDefineImageSection(ImageConfig.ImageWidth, ImageConfig.ImageHeight, ImageConfig.CameraBitsPerPixel);
-		AdvLib.AdvAddOrUpdateImageSectionTag("IMAGE-BYTE-ORDER", ImageConfig.ImageBigEndian ? "BIG-ENDIAN" : "LITTLE-ENDIAN");
-	    AdvLib.AdvAddOrUpdateImageSectionTag("IMAGE-DYNABITS", ImageConfig.ImageBitsPerPixel.ToString(CultureInfo.InvariantCulture));
+		AdvLib.AdvVer1_DefineImageSection(ImageConfig.ImageWidth, ImageConfig.ImageHeight, ImageConfig.CameraBitsPerPixel);
+		AdvLib.AdvVer1_AddOrUpdateImageSectionTag("IMAGE-BYTE-ORDER", ImageConfig.ImageBigEndian ? "BIG-ENDIAN" : "LITTLE-ENDIAN");
+		AdvLib.AdvVer1_AddOrUpdateImageSectionTag("IMAGE-DYNABITS", ImageConfig.ImageBitsPerPixel.ToString(CultureInfo.InvariantCulture));
 
-		AdvLib.AdvDefineImageLayout(CFG_ADV_LAYOUT_1_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16, 0, null);
-		AdvLib.AdvDefineImageLayout(CFG_ADV_LAYOUT_2_COMPRESSED, "FULL-IMAGE-DIFFERENTIAL-CODING", "QUICKLZ", 12, 32, "PREV-FRAME");
-		AdvLib.AdvDefineImageLayout(CFG_ADV_LAYOUT_3_COMPRESSED, "FULL-IMAGE-RAW", "QUICKLZ", 16, 0, null);
-		AdvLib.AdvDefineImageLayout(CFG_ADV_LAYOUT_4_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 8, 0, null);
-		AdvLib.AdvDefineImageLayout(CFG_ADV_LAYOUT_5_COMPRESSED, "FULL-IMAGE-RAW", "QUICKLZ", 8, 0, null);
+		AdvLib.AdvVer1_DefineImageLayout(CFG_ADV_LAYOUT_1_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16, 0, null);
+		AdvLib.AdvVer1_DefineImageLayout(CFG_ADV_LAYOUT_2_COMPRESSED, "FULL-IMAGE-DIFFERENTIAL-CODING", "QUICKLZ", 12, 32, "PREV-FRAME");
+		AdvLib.AdvVer1_DefineImageLayout(CFG_ADV_LAYOUT_3_COMPRESSED, "FULL-IMAGE-RAW", "QUICKLZ", 16, 0, null);
+		AdvLib.AdvVer1_DefineImageLayout(CFG_ADV_LAYOUT_4_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 8, 0, null);
+		AdvLib.AdvVer1_DefineImageLayout(CFG_ADV_LAYOUT_5_COMPRESSED, "FULL-IMAGE-RAW", "QUICKLZ", 8, 0, null);
 
-		if (StatusSectionConfig.RecordSystemTime) m_TAGID_SystemTime = AdvLib.AdvDefineStatusSectionTag("SystemTime", AdvTagType.ULong64);
+		if (StatusSectionConfig.RecordSystemTime) m_TAGID_SystemTime = AdvLib.AdvVer1_DefineStatusSectionTag("SystemTime", AdvTagType.ULong64);
 
-		if (StatusSectionConfig.RecordGPSTrackedSatellites) m_TAGID_TrackedGPSSatellites = AdvLib.AdvDefineStatusSectionTag("GPSTrackedSatellites", AdvTagType.UInt8);
-		if (StatusSectionConfig.RecordGPSAlmanacStatus) m_TAGID_GPSAlmanacStatus = AdvLib.AdvDefineStatusSectionTag("GPSAlmanacStatus", AdvTagType.UInt8);
-		if (StatusSectionConfig.RecordGPSAlmanacOffset) m_TAGID_GPSAlmanacOffset = AdvLib.AdvDefineStatusSectionTag("GPSAlmanacOffset", AdvTagType.UInt8);
-		if (StatusSectionConfig.RecordGPSFixStatus) m_TAGID_GPSFixStatus = AdvLib.AdvDefineStatusSectionTag("GPSFixStatus", AdvTagType.UInt8);
-		if (StatusSectionConfig.RecordGain) m_TAGID_Gain = AdvLib.AdvDefineStatusSectionTag("Gain", AdvTagType.Real);
-		if (StatusSectionConfig.RecordShutter) m_TAGID_Shutter = AdvLib.AdvDefineStatusSectionTag("Shutter", AdvTagType.Real);
-		if (StatusSectionConfig.RecordCameraOffset) m_TAGID_Offset = AdvLib.AdvDefineStatusSectionTag("Offset", AdvTagType.Real);
-		if (StatusSectionConfig.RecordVideoCameraFrameId) m_TAGID_VideoCameraFrameId = AdvLib.AdvDefineStatusSectionTag("VideoCameraFrameId", AdvTagType.ULong64);
-		if (StatusSectionConfig.RecordGamma) m_TAGID_Gamma = AdvLib.AdvDefineStatusSectionTag("Gamma", AdvTagType.Real);
-		if (StatusSectionConfig.RecordUserCommands) m_TAGID_UserCommand = AdvLib.AdvDefineStatusSectionTag("UserCommand", AdvTagType.List16OfAnsiString255);
-		if (StatusSectionConfig.RecordSystemErrors) m_TAGID_SystemError = AdvLib.AdvDefineStatusSectionTag("SystemError", AdvTagType.List16OfAnsiString255);
+		if (StatusSectionConfig.RecordGPSTrackedSatellites) m_TAGID_TrackedGPSSatellites = AdvLib.AdvVer1_DefineStatusSectionTag("GPSTrackedSatellites", AdvTagType.UInt8);
+		if (StatusSectionConfig.RecordGPSAlmanacStatus) m_TAGID_GPSAlmanacStatus = AdvLib.AdvVer1_DefineStatusSectionTag("GPSAlmanacStatus", AdvTagType.UInt8);
+		if (StatusSectionConfig.RecordGPSAlmanacOffset) m_TAGID_GPSAlmanacOffset = AdvLib.AdvVer1_DefineStatusSectionTag("GPSAlmanacOffset", AdvTagType.UInt8);
+		if (StatusSectionConfig.RecordGPSFixStatus) m_TAGID_GPSFixStatus = AdvLib.AdvVer1_DefineStatusSectionTag("GPSFixStatus", AdvTagType.UInt8);
+		if (StatusSectionConfig.RecordGain) m_TAGID_Gain = AdvLib.AdvVer1_DefineStatusSectionTag("Gain", AdvTagType.Real);
+		if (StatusSectionConfig.RecordShutter) m_TAGID_Shutter = AdvLib.AdvVer1_DefineStatusSectionTag("Shutter", AdvTagType.Real);
+		if (StatusSectionConfig.RecordCameraOffset) m_TAGID_Offset = AdvLib.AdvVer1_DefineStatusSectionTag("Offset", AdvTagType.Real);
+		if (StatusSectionConfig.RecordVideoCameraFrameId) m_TAGID_VideoCameraFrameId = AdvLib.AdvVer1_DefineStatusSectionTag("VideoCameraFrameId", AdvTagType.ULong64);
+		if (StatusSectionConfig.RecordGamma) m_TAGID_Gamma = AdvLib.AdvVer1_DefineStatusSectionTag("Gamma", AdvTagType.Real);
+		if (StatusSectionConfig.RecordUserCommands) m_TAGID_UserCommand = AdvLib.AdvVer1_DefineStatusSectionTag("UserCommand", AdvTagType.List16OfAnsiString255);
+		if (StatusSectionConfig.RecordSystemErrors) m_TAGID_SystemError = AdvLib.AdvVer1_DefineStatusSectionTag("SystemError", AdvTagType.List16OfAnsiString255);
 
 		m_AdditionalStatusSectionTagIds.Clear();
 
@@ -212,7 +212,7 @@ public class AdvRecorder
 		{
 			foreach (string tagName in StatusSectionConfig.AdditionalStatusTags.Keys)
 			{
-				uint tagId = AdvLib.AdvDefineStatusSectionTag(tagName, StatusSectionConfig.AdditionalStatusTags[tagName]);
+				uint tagId = AdvLib.AdvVer1_DefineStatusSectionTag(tagName, StatusSectionConfig.AdditionalStatusTags[tagName]);
 				m_AdditionalStatusSectionTagIds.Add(tagName, tagId);
 			}
 		}
@@ -227,7 +227,7 @@ public class AdvRecorder
 	/// </summary>
 	public void StopRecording()
 	{
-		AdvLib.AdvEndFile();
+		AdvLib.AdvVer1_EndFile();
 	}
 
 	/// <summary>
@@ -246,15 +246,15 @@ public class AdvRecorder
 		if (imageData == AdvImageData.PixelDepth16Bit)
 		{
 			byte layoutIdForCurrentFramerate = compress ? CFG_ADV_LAYOUT_3_COMPRESSED : CFG_ADV_LAYOUT_1_UNCOMPRESSED;
-			AdvLib.AdvFrameAddImageBytes(layoutIdForCurrentFramerate, pixels, 16);	
+			AdvLib.AdvVer1_FrameAddImageBytes(layoutIdForCurrentFramerate, pixels, 16);	
 		}
 		else if (imageData == AdvImageData.PixelDepth8Bit)
 		{
 			byte layoutIdForCurrentFramerate = compress ? CFG_ADV_LAYOUT_5_COMPRESSED : CFG_ADV_LAYOUT_4_UNCOMPRESSED;
-			AdvLib.AdvFrameAddImageBytes(layoutIdForCurrentFramerate, pixels, 8);
+			AdvLib.AdvVer1_FrameAddImageBytes(layoutIdForCurrentFramerate, pixels, 8);
 		}
 
-		AdvLib.AdvEndFrame();	
+		AdvLib.AdvVer1_EndFrame();	
 	}
 
 	/// <summary>
@@ -271,9 +271,9 @@ public class AdvRecorder
 
 		byte layoutIdForCurrentFramerate = compress ? CFG_ADV_LAYOUT_3_COMPRESSED : CFG_ADV_LAYOUT_1_UNCOMPRESSED;
 
-		AdvLib.AdvFrameAddImage(layoutIdForCurrentFramerate, pixels, 16);
+		AdvLib.AdvVer1_FrameAddImage(layoutIdForCurrentFramerate, pixels, 16);
 
-		AdvLib.AdvEndFrame();	
+		AdvLib.AdvVer1_EndFrame();	
 	}
 
 	private void BeginVideoFrame( AdvTimeStamp timeStamp, uint exposureIn10thMilliseconds, AdvStatusEntry metadata)
@@ -288,7 +288,7 @@ public class AdvRecorder
 			m_FirstRecordedFrameTimestamp = timeStamp.MillisecondsAfterAdvZeroEpoch;
 		}
 
-		bool frameStartedOk = AdvLib.AdvBeginFrame(timeStamp.MillisecondsAfterAdvZeroEpoch, elapsedTimeMilliseconds > 0 ? (uint)elapsedTimeMilliseconds : 0, exposureIn10thMilliseconds);
+		bool frameStartedOk = AdvLib.AdvVer1_BeginFrame(timeStamp.MillisecondsAfterAdvZeroEpoch, elapsedTimeMilliseconds > 0 ? (uint)elapsedTimeMilliseconds : 0, exposureIn10thMilliseconds);
 		if (!frameStartedOk)
 		{
 			// If we can't add the first frame, this may be a file creation issue; otherwise increase the dropped frames counter
@@ -296,18 +296,18 @@ public class AdvRecorder
 				m_NumberDroppedFrames++;
 			return;
 		}
-	
-		if (StatusSectionConfig.RecordSystemTime) AdvLib.AdvFrameAddStatusTag64(m_TAGID_SystemTime, metadata.SystemTime.MillisecondsAfterAdvZeroEpoch > 0 ? (ulong)metadata.SystemTime.MillisecondsAfterAdvZeroEpoch : 0);
-	
-		if (StatusSectionConfig.RecordGPSTrackedSatellites) AdvLib.AdvFrameAddStatusTagUInt8(m_TAGID_TrackedGPSSatellites, metadata.GPSTrackedSatellites);
-		if (StatusSectionConfig.RecordGPSAlmanacStatus) AdvLib.AdvFrameAddStatusTagUInt8(m_TAGID_GPSAlmanacStatus, (byte)metadata.GPSAlmanacStatus);
-		if (StatusSectionConfig.RecordGPSAlmanacOffset) AdvLib.AdvFrameAddStatusTagUInt8(m_TAGID_GPSAlmanacOffset, metadata.GPSAlmanacOffset);	
-		if (StatusSectionConfig.RecordGPSFixStatus) AdvLib.AdvFrameAddStatusTagUInt8(m_TAGID_GPSFixStatus, (byte)metadata.GPSFixStatus);
-		if (StatusSectionConfig.RecordGain) AdvLib.AdvFrameAddStatusTagReal(m_TAGID_Gain, metadata.Gain);
-		if (StatusSectionConfig.RecordGamma) AdvLib.AdvFrameAddStatusTagReal(m_TAGID_Gamma, metadata.Gamma);
-		if (StatusSectionConfig.RecordShutter) AdvLib.AdvFrameAddStatusTagReal(m_TAGID_Shutter, metadata.Shutter);
-		if (StatusSectionConfig.RecordCameraOffset) AdvLib.AdvFrameAddStatusTagReal(m_TAGID_Offset, metadata.CameraOffset);
-		if (StatusSectionConfig.RecordVideoCameraFrameId) AdvLib.AdvFrameAddStatusTag64(m_TAGID_VideoCameraFrameId, metadata.VideoCameraFrameId);
+
+		if (StatusSectionConfig.RecordSystemTime) AdvLib.AdvVer1_FrameAddStatusTag64(m_TAGID_SystemTime, metadata.SystemTime.MillisecondsAfterAdvZeroEpoch > 0 ? (ulong)metadata.SystemTime.MillisecondsAfterAdvZeroEpoch : 0);
+
+		if (StatusSectionConfig.RecordGPSTrackedSatellites) AdvLib.AdvVer1_FrameAddStatusTagUInt8(m_TAGID_TrackedGPSSatellites, metadata.GPSTrackedSatellites);
+		if (StatusSectionConfig.RecordGPSAlmanacStatus) AdvLib.AdvVer1_FrameAddStatusTagUInt8(m_TAGID_GPSAlmanacStatus, (byte)metadata.GPSAlmanacStatus);
+		if (StatusSectionConfig.RecordGPSAlmanacOffset) AdvLib.AdvVer1_FrameAddStatusTagUInt8(m_TAGID_GPSAlmanacOffset, metadata.GPSAlmanacOffset);
+		if (StatusSectionConfig.RecordGPSFixStatus) AdvLib.AdvVer1_FrameAddStatusTagUInt8(m_TAGID_GPSFixStatus, (byte)metadata.GPSFixStatus);
+		if (StatusSectionConfig.RecordGain) AdvLib.AdvVer1_FrameAddStatusTagReal(m_TAGID_Gain, metadata.Gain);
+		if (StatusSectionConfig.RecordGamma) AdvLib.AdvVer1_FrameAddStatusTagReal(m_TAGID_Gamma, metadata.Gamma);
+		if (StatusSectionConfig.RecordShutter) AdvLib.AdvVer1_FrameAddStatusTagReal(m_TAGID_Shutter, metadata.Shutter);
+		if (StatusSectionConfig.RecordCameraOffset) AdvLib.AdvVer1_FrameAddStatusTagReal(m_TAGID_Offset, metadata.CameraOffset);
+		if (StatusSectionConfig.RecordVideoCameraFrameId) AdvLib.AdvVer1_FrameAddStatusTag64(m_TAGID_VideoCameraFrameId, metadata.VideoCameraFrameId);
 
 		if (StatusSectionConfig.RecordUserCommands && metadata.UserCommands != null)
 		{
@@ -316,9 +316,9 @@ public class AdvRecorder
 				if (metadata.UserCommands[i] != null)
 				{
 					if (metadata.UserCommands[i].Length > 255)
-						AdvLib.AdvFrameAddStatusTagMessage(m_TAGID_UserCommand, metadata.UserCommands[i].Substring(0, 255));
+						AdvLib.AdvVer1_FrameAddStatusTagMessage(m_TAGID_UserCommand, metadata.UserCommands[i].Substring(0, 255));
 					else
-						AdvLib.AdvFrameAddStatusTagMessage(m_TAGID_UserCommand, metadata.UserCommands[i]);
+						AdvLib.AdvVer1_FrameAddStatusTagMessage(m_TAGID_UserCommand, metadata.UserCommands[i]);
 				}
 			}
 		}
@@ -330,9 +330,9 @@ public class AdvRecorder
 				if (metadata.SystemErrors[i] != null)
 				{
 					if (metadata.SystemErrors[i].Length > 255)
-						AdvLib.AdvFrameAddStatusTagMessage(m_TAGID_SystemError, metadata.SystemErrors[i].Substring(0, 255));
+						AdvLib.AdvVer1_FrameAddStatusTagMessage(m_TAGID_SystemError, metadata.SystemErrors[i].Substring(0, 255));
 					else
-						AdvLib.AdvFrameAddStatusTagMessage(m_TAGID_SystemError, metadata.SystemErrors[i]);
+						AdvLib.AdvVer1_FrameAddStatusTagMessage(m_TAGID_SystemError, metadata.SystemErrors[i]);
 				}
 			} 
 		}
@@ -347,27 +347,27 @@ public class AdvRecorder
 			switch (StatusSectionConfig.AdditionalStatusTags[tagName])
 			{
 				case AdvTagType.UInt8:
-					AdvLib.AdvFrameAddStatusTagUInt8(tagId, (byte)statusTagValue);
+					AdvLib.AdvVer1_FrameAddStatusTagUInt8(tagId, (byte)statusTagValue);
 					break;
 
 				case AdvTagType.UInt16:
-					AdvLib.AdvFrameAddStatusTag16(tagId, (ushort)statusTagValue);
+					AdvLib.AdvVer1_FrameAddStatusTag16(tagId, (ushort)statusTagValue);
 					break;
 
 				case AdvTagType.UInt32:
-					AdvLib.AdvFrameAddStatusTag32(tagId, (uint)statusTagValue);
+					AdvLib.AdvVer1_FrameAddStatusTag32(tagId, (uint)statusTagValue);
 					break;
 
 				case AdvTagType.ULong64:
-					AdvLib.AdvFrameAddStatusTag64(tagId, (ulong)statusTagValue);
+					AdvLib.AdvVer1_FrameAddStatusTag64(tagId, (ulong)statusTagValue);
 					break;
 
 				case AdvTagType.Real:
-					AdvLib.AdvFrameAddStatusTagReal(tagId, (float)statusTagValue);
+					AdvLib.AdvVer1_FrameAddStatusTagReal(tagId, (float)statusTagValue);
 					break;
 
 				case AdvTagType.AnsiString255:
-					AdvLib.AdvFrameAddStatusTag(tagId, (string)statusTagValue);
+					AdvLib.AdvVer1_FrameAddStatusTag(tagId, (string)statusTagValue);
 					break;
 
 				case AdvTagType.List16OfAnsiString255:
@@ -377,9 +377,9 @@ public class AdvRecorder
 						if (lines[i] != null)
 						{
 							if (lines[i].Length > 255)
-								AdvLib.AdvFrameAddStatusTagMessage(tagId, lines[i].Substring(0, 255));
+								AdvLib.AdvVer1_FrameAddStatusTagMessage(tagId, lines[i].Substring(0, 255));
 							else
-								AdvLib.AdvFrameAddStatusTagMessage(tagId, lines[i]);
+								AdvLib.AdvVer1_FrameAddStatusTagMessage(tagId, lines[i]);
 						}
 					} 
 					break;
