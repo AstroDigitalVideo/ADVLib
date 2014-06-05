@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvRecorder_V1.cs" />
+    <Compile Include="AdvRecorder_V2.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="PInvoke.cs" />

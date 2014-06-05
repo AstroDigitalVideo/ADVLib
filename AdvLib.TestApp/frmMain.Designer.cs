@@ -45,6 +45,7 @@
 			this.cbxCompress = new System.Windows.Forms.CheckBox();
 			this.btnVerifyLibrary = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+			this.cbxADV2 = new System.Windows.Forms.CheckBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -236,11 +237,22 @@
 			this.openFileDialog1.FileName = "Open Adv.Core dll";
 			this.openFileDialog1.Filter = "Dynamic Link Libraries (*.dll)|*.dll";
 			// 
+			// cbxADV2
+			// 
+			this.cbxADV2.AutoSize = true;
+			this.cbxADV2.Location = new System.Drawing.Point(390, 26);
+			this.cbxADV2.Name = "cbxADV2";
+			this.cbxADV2.Size = new System.Drawing.Size(95, 17);
+			this.cbxADV2.TabIndex = 10;
+			this.cbxADV2.Text = "Use ADV Ver2";
+			this.cbxADV2.UseVisualStyleBackColor = true;
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(541, 233);
+			this.Controls.Add(this.cbxADV2);
 			this.Controls.Add(this.btnVerifyLibrary);
 			this.Controls.Add(this.cbxCompress);
 			this.Controls.Add(this.groupBox3);
@@ -280,6 +292,7 @@
 		private System.Windows.Forms.CheckBox cbxCompress;
 		private System.Windows.Forms.Button btnVerifyLibrary;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
+		private System.Windows.Forms.CheckBox cbxADV2;
 	}
 }
 

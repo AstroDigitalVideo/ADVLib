@@ -115,6 +115,33 @@ public static class AdvLib
 	private static extern void AdvVer1_EndFrame32();
 
 
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_NewFile")]
+	//DLL_PUBLIC void AdvVer2_NewFile(const char* fileName);
+	private static extern void AdvVer2_NewFile32(string fileName);
+
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFile")]
+	//DLL_PUBLIC void AdvVer2_EndFile();
+	private static extern void AdvVer2_EndFile32();
+
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_SetTimingPrecision")]
+	//DLL_PUBLIC void AdvVer2_SetTimingPrecision(__int64 mainClockFrequency, int mainStreamAccuracy, __int64 calibrationClockFrequency, int calibrationStreamAccuracy);
+	private static extern void AdvVer2_SetTimingPrecision32(long mainClockFrequency, int mainStreamAccuracy, long calibrationClockFrequency, int calibrationStreamAccuracy);
+
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddMainStreamTag")]
+	//DLL_PUBLIC unsigned int AdvVer2_AddMainStreamTag(const char* tagName, const char* tagValue);
+	private static extern int AdvVer2_AddMainStreamTag32([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
+
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddCalibrationStreamTag")]
+	//DLL_PUBLIC unsigned int AdvVer2_AddCalibrationStreamTag(const char* tagName, const char* tagValue);
+	private static extern int AdvVer2_AddCalibrationStreamTag32([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
+
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrame")]
+	//bool AdvBeginFrame(long long timeStamp, unsigned int elapsedTime, unsigned int exposure);
+	private static extern bool AdvVer2_BeginFrame32(byte streamId, long timeStamp, uint elapsedTime, uint exposure);
+
+
+
+
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryVersion")]
 	private static extern void GetLibraryVersion64([MarshalAs(UnmanagedType.LPArray)]byte[] version);
 
@@ -196,6 +223,32 @@ public static class AdvLib
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_EndFrame")]
 	//void AdvEndFrame();
 	private static extern void AdvVer1_EndFrame64();
+
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_NewFile")]
+	//DLL_PUBLIC void AdvVer2_NewFile(const char* fileName);
+	private static extern void AdvVer2_NewFile64(string fileName);
+
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFile")]
+	//DLL_PUBLIC void AdvVer2_EndFile();
+	private static extern void AdvVer2_EndFile64();
+
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_SetTimingPrecision")]
+	//DLL_PUBLIC void AdvVer2_SetTimingPrecision(__int64 mainClockFrequency, int mainStreamAccuracy, __int64 calibrationClockFrequency, int calibrationStreamAccuracy);
+	private static extern void AdvVer2_SetTimingPrecision64(long mainClockFrequency, int mainStreamAccuracy, long calibrationClockFrequency, int calibrationStreamAccuracy);
+
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddMainStreamTag")]
+	//DLL_PUBLIC unsigned int AdvVer2_AddMainStreamTag(const char* tagName, const char* tagValue);
+	private static extern int AdvVer2_AddMainStreamTag64([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
+
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddCalibrationStreamTag")]
+	//DLL_PUBLIC unsigned int AdvVer2_AddCalibrationStreamTag(const char* tagName, const char* tagValue);
+	private static extern int AdvVer2_AddCalibrationStreamTag64([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
+
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrame")]
+	//bool AdvBeginFrame(long long timeStamp, unsigned int elapsedTime, unsigned int exposure);
+	private static extern bool AdvVer2_BeginFrame64(byte streamId, long timeStamp, uint elapsedTime, uint exposure);
+
+
 
 	public static void AdvVer1_NewFile(string fileName)
 	{
@@ -382,5 +435,62 @@ public static class AdvLib
 		{
 			return false;
 		}
+	}
+
+
+	public static void AdvVer2_NewFile(string fileName)
+	{
+		if (Is64Bit())
+			AdvVer2_NewFile64(fileName);
+		else
+			AdvVer2_NewFile32(fileName);
+	}
+
+	public static void AdvVer2_EndFile()
+	{
+		if (Is64Bit())
+			AdvVer2_EndFile64();
+		else
+			AdvVer2_EndFile32();
+	}
+
+	private static byte[] StringToUTF8Bytes(string str)
+	{
+		if (string.IsNullOrEmpty(str))
+			return new byte[0];
+		else
+			return Encoding.UTF8.GetBytes(str);
+	}
+
+	public static void AdvVer2_SetTimingPrecision(long mainFrequency, int mainAccuracy, long calibrationFrequency, int calibrationAccuracy)
+	{
+		if (Is64Bit())
+			AdvVer2_SetTimingPrecision64(mainFrequency, mainAccuracy, calibrationFrequency, calibrationAccuracy);
+		else
+			AdvVer2_SetTimingPrecision32(mainFrequency, mainAccuracy, calibrationFrequency, calibrationAccuracy);
+	}
+
+	public static void AdvVer2_AddMainStreamTag(string tagName, string tagValue)
+	{
+		if (Is64Bit())
+			AdvVer2_AddMainStreamTag64(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
+		else
+			AdvVer2_AddMainStreamTag32(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
+	}
+
+	public static void AdvVer2_AddCalibrationStreamTag(string tagName, string tagValue)
+	{
+		if (Is64Bit())
+			AdvVer2_AddCalibrationStreamTag64(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
+		else
+			AdvVer2_AddCalibrationStreamTag32(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
+	}
+
+	public static void AdvVer2_BeginFrame(byte streamId, long timeStamp, uint elapsedTime, uint exposure)
+	{
+		if (Is64Bit())
+			AdvVer2_BeginFrame64(streamId, timeStamp, elapsedTime, exposure);
+		else
+			AdvVer2_BeginFrame32(streamId, timeStamp, elapsedTime, exposure);
 	}
 }

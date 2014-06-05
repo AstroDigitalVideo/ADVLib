@@ -44,6 +44,23 @@ namespace AdvLibTestApp
 
 		private void button1_Click(object sender, EventArgs e)
 		{
+			if (cbxADV2.Checked)
+				SaveAdvVer2Sample();
+			else
+				SaveAdvVer1Sample();
+		}
+
+		private void SaveAdvVer2Sample()
+		{
+			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\Filename2.adv");
+
+			AdvRecorder_V2 recorder = new AdvRecorder_V2();
+			recorder.StartRecordingNewFile(fileName);
+			recorder.StopRecording();
+		}
+
+		private void SaveAdvVer1Sample()
+		{
 			AdvRecorder_V1 recorder = new AdvRecorder_V1();
 
 			// First set the values of the standard file metadata
@@ -74,7 +91,7 @@ namespace AdvLibTestApp
 				recorder.LocationData.LatitudeWgs84 = "-33*39'49.3\"";
 				recorder.LocationData.AltitudeMsl = "284.4M";
 				recorder.LocationData.MslWgs84Offset = "22.4M";
-				recorder.LocationData.GpsHdop = "0.7";				
+				recorder.LocationData.GpsHdop = "0.7";
 			}
 
 			// Define the image size and bit depth
@@ -96,9 +113,9 @@ namespace AdvLibTestApp
 			recorder.StatusSectionConfig.RecordGamma = true;
 			int customTagIdCustomGain = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-GAIN", AdvTagType.UInt32);
 			int customTagIdMessages = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-MESSAGES", AdvTagType.List16OfAnsiString255);
-			
-		    string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\Filename.adv");
-            recorder.StartRecordingNewFile(fileName);
+
+			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\Filename.adv");
+			recorder.StartRecordingNewFile(fileName);
 
 			AdvStatusEntry status = new AdvStatusEntry();
 			status.AdditionalStatusTags = new object[2];
@@ -165,7 +182,7 @@ namespace AdvLibTestApp
 
 			recorder.StopRecording();
 
-            MessageBox.Show(string.Format("'{0}' has been created.", fileName));
+			MessageBox.Show(string.Format("'{0}' has been created.", fileName));
 		}
 
 		private int GetTotalImages()
