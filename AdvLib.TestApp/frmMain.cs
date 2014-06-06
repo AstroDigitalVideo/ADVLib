@@ -57,6 +57,8 @@ namespace AdvLibTestApp
 			AdvRecorder_V2 recorder = new AdvRecorder_V2();
 			recorder.StartRecordingNewFile(fileName);
 			recorder.StopRecording();
+
+			MessageBox.Show(string.Format("'{0}' has been created.", fileName));
 		}
 
 		private void SaveAdvVer1Sample()

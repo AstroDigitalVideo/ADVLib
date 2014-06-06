@@ -137,7 +137,7 @@ public static class AdvLib
 
 	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrame")]
 	//bool AdvBeginFrame(long long timeStamp, unsigned int elapsedTime, unsigned int exposure);
-	private static extern bool AdvVer2_BeginFrame32(byte streamId, long timeStamp, uint elapsedTime, uint exposure);
+	private static extern bool AdvVer2_BeginFrame32(uint streamId, long timeStamp, uint elapsedTime, uint exposure);
 
 
 
@@ -246,7 +246,7 @@ public static class AdvLib
 
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrame")]
 	//bool AdvBeginFrame(long long timeStamp, unsigned int elapsedTime, unsigned int exposure);
-	private static extern bool AdvVer2_BeginFrame64(byte streamId, long timeStamp, uint elapsedTime, uint exposure);
+	private static extern bool AdvVer2_BeginFrame64(uint streamId, long timeStamp, uint elapsedTime, uint exposure);
 
 
 
