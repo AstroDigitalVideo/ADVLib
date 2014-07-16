@@ -32,6 +32,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using Obsolete;
 
 namespace AdvLibTestApp
 {
@@ -44,18 +45,33 @@ namespace AdvLibTestApp
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			if (cbxADV2.Checked)
-				SaveAdvVer2Sample();
-			else
+			if (cbxADV1.Checked)
 				SaveAdvVer1Sample();
+			else
+				SaveAdvVer2Sample();
 		}
 
 		private void SaveAdvVer2Sample()
 		{
 			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\Filename2.adv");
 
-			AdvRecorder_V2 recorder = new AdvRecorder_V2();
+			AdvRecorder recorder = new AdvRecorder();
+
+			// Define the image size and bit depth
+			byte dynaBits = 16;
+			if (rbPixel16.Checked) dynaBits = 16;
+			else if (rbPixel12.Checked) dynaBits = 12;
+			else if (rbPixel8.Checked) dynaBits = 8;
+
+			byte cameraDepth = 16;
+			if (rbCamera16.Checked) cameraDepth = 16;
+			else if (rbCamera12.Checked) cameraDepth = 12;
+			else if (rbCamera8.Checked) cameraDepth = 8;
+
+			recorder.ImageConfig.SetImageParameters(640, 480, cameraDepth, dynaBits);
+
 			recorder.StartRecordingNewFile(fileName);
+
 			recorder.StopRecording();
 
 			MessageBox.Show(string.Format("'{0}' has been created.", fileName));
@@ -63,7 +79,7 @@ namespace AdvLibTestApp
 
 		private void SaveAdvVer1Sample()
 		{
-			AdvRecorder_V1 recorder = new AdvRecorder_V1();
+			var recorder = new Obsolete.AdvVer1.AdvRecorder();
 
 			// First set the values of the standard file metadata
 			recorder.FileMetaData.RecorderName = "Genika";
