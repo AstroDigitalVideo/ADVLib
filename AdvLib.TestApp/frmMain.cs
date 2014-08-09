@@ -32,7 +32,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using Obsolete;
 
 namespace AdvLibTestApp
 {
@@ -55,12 +54,36 @@ namespace AdvLibTestApp
 		{
 			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\Filename2.adv");
 
-			AdvRecorder recorder = new AdvRecorder();
+			var recorder = new AdvRecorder();
+
+			// First set the values of the standard file metadata
+			recorder.FileMetaData.RecorderSoftwareName = "AdvLibRecorder";
+			recorder.FileMetaData.RecorderSoftwareVersion = "x.y.z";
+			recorder.FileMetaData.RecorderHardwareName = "a.b.c";
+
+			recorder.FileMetaData.CameraModel = "Flea3 FL3-FW-03S3M";
+			recorder.FileMetaData.CameraSensorInfo = "Sony ICX414AL (1/2\" 648x488 CCD)";
+
+			// Then define additional metadata, if required
+			recorder.FileMetaData.AddUserTag("TELESCOPE-NAME", "Large Telescope");
+			recorder.FileMetaData.AddUserTag("TELESCOPE-FL", "8300");
+			recorder.FileMetaData.AddUserTag("TELESCOPE-FD", "6.5");
+			recorder.FileMetaData.AddUserTag("CAMERA-DIGITAL-SAMPLIG", "xxx");
+			recorder.FileMetaData.AddUserTag("CAMERA-HDR-RESPONSE", "yyy");
+			recorder.FileMetaData.AddUserTag("CAMERA-OPTICAL-RESOLUTION", "zzz");
+
+			if (cbxLocationData.Checked)
+			{
+				recorder.LocationData.SetLocation(
+					150 + 38 / 60.0 + 27.7 / 3600.0,
+					-1 * (33 + 39 / 60.0 + 49.3 / 3600.0),
+					284.4);
+			}
 
 			// Define the image size and bit depth
 			byte dynaBits = 16;
 			if (rbPixel16.Checked) dynaBits = 16;
-			else if (rbPixel12.Checked) dynaBits = 12;
+			else if (rbPixel12as16.Checked || rbPixel12as12.Checked) dynaBits = 12;
 			else if (rbPixel8.Checked) dynaBits = 8;
 
 			byte cameraDepth = 16;
@@ -68,9 +91,105 @@ namespace AdvLibTestApp
 			else if (rbCamera12.Checked) cameraDepth = 12;
 			else if (rbCamera8.Checked) cameraDepth = 8;
 
-			recorder.ImageConfig.SetImageParameters(640, 480, cameraDepth, dynaBits);
+			int? normalPixelValue = null;
+			if (nudNormalValue.Value > 0) normalPixelValue = (int)nudNormalValue.Value;
+
+			recorder.ImageConfig.SetImageParameters(640, 480, cameraDepth, dynaBits, normalPixelValue);
+
+			// By default no status section values will be recorded. The user must enable the ones they need recorded and 
+			// can also define additional status parameters to be recorded with each video frame
+			recorder.StatusSectionConfig.RecordGain = true;
+			recorder.StatusSectionConfig.RecordGamma = true;
+			int customTagIdCustomGain = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-GAIN", AdvTagType.UInt32);
+			int customTagIdMessages = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-MESSAGES", AdvTagType.List16OfAnsiString255);
+
 
 			recorder.StartRecordingNewFile(fileName);
+
+			AdvRecorder.AdvStatusEntry status = new AdvRecorder.AdvStatusEntry();
+			status.AdditionalStatusTags = new object[2];
+
+			int imagesCount = GetTotalImages();
+			bool useCompression = cbxCompress.Checked;
+
+			for (int i = 0; i < imagesCount; i++)
+			{
+				// NOTE: Moking up some test data
+				uint exposure = GetCurrentImageExposure(i);
+				DateTime startTimestamp = GetCurrentImageTimeStamp(i);
+				DateTime endTimestamp = startTimestamp.AddMilliseconds(exposure/10.0);
+				status.Gain = GetCurrentImageGain(i);
+				status.Gamma = GetCurrentImageGamma(i);
+				status.AdditionalStatusTags[customTagIdMessages] = GetCurrentExampleMassages(i);
+				status.AdditionalStatusTags[customTagIdCustomGain] = GetCurrentExampleCustomGain(i);
+
+				if (rb16BitUShort.Checked)
+				{
+					ushort[] imagePixels = GetCurrentImageBytesIn16(i, dynaBits);
+
+					recorder.AddVideoFrame(
+						imagePixels,
+
+						// NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
+						// i.e. it may take longer to compress the data than for the next image to arrive on the buffer
+						useCompression,
+
+						AdvTimeStamp.FromDateTime(startTimestamp),
+						AdvTimeStamp.FromDateTime(endTimestamp),
+						status);
+				}
+				else if (rb16BitByte.Checked)
+				{
+					byte[] imageBytes = GetCurrentImageBytes(i, dynaBits);
+
+					recorder.AddVideoFrame(
+						imageBytes,
+
+						// NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
+						// i.e. it may take longer to compress the data than for the next image to arrive on the buffer
+						useCompression,
+						
+						AdvTimeStamp.FromDateTime(startTimestamp),
+						AdvTimeStamp.FromDateTime(endTimestamp),
+						status,
+						
+						AdvImageData.PixelDepth16Bit);
+				}
+				else if (rb12BitByte.Checked)
+				{
+					byte[] imageBytes = GetCurrentImageBytes(i, dynaBits);
+
+					recorder.AddVideoFrame(
+						imageBytes,
+
+						// NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
+						// i.e. it may take longer to compress the data than for the next image to arrive on the buffer
+						useCompression,
+
+						AdvTimeStamp.FromDateTime(startTimestamp),
+						AdvTimeStamp.FromDateTime(endTimestamp),
+						status,
+
+						AdvImageData.PixelDepth16Bit);
+				}
+				else if (rb8BitByte.Checked)
+				{
+					byte[] imageBytes = GetCurrentImageBytes(i, dynaBits);
+
+					recorder.AddVideoFrame(
+						imageBytes,
+
+						// NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
+						// i.e. it may take longer to compress the data than for the next image to arrive on the buffer
+						useCompression,
+						
+						AdvTimeStamp.FromDateTime(startTimestamp),
+						AdvTimeStamp.FromDateTime(endTimestamp),
+						status,
+						
+						AdvImageData.PixelDepth8Bit);
+				}
+			}
 
 			recorder.StopRecording();
 
@@ -115,7 +234,7 @@ namespace AdvLibTestApp
 			// Define the image size and bit depth
 			byte dynaBits = 16;
 			if (rbPixel16.Checked) dynaBits = 16;
-			else if (rbPixel12.Checked) dynaBits = 12;
+			else if (rbPixel12as16.Checked) dynaBits = 12;
 			else if (rbPixel8.Checked) dynaBits = 8;
 
 			byte cameraDepth = 16;
@@ -135,7 +254,7 @@ namespace AdvLibTestApp
 			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\Filename.adv");
 			recorder.StartRecordingNewFile(fileName);
 
-			AdvStatusEntry status = new AdvStatusEntry();
+			Obsolete.AdvStatusEntry status = new Obsolete.AdvStatusEntry();
 			status.AdditionalStatusTags = new object[2];
 
 			int imagesCount = GetTotalImages();
@@ -352,10 +471,23 @@ namespace AdvLibTestApp
 			{
 				rbPixel16.Checked = true;
 				rbPixel16.Enabled = true;
-				rbPixel12.Enabled = true;
+				rbPixel12as16.Enabled = true;
+				rbPixel12as12.Enabled = false;
 				rbPixel8.Enabled = false;
 				rbCamera16.Checked = true;
 				rbCamera16.Enabled = true;
+				rbCamera12.Enabled = true;
+				rbCamera8.Enabled = false;
+			}
+			else if (rb12BitByte.Checked)
+			{				
+				rbPixel16.Enabled = false;
+				rbPixel12as16.Enabled = false;
+				rbPixel12as12.Enabled = true;
+				rbPixel12as12.Checked = true;
+				rbPixel8.Enabled = false;
+				rbCamera16.Checked = false;
+				rbCamera16.Enabled = false;
 				rbCamera12.Enabled = true;
 				rbCamera8.Enabled = false;
 			}
@@ -363,7 +495,8 @@ namespace AdvLibTestApp
 			{
 				rbPixel8.Checked = true;
 				rbPixel16.Enabled = false;
-				rbPixel12.Enabled = false;
+				rbPixel12as16.Enabled = false;
+				rbPixel12as12.Enabled = false;
 				rbPixel8.Enabled = true;
 				rbCamera8.Checked = true;
 				rbCamera16.Enabled = false;
@@ -373,8 +506,8 @@ namespace AdvLibTestApp
 		}
 
 		private void OnPixelFormatChanged(object sender, EventArgs e)
-		{			
-			if (rbPixel12.Checked)
+		{
+			if (rbPixel12as16.Checked || rbPixel12as12.Checked)
 			{
 				rbCamera16.Enabled = false;
 				rbCamera12.Checked = true;
@@ -405,12 +538,30 @@ namespace AdvLibTestApp
 				string version = Library.GetVersion();
 				string platformId = Library.GetPlatformId();
 				bool is64Bit = Library.Is64BitProcess();
+				string path = Library.GetLibraryPath();
 
-				MessageBox.Show(this, string.Format("AdvLib.Core v.{0}\r\nPlatform: {1}\r\nCurrent process is {2} bit", version, platformId, is64Bit ? "64" : "32"), "AdvLib Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(this, string.Format("Current process is {3} bit\r\nAdvLib.Core v.{0}\r\nPlatform: {2}\r\n\r\nLocation: {1}", version, path, platformId, is64Bit ? "64" : "32"), "AdvLib Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show(this,ex.Message + "\r\n\r\n" + ex.StackTrace, ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void cbxADV1_CheckedChanged(object sender, EventArgs e)
+		{
+			if (cbxADV1.Checked)
+			{
+				rbPixel12as12.Enabled = false;
+				rb12BitByte.Enabled = false;
+				rb16BitUShort.Checked = true;
+				rbPixel16.Checked = true;
+				rbCamera16.Checked = true;
+			}
+			else
+			{
+				rbPixel12as12.Enabled = true;
+				rb12BitByte.Enabled = true;
 			}
 		}
 	}

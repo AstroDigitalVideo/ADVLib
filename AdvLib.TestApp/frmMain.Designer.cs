@@ -36,7 +36,7 @@
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.rbPixel8 = new System.Windows.Forms.RadioButton();
-			this.rbPixel12 = new System.Windows.Forms.RadioButton();
+			this.rbPixel12as16 = new System.Windows.Forms.RadioButton();
 			this.rbPixel16 = new System.Windows.Forms.RadioButton();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.rbCamera8 = new System.Windows.Forms.RadioButton();
@@ -46,14 +46,19 @@
 			this.btnVerifyLibrary = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.cbxADV1 = new System.Windows.Forms.CheckBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.nudNormalValue = new System.Windows.Forms.NumericUpDown();
+			this.rbPixel12as12 = new System.Windows.Forms.RadioButton();
+			this.rb12BitByte = new System.Windows.Forms.RadioButton();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.nudNormalValue)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(33, 189);
+			this.button1.Location = new System.Drawing.Point(33, 217);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(132, 23);
 			this.button1.TabIndex = 0;
@@ -98,7 +103,7 @@
 			// rb8BitByte
 			// 
 			this.rb8BitByte.AutoSize = true;
-			this.rb8BitByte.Location = new System.Drawing.Point(18, 70);
+			this.rb8BitByte.Location = new System.Drawing.Point(18, 93);
 			this.rb8BitByte.Name = "rb8BitByte";
 			this.rb8BitByte.Size = new System.Drawing.Size(77, 17);
 			this.rb8BitByte.TabIndex = 4;
@@ -108,33 +113,35 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.rb12BitByte);
 			this.groupBox1.Controls.Add(this.rb16BitUShort);
 			this.groupBox1.Controls.Add(this.rb8BitByte);
 			this.groupBox1.Controls.Add(this.rb16BitByte);
 			this.groupBox1.Location = new System.Drawing.Point(33, 52);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(184, 100);
+			this.groupBox1.Size = new System.Drawing.Size(184, 123);
 			this.groupBox1.TabIndex = 5;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Image Format";
+			this.groupBox1.Text = "Source Pixel Format";
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.rbPixel12as12);
 			this.groupBox2.Controls.Add(this.rbPixel8);
-			this.groupBox2.Controls.Add(this.rbPixel12);
+			this.groupBox2.Controls.Add(this.rbPixel12as16);
 			this.groupBox2.Controls.Add(this.rbPixel16);
 			this.groupBox2.Location = new System.Drawing.Point(223, 52);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(161, 100);
+			this.groupBox2.Size = new System.Drawing.Size(161, 123);
 			this.groupBox2.TabIndex = 6;
 			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Pixel Format";
+			this.groupBox2.Text = "Image Pixel Format";
 			// 
 			// rbPixel8
 			// 
 			this.rbPixel8.AutoSize = true;
 			this.rbPixel8.Enabled = false;
-			this.rbPixel8.Location = new System.Drawing.Point(15, 70);
+			this.rbPixel8.Location = new System.Drawing.Point(15, 93);
 			this.rbPixel8.Name = "rbPixel8";
 			this.rbPixel8.Size = new System.Drawing.Size(122, 17);
 			this.rbPixel8.TabIndex = 2;
@@ -142,16 +149,16 @@
 			this.rbPixel8.UseVisualStyleBackColor = true;
 			this.rbPixel8.CheckedChanged += new System.EventHandler(this.OnPixelFormatChanged);
 			// 
-			// rbPixel12
+			// rbPixel12as16
 			// 
-			this.rbPixel12.AutoSize = true;
-			this.rbPixel12.Location = new System.Drawing.Point(15, 47);
-			this.rbPixel12.Name = "rbPixel12";
-			this.rbPixel12.Size = new System.Drawing.Size(134, 17);
-			this.rbPixel12.TabIndex = 1;
-			this.rbPixel12.Text = "12-bit (Saved as 16-bit)";
-			this.rbPixel12.UseVisualStyleBackColor = true;
-			this.rbPixel12.CheckedChanged += new System.EventHandler(this.OnPixelFormatChanged);
+			this.rbPixel12as16.AutoSize = true;
+			this.rbPixel12as16.Location = new System.Drawing.Point(15, 47);
+			this.rbPixel12as16.Name = "rbPixel12as16";
+			this.rbPixel12as16.Size = new System.Drawing.Size(134, 17);
+			this.rbPixel12as16.TabIndex = 1;
+			this.rbPixel12as16.Text = "12-bit (Saved as 16-bit)";
+			this.rbPixel12as16.UseVisualStyleBackColor = true;
+			this.rbPixel12as16.CheckedChanged += new System.EventHandler(this.OnPixelFormatChanged);
 			// 
 			// rbPixel16
 			// 
@@ -173,7 +180,7 @@
 			this.groupBox3.Controls.Add(this.rbCamera16);
 			this.groupBox3.Location = new System.Drawing.Point(390, 52);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(122, 100);
+			this.groupBox3.Size = new System.Drawing.Size(122, 123);
 			this.groupBox3.TabIndex = 7;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Camera Depth";
@@ -214,7 +221,7 @@
 			// cbxCompress
 			// 
 			this.cbxCompress.AutoSize = true;
-			this.cbxCompress.Location = new System.Drawing.Point(33, 162);
+			this.cbxCompress.Location = new System.Drawing.Point(33, 190);
 			this.cbxCompress.Name = "cbxCompress";
 			this.cbxCompress.Size = new System.Drawing.Size(140, 17);
 			this.cbxCompress.TabIndex = 8;
@@ -223,7 +230,7 @@
 			// 
 			// btnVerifyLibrary
 			// 
-			this.btnVerifyLibrary.Location = new System.Drawing.Point(380, 189);
+			this.btnVerifyLibrary.Location = new System.Drawing.Point(380, 217);
 			this.btnVerifyLibrary.Name = "btnVerifyLibrary";
 			this.btnVerifyLibrary.Size = new System.Drawing.Size(132, 23);
 			this.btnVerifyLibrary.TabIndex = 9;
@@ -246,12 +253,57 @@
 			this.cbxADV1.TabIndex = 10;
 			this.cbxADV1.Text = "Use ADV Version 1";
 			this.cbxADV1.UseVisualStyleBackColor = true;
+			this.cbxADV1.CheckedChanged += new System.EventHandler(this.cbxADV1_CheckedChanged);
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(191, 190);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(98, 13);
+			this.label1.TabIndex = 11;
+			this.label1.Text = "Normal Pixel Value:";
+			// 
+			// nudNormalValue
+			// 
+			this.nudNormalValue.Location = new System.Drawing.Point(296, 188);
+			this.nudNormalValue.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+			this.nudNormalValue.Name = "nudNormalValue";
+			this.nudNormalValue.Size = new System.Drawing.Size(64, 20);
+			this.nudNormalValue.TabIndex = 12;
+			// 
+			// rbPixel12as12
+			// 
+			this.rbPixel12as12.AutoSize = true;
+			this.rbPixel12as12.Location = new System.Drawing.Point(15, 70);
+			this.rbPixel12as12.Name = "rbPixel12as12";
+			this.rbPixel12as12.Size = new System.Drawing.Size(134, 17);
+			this.rbPixel12as12.TabIndex = 3;
+			this.rbPixel12as12.Text = "12-bit (Saved as 12-bit)";
+			this.rbPixel12as12.UseVisualStyleBackColor = true;
+			// 
+			// rb12BitByte
+			// 
+			this.rb12BitByte.AutoSize = true;
+			this.rb12BitByte.Location = new System.Drawing.Point(18, 70);
+			this.rb12BitByte.Name = "rb12BitByte";
+			this.rb12BitByte.Size = new System.Drawing.Size(125, 17);
+			this.rb12BitByte.TabIndex = 5;
+			this.rb12BitByte.Text = "12-bit, packed, byte[]";
+			this.rb12BitByte.UseVisualStyleBackColor = true;
+			this.rb12BitByte.CheckedChanged += new System.EventHandler(this.OnImageFormatChanged);
 			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(541, 233);
+			this.ClientSize = new System.Drawing.Size(541, 254);
+			this.Controls.Add(this.nudNormalValue);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.cbxADV1);
 			this.Controls.Add(this.btnVerifyLibrary);
 			this.Controls.Add(this.cbxCompress);
@@ -268,6 +320,7 @@
 			this.groupBox2.PerformLayout();
 			this.groupBox3.ResumeLayout(false);
 			this.groupBox3.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.nudNormalValue)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -283,7 +336,7 @@
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.RadioButton rbPixel8;
-		private System.Windows.Forms.RadioButton rbPixel12;
+		private System.Windows.Forms.RadioButton rbPixel12as16;
 		private System.Windows.Forms.RadioButton rbPixel16;
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.RadioButton rbCamera8;
@@ -293,6 +346,10 @@
 		private System.Windows.Forms.Button btnVerifyLibrary;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.CheckBox cbxADV1;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.NumericUpDown nudNormalValue;
+		private System.Windows.Forms.RadioButton rbPixel12as12;
+		private System.Windows.Forms.RadioButton rb12BitByte;
 	}
 }
 

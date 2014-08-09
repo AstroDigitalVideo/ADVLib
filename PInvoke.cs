@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -17,6 +18,8 @@ public enum AdvTagType
 	Real = 4, // IEEE/REAL*4
 	AnsiString255 = 5,
 	List16OfAnsiString255 = 6,
+	UTF8String = 7,
+	List16OfUTF8String = 8,
 };
 
 public static class AdvLib
@@ -136,8 +139,8 @@ public static class AdvLib
 	private static extern int AdvVer2_AddCalibrationStreamTag32([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
 	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrame")]
-	//bool AdvBeginFrame(long long timeStamp, long long elapsedTicks, unsigned int exposure);
-	private static extern bool AdvVer2_BeginFrame32(uint streamId, long timeStamp, long elapsedTicks, uint exposure);
+	//bool AdvBeginFrame(unsigned char streamId, __int64 startFrameTicks, __int64 endFrameTicks,__int64 elapsedTicksSinceFirstFrame));
+	private static extern bool AdvVer2_BeginFrame32(uint streamId, long startTicks, long endTicks, long elapsedTicksFromStart);
 
 	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageSection")]
 	//void AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
@@ -195,7 +198,9 @@ public static class AdvLib
 	//void AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
 	private static extern void AdvVer2_FrameAddImageBytes_32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
-
+	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
+	//void AdvVer2_EndFrame();
+	private static extern void AdvVer2_EndFrame32();
 
 
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryVersion")]
@@ -301,8 +306,8 @@ public static class AdvLib
 	private static extern int AdvVer2_AddCalibrationStreamTag64([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrame")]
-	//bool AdvBeginFrame(long long timeStamp, long long elapsedTicks, unsigned int exposure);
-	private static extern bool AdvVer2_BeginFrame64(uint streamId, long timeStamp, long elapsedTicks, uint exposure);
+	//bool AdvBeginFrame(unsigned char streamId, __int64 startFrameTicks, __int64 endFrameTicks,__int64 elapsedTicksSinceFirstFrame);
+	private static extern bool AdvVer2_BeginFrame64(uint streamId, long startTicks, long endTicks, long elapsedTicksFromStart);
 
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageSection")]
 	//void AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
@@ -360,6 +365,9 @@ public static class AdvLib
 	//void AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
 	private static extern void AdvVer2_FrameAddImageBytes_64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
+	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
+	//void AdvVer2_EndFrame();
+	private static extern void AdvVer2_EndFrame64();
 
 	public static string AdvGetCurrentFilePath()
 	{
@@ -603,12 +611,23 @@ public static class AdvLib
 			AdvVer2_AddCalibrationStreamTag32(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
 	}
 
-	public static void BeginFrame(byte streamId, long timeStamp, uint elapsedTime, uint exposure)
+	public static bool BeginFrame(byte streamId, long startTicks, long endTicks, long elapsedTicksFromStart)
 	{
-		if (Is64Bit())
-			AdvVer2_BeginFrame64(streamId, timeStamp, elapsedTime, exposure);
-		else
-			AdvVer2_BeginFrame32(streamId, timeStamp, elapsedTime, exposure);
+		try
+		{
+			if (Is64Bit())
+				AdvVer2_BeginFrame64(streamId, startTicks, endTicks, elapsedTicksFromStart);
+			else
+				AdvVer2_BeginFrame32(streamId, startTicks, endTicks, elapsedTicksFromStart);
+
+			return true;
+		}
+		catch (Exception ex)
+		{
+			Trace.WriteLine(ex);
+
+			return false;
+		}
 	}
 
 	public static void DefineImageSection(ushort width, ushort height, byte dataBpp)
@@ -721,5 +740,13 @@ public static class AdvLib
 			AdvVer2_FrameAddImageBytes_64(layoutId, pixels, pixelsBpp);
 		else
 			AdvVer2_FrameAddImageBytes_32(layoutId, pixels, pixelsBpp);
+	}
+
+	public static void EndFrame()
+	{
+		if (Is64Bit())
+			AdvVer2_EndFrame64();
+		else
+			AdvVer2_EndFrame32();
 	}
 }

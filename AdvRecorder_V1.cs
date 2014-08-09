@@ -71,6 +71,106 @@ namespace Obsolete
 		}
 	}
 
+	public class AdvStatusSectionConfig
+	{
+		public bool RecordSystemTime { get; set; }
+		public bool RecordGPSTrackedSatellites { get; set; }
+		public bool RecordGPSAlmanacStatus { get; set; }
+		public bool RecordGPSAlmanacOffset { get; set; }
+		public bool RecordGPSFixStatus { get; set; }
+		public bool RecordGain { get; set; }
+		public bool RecordShutter { get; set; }
+		public bool RecordCameraOffset { get; set; }
+		public bool RecordGamma { get; set; }
+		public bool RecordVideoCameraFrameId { get; set; }
+		public bool RecordUserCommands { get; set; }
+		public bool RecordSystemErrors { get; set; }
+
+		internal Dictionary<string, AdvTagType> AdditionalStatusTags = new Dictionary<string, AdvTagType>();
+
+		public int AddDefineTag(string tagName, AdvTagType tagType)
+		{
+			if (AdditionalStatusTags.ContainsKey(tagName))
+				throw new ArgumentException("This tag name as been already added.");
+
+			if (tagType == AdvTagType.UTF8String || tagType == AdvTagType.List16OfUTF8String)
+				throw new ArgumentException("UTF8 strings are not supported in the obsolete recorder which is using ADV version 1.");
+
+			AdditionalStatusTags.Add(tagName, tagType);
+
+			return AdditionalStatusTags.Count - 1;
+		}
+	}
+
+	public class AdvStatusEntry
+	{
+		/// <summary>
+		/// Lower accuracy system timestamp for the frame. Could be used as a backup time reference in case of a problem with the main timing hardware.
+		/// </summary>
+		public AdvTimeStamp SystemTime { get; set; }
+
+		/// <summary>
+		/// Number of tracked GPS satellites
+		/// </summary>
+		public byte GPSTrackedSatellites { get; set; }
+
+		/// <summary>
+		/// The status of the GPS almanac update 
+		/// </summary>
+		public AlmanacStatus GPSAlmanacStatus { get; set; }
+
+		/// <summary>
+		/// The almanac offset in seconds that was added to the uncorrected time reported by the GPS in order to compute the UTC time
+		/// </summary>
+		public byte GPSAlmanacOffset { get; set; }
+
+		/// <summary>
+		/// The status of the GPS fix
+		/// </summary>
+		public FixStatus GPSFixStatus { get; set; }
+
+		/// <summary>
+		/// The gain of the camera in dB
+		/// </summary>
+		public float Gain { get; set; }
+
+		/// <summary>
+		/// Camera shutter speed in seconds
+		/// </summary>
+		public float Shutter { get; set; }
+
+		/// <summary>
+		/// The gamma correction applied to the produced image
+		/// </summary>
+		public float Gamma { get; set; }
+
+		/// <summary>
+		/// The offset in percentage applied to the produced image
+		/// </summary>
+		public float CameraOffset { get; set; }
+
+		/// <summary>
+		/// The id of the frame as labeled by the camera frame counter
+		/// </summary>
+		public ulong VideoCameraFrameId { get; set; }
+
+		/// <summary>
+		/// The user commands executed since the last recorded frame. Up to 16 lines, each line up to 255 characters.
+		/// </summary>
+		public string[] UserCommands { get; set; }
+
+		/// <summary>
+		/// System errors detected since the last recorded frame. Up to 16 lines, each line up to 255 characters.
+		/// </summary>
+		public string[] SystemErrors { get; set; }
+
+		/// <summary>
+		/// The values of the additional tags. The value types must correspond to the defined tag type. Only the following
+		/// .NET types are supported: byte, ushort, uint, ulong, float, string and string[]
+		/// </summary>
+		public object[] AdditionalStatusTags;
+	}
+
 	namespace AdvVer1
 	{
 		public class AdvRecorder
@@ -251,8 +351,7 @@ namespace Obsolete
 			/// <param name="timeStamp">The high accuracy timestamp for the middle of the frame. If the timestamp is not with an accuracy of 1ms then set it as zero. A lower accuracy timestamp can be specified in the SystemTime status value.</param>
 			/// <param name="exposureIn10thMilliseconds">The duration of the frame in whole 0.1 ms as determined by the high accuracy timestamping. If high accuracy timestamp is not available then set this to zero. Note that the Shutter status value should be derived from the camera settings rather than from the timestamps.</param>
 			/// <param name="metadata">The status metadata to be saved with the video frame.</param>
-			public void AddVideoFrame(byte[] pixels, bool compress, AdvImageData imageData, AdvTimeStamp timeStamp,
-									  uint exposureIn10thMilliseconds, AdvStatusEntry metadata)
+			public void AddVideoFrame(byte[] pixels, bool compress, AdvImageData imageData, AdvTimeStamp timeStamp, uint exposureIn10thMilliseconds, AdvStatusEntry metadata)
 			{
 				BeginVideoFrame(timeStamp, exposureIn10thMilliseconds, metadata);
 
