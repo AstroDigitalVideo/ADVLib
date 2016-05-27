@@ -46,7 +46,7 @@ public static class AdvLib
 
     [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvOpenFile")]
     //unsigned int AdvOpenFile(const char* fileName);
-    private static extern uint AdvOpenFile32(string fileName);
+    private static extern int AdvOpenFile32(string fileName);
 
     [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvGetFileVersion")]
     //unsigned int AdvGetFileVersion(const char* fileName);
@@ -225,7 +225,7 @@ public static class AdvLib
 
     [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvOpenFile")]
     //unsigned int AdvOpenFile(const char* fileName);
-    private static extern uint AdvOpenFile64(string fileName);
+    private static extern int AdvOpenFile64(string fileName);
 
     [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvGetFileVersion")]
     //unsigned int AdvGetFileVersion(const char* fileName);
@@ -587,7 +587,7 @@ public static class AdvLib
         if (Is64Bit())
             return AdvOpenFile64(fileName);
         else
-            return AdvOpenFile32(fileName);       
+            return AdvOpenFile32(fileName);
     }
 
     public static uint AdvGetFileVersion(string fileName)

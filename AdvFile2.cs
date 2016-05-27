@@ -7,10 +7,12 @@ public class AdvFile2
 {
     public AdvFile2(string fileName)
     {
-        uint fileVersion = AdvLib.AdvOpenFile(fileName);
-        if (fileVersion == 0)
+        int fileVersionOrErrorCode = AdvLib.AdvOpenFile(fileName);
+        if (fileVersionOrErrorCode == 0)
             throw new AdvLibException(string.Format("'{0}' is not an ADV file.", fileName));
-        else if (fileVersion != 2)
+        else if (fileVersionOrErrorCode < 0)
+            throw new AdvLibException(string.Format("There was an error opening '{0}'. Error code is: {1}", fileName, fileVersionOrErrorCode));
+        else if (fileVersionOrErrorCode != 2)
             throw new AdvLibException(string.Format("'{0}' is not an ADV version 2 file.", fileName));
     }
 }
