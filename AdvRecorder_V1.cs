@@ -337,7 +337,7 @@ namespace Obsolete
 			/// <summary>
 			/// Closes the AVD file and stops any recording to it.
 			/// </summary>
-			public void StopRecording()
+			public void FinishRecording()
 			{
 				AdvLib.Obsolete.AdvVer1.EndFile();
 			}

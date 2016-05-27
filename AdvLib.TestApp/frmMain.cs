@@ -22,6 +22,7 @@
 // THE SOFTWARE.
 #endregion
 
+using AdvLib.TestApp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -191,9 +192,9 @@ namespace AdvLibTestApp
 				}
 			}
 
-			recorder.StopRecording();
+			recorder.FinishRecording();
 
-			MessageBox.Show(string.Format("'{0}' has been created.", fileName));
+			ActionFileOperation(fileName);
 		}
 
 		private void SaveAdvVer1Sample()
@@ -317,10 +318,37 @@ namespace AdvLibTestApp
 				}
 			}
 
-			recorder.StopRecording();
-
-			MessageBox.Show(string.Format("'{0}' has been created.", fileName));
+			recorder.FinishRecording();
+		    ActionFileOperation(fileName);
 		}
+
+	    private void ActionFileOperation(string fileName)
+	    {
+            var frm = new frmChooseGeneratedFileAction(fileName);
+            if (frm.ShowDialog(this) == DialogResult.OK)
+            {
+                switch (frm.SelectedOperation)
+                {
+                    case frmChooseGeneratedFileAction.FileOperation.ViewStructure:
+                        LoadFileStructure(fileName);
+                        break;
+
+                    case frmChooseGeneratedFileAction.FileOperation.PlayVideo:
+                        PlayFile(fileName);
+                        break;
+                }
+            }
+	    }
+
+	    private void LoadFileStructure(string fileName)
+	    {
+	        var file = new AdvFile2(fileName);
+	    }
+
+        private void PlayFile(string fileName)
+        {
+
+        }
 
 		private int GetTotalImages()
 		{

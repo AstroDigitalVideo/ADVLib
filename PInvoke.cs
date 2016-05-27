@@ -41,6 +41,14 @@ public static class AdvLib
 	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryPlatformId")]
 	private static extern void GetLibraryPlatformId32([MarshalAs(UnmanagedType.LPArray)]byte[] platform);
 
+    [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvOpenFile")]
+    //unsigned int AdvOpenFile(const char* fileName);
+    private static extern uint AdvOpenFile32(string fileName);
+
+    [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvGetFileVersion")]
+    //unsigned int AdvGetFileVersion(const char* fileName);
+    private static extern uint AdvGetFileVersion32(string fileName);
+
 	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_NewFile")]
 	//void AdvNewFile(const char* fileName);
 	private static extern void AdvVer1_NewFile32(string fileName);
@@ -208,6 +216,15 @@ public static class AdvLib
 
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryPlatformId")]
 	private static extern void GetLibraryPlatformId64([MarshalAs(UnmanagedType.LPArray)]byte[] platform);
+
+
+    [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvOpenFile")]
+    //unsigned int AdvOpenFile(const char* fileName);
+    private static extern uint AdvOpenFile64(string fileName);
+
+    [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvGetFileVersion")]
+    //unsigned int AdvGetFileVersion(const char* fileName);
+    private static extern uint AdvGetFileVersion64(string fileName);
 
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_NewFile")]
 	//void AdvNewFile(const char* fileName);
@@ -548,6 +565,22 @@ public static class AdvLib
 
 		return Encoding.ASCII.GetString(platform).Trim('\0');
 	}
+
+    public static uint AdvOpenFile(string fileName)
+    {
+        if (Is64Bit())
+            return AdvOpenFile64(fileName);
+        else
+            return AdvOpenFile32(fileName);       
+    }
+
+    public static uint AdvGetFileVersion(string fileName)
+    {
+        if (Is64Bit())
+            return AdvGetFileVersion64(fileName);
+        else
+            return AdvGetFileVersion32(fileName);
+    }
 	
 	public static bool Is64Bit()
 	{

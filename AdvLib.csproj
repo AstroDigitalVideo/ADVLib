@@ -111,6 +111,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvFile.cs" />
+    <Compile Include="AdvFile2.cs" />
     <Compile Include="AdvLibException.cs" />
     <Compile Include="AdvRecorder_V1.cs" />
     <Compile Include="AdvRecorder_V2.cs" />
