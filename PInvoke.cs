@@ -213,6 +213,14 @@ public static class AdvLib
 	//void AdvVer2_EndFrame();
 	private static extern void AdvVer2_EndFrame32();
 
+    [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetMainStreamInfo")]
+    //void AdvVer2_GetMainStreamInfo(long* numFrames, __int64* mainClockFrequency, long* mainStreamAccuracy);
+    private static extern void AdvVer2_GetMainStreamInfo32(ref int numFrames, ref long mainClockFrequency, ref int mainStreamAccuracy);
+
+    [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetCalibrationStreamInfo")]
+    //void AdvVer2_GetCalibrationStreamInfo(long* numFrames, __int64* calibrationClockFrequency, long* calibrationStreamAccuracy);
+    private static extern void AdvVer2_GetCalibrationStreamInfo32(ref int numFrames, ref long calibrationClockFrequency, ref int calibrationStreamAccuracy);
+
 
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryVersion")]
 	private static extern void GetLibraryVersion64([MarshalAs(UnmanagedType.LPArray)]byte[] version);
@@ -390,6 +398,14 @@ public static class AdvLib
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
 	//void AdvVer2_EndFrame();
 	private static extern void AdvVer2_EndFrame64();
+
+    [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetMainStreamInfo")]
+    //void AdvVer2_GetMainStreamInfo(long* numFrames, __int64* mainClockFrequency, long* mainStreamAccuracy);
+    private static extern void AdvVer2_GetMainStreamInfo64(ref int numFrames, ref long mainClockFrequency, ref int mainStreamAccuracy);
+
+    [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetCalibrationStreamInfo")]
+    //void AdvVer2_GetCalibrationStreamInfo(long* numFrames, __int64* calibrationClockFrequency, long* calibrationStreamAccuracy);
+    private static extern void AdvVer2_GetCalibrationStreamInfo64(ref int numFrames, ref long calibrationClockFrequency, ref int calibrationStreamAccuracy);
 
 	public static string AdvGetCurrentFilePath()
 	{
@@ -798,4 +814,20 @@ public static class AdvLib
 		else
 			AdvVer2_EndFrame32();
 	}
+
+    public static void GetMainStreamInfo(ref int numFrames, ref long mainClockFrequency, ref int mainStreamAccuracy)
+	{
+		if (Is64Bit())
+            AdvVer2_GetMainStreamInfo64(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
+		else
+            AdvVer2_GetMainStreamInfo32(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
+	}
+
+    public static void GetCalibrationStreamInfo(ref int numFrames, ref long mainClockFrequency, ref int mainStreamAccuracy)
+    {
+        if (Is64Bit())
+            AdvVer2_GetCalibrationStreamInfo64(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
+        else
+            AdvVer2_GetCalibrationStreamInfo32(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
+    }
 }
