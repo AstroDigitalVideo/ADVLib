@@ -568,7 +568,9 @@ namespace AdvLibTestApp
 				bool is64Bit = Library.Is64BitProcess();
 				string path = Library.GetLibraryPath();
 
-				MessageBox.Show(this, string.Format("Current process is {3} bit\r\nAdvLib.Core v.{0}\r\nPlatform: {2}\r\n\r\nLocation: {1}", version, path, platformId, is64Bit ? "64" : "32"), "AdvLib Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			    var fi = new FileInfo(path);
+
+                MessageBox.Show(this, string.Format("Current process is {3} bit\r\nAdvLib.Core v.{0}\r\nPlatform: {2}\r\n\r\nLocation: {1}\r\n\r\nLast Modified: {4}", version, path, platformId, is64Bit ? "64" : "32", fi.LastWriteTime.ToString("dd-MM-yyyy HH:mm:ss")), "AdvLib Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			catch (Exception ex)
 			{
