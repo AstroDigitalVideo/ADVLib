@@ -41,6 +41,9 @@ public static class AdvLib
 	[DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryPlatformId")]
 	private static extern void GetLibraryPlatformId32([MarshalAs(UnmanagedType.LPArray)]byte[] platform);
 
+    [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryBitness")]
+    private static extern int GetLibraryBitness32();
+
     [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvOpenFile")]
     //unsigned int AdvOpenFile(const char* fileName);
     private static extern uint AdvOpenFile32(string fileName);
@@ -217,6 +220,8 @@ public static class AdvLib
 	[DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryPlatformId")]
 	private static extern void GetLibraryPlatformId64([MarshalAs(UnmanagedType.LPArray)]byte[] platform);
 
+    [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryBitness")]
+    private static extern int GetLibraryBitness64();
 
     [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvOpenFile")]
     //unsigned int AdvOpenFile(const char* fileName);
@@ -564,6 +569,17 @@ public static class AdvLib
 			GetLibraryPlatformId32(platform);
 
 		return Encoding.ASCII.GetString(platform).Trim('\0');
+	}
+
+    public static string GetLibraryBitness()
+    {
+        int bitness = 0;
+		if (Is64Bit())
+            bitness = GetLibraryBitness64();
+		else
+            bitness = GetLibraryBitness32();
+
+        return bitness > 0 ? string.Format(" ({0} bit)", bitness) : string.Empty;
 	}
 
     public static uint AdvOpenFile(string fileName)

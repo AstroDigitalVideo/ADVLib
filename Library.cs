@@ -23,6 +23,11 @@ public class Library
 		return AdvLib.GetLibraryPlatformId();
 	}
 
+    public static string GetLibraryBitness()
+	{
+        return AdvLib.GetLibraryBitness();
+	}
+ 
 	public static string GetLibraryPath()
 	{
 		string dllName = Is64BitProcess() ? AdvLib.LIBRARY_ADVLIB_CORE64 : AdvLib.LIBRARY_ADVLIB_CORE32;
