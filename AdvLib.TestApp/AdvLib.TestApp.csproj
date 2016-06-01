@@ -149,6 +149,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AdvLib.Tests\AdvLib.Tests.csproj">
+      <Project>{f238a8e6-dd8f-4c20-9007-a15bd2d2b7f4}</Project>
+      <Name>AdvLib.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AdvLib.csproj">
       <Project>{2f43d637-abe8-4df9-b227-6990e02edb2d}</Project>
       <Name>AdvLib</Name>

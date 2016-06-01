@@ -23,6 +23,7 @@
 #endregion
 
 using AdvLib.TestApp;
+using AdvLib.Tests.Generators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,6 +39,8 @@ namespace AdvLibTestApp
 {
 	public partial class frmMain : Form
 	{
+	    private ImageGenerator imageGenerator = new ImageGenerator();
+
 		public frmMain()
 		{
 			InitializeComponent();
@@ -126,7 +129,7 @@ namespace AdvLibTestApp
 
 				if (rb16BitUShort.Checked)
 				{
-					ushort[] imagePixels = GetCurrentImageBytesIn16(i, dynaBits);
+                    ushort[] imagePixels = imageGenerator.GetCurrentImageBytesInt16(i, dynaBits);
 
 					recorder.AddVideoFrame(
 						imagePixels,
@@ -141,7 +144,7 @@ namespace AdvLibTestApp
 				}
 				else if (rb16BitByte.Checked)
 				{
-					byte[] imageBytes = GetCurrentImageBytes(i, dynaBits);
+                    byte[] imageBytes = imageGenerator.GetCurrentImageBytes(i, dynaBits);
 
 					recorder.AddVideoFrame(
 						imageBytes,
@@ -158,7 +161,7 @@ namespace AdvLibTestApp
 				}
 				else if (rb12BitByte.Checked)
 				{
-					byte[] imageBytes = GetCurrentImageBytes(i, dynaBits);
+                    byte[] imageBytes = imageGenerator.GetCurrentImageBytes(i, dynaBits);
 
 					recorder.AddVideoFrame(
 						imageBytes,
@@ -175,7 +178,7 @@ namespace AdvLibTestApp
 				}
 				else if (rb8BitByte.Checked)
 				{
-					byte[] imageBytes = GetCurrentImageBytes(i, dynaBits);
+                    byte[] imageBytes = imageGenerator.GetCurrentImageBytes(i, dynaBits);
 
 					recorder.AddVideoFrame(
 						imageBytes,
@@ -273,7 +276,7 @@ namespace AdvLibTestApp
 
 				if (rb16BitUShort.Checked)
 				{
-					ushort[] imagePixels = GetCurrentImageBytesIn16(i, dynaBits);
+                    ushort[] imagePixels = imageGenerator.GetCurrentImageBytesInt16(i, dynaBits);
 
 					recorder.AddVideoFrame(
 						imagePixels,
@@ -288,7 +291,7 @@ namespace AdvLibTestApp
 				}
 				else if (rb16BitByte.Checked)
 				{
-					byte[] imageBytes = GetCurrentImageBytes(i, dynaBits);
+                    byte[] imageBytes = imageGenerator.GetCurrentImageBytes(i, dynaBits);
 
 					recorder.AddVideoFrame(
 						imageBytes,
@@ -303,7 +306,7 @@ namespace AdvLibTestApp
 				}
 				else if (rb8BitByte.Checked)
 				{
-					byte[] imageBytes = GetCurrentImageBytes(i, dynaBits);
+                    byte[] imageBytes = imageGenerator.GetCurrentImageBytes(i, dynaBits);
 
 					recorder.AddVideoFrame(
 						imageBytes,
@@ -392,108 +395,7 @@ namespace AdvLibTestApp
 			return 0x293;
 		}
 
-        private ushort[] GetCurrentImageBytesIn16(int frameId, byte dynaBits)
-		{
-			ushort[] pixels = new ushort[640 * 480];
-
-			// Background values are all half way 0x0FFF / 2 = 0x07FF
-			for (int i = 0; i < pixels.Length; i++)
-			{
-                if (dynaBits == 16)
-				    pixels[i] = 0x7FF0;
-                else if (dynaBits == 12)
-                    pixels[i] = 0x07FF;
-			}
-
-			// There is a pixel wide line from top left - down and right with full intensity (0x0FFF)
-			for (int x = 0; x < 480; x++)
-			{
-                if (dynaBits == 16)
-				    pixels[(x * 640 + x)] = 0xFFF0;
-                else if (dynaBits == 12)
-                    pixels[(x * 640 + x)] = 0x0FFF;
-			}
-
-			// There is a pixel wide line from top right - down and left with zero intensity (0x0000)
-			for (int x = 0; x < 480; x++)
-			{
-				pixels[(x + 1) * 640 - x - 1] = 0x0000;
-			}
-
-			return pixels;
-		}
-
-        private byte[] GetCurrentImageBytes(int frameId, byte dynaBits)
-		{
-			// NOTE: In this TEST example we mock up 12 bit pixels (640, 480), where 
-			
-			byte[] pixels;
-
-	        if (dynaBits == 12 || dynaBits == 16)
-			{
-				pixels = new byte[640 * 480 * 2];
-
-				// Background values are all half way 0x0FFF / 2 = 0x07FF. This "scaled" to 16 bit is 0x7FF0
-				for (int i = 0; i < pixels.Length / 2; i++)
-				{
-					if (dynaBits == 16)
-					{
-						pixels[2 * i] = 0xF0;
-						pixels[2 * i + 1] = 0x7F;
-					}
-					else if (dynaBits == 12)
-					{
-						pixels[2 * i] = 0xFF;
-						pixels[2 * i + 1] = 0x07;
-					}
-				}
-
-				// There is a pixel wide line from top left - down and right with full intensity (0x0FFF). This "scaled" to 16 bit is 0xFFF0
-				for (int x = 0; x < 480; x++)
-				{
-					if (dynaBits == 16)
-					{
-						pixels[2 * (x * 640 + x)] = 0xF0;
-						pixels[2 * (x * 640 + x) + 1] = 0xFF;
-					}
-					else if (dynaBits == 12)
-					{
-						pixels[2 * (x * 640 + x)] = 0xFF;
-						pixels[2 * (x * 640 + x) + 1] = 0x0F;
-					}
-				}
-
-				// There is a pixel wide line from top right - down and left with zero intensity (0x0000)
-				for (int x = 0; x < 480; x++)
-				{
-					pixels[2 * ((x + 1) * 640 - x - 1)] = 0x00;
-					pixels[2 * ((x + 1) * 640 - x - 1) + 1] = 0x00;
-				}				
-			}
-			else
-			{
-				pixels = new byte[640 * 480];
-
-				for (int i = 0; i < pixels.Length; i++)
-				{
-					pixels[i] = 0x7F;
-				}
-
-				for (int x = 0; x < 480; x++)
-				{
-					pixels[x * 640 + x + 1] = 0xFF;
-				}
-
-				for (int x = 0; x < 480; x++)
-				{
-					pixels[(x + 1) * 640 - x - 1] = 0x00;
-				}
-			}
-
-	        return pixels;
-		}
-
-		private void OnImageFormatChanged(object sender, EventArgs e)
+        private void OnImageFormatChanged(object sender, EventArgs e)
 		{
 			if (rb16BitUShort.Checked || rb16BitByte.Checked)
 			{
