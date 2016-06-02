@@ -11,6 +11,7 @@ public class DataStreamDefinition
 }
 
 public class AdvFile2
+public class AdvFile2 : IDisposable
 {
     public DataStreamDefinition MainSteamInfo;
     public DataStreamDefinition CalibrationSteamInfo;
@@ -30,5 +31,16 @@ public class AdvFile2
 
         CalibrationSteamInfo = new DataStreamDefinition();
         AdvLib.GetCalibrationStreamInfo(ref CalibrationSteamInfo.FrameCount, ref CalibrationSteamInfo.ClockFrequency, ref CalibrationSteamInfo.TimingAccuracy);
+    }
+
+    public bool Close()
+    {
+        uint closedVer = AdvLib.AdvCloseFile();
+        return closedVer > 1;
+    }
+
+    public void Dispose()
+    {
+        Close();
     }
 }

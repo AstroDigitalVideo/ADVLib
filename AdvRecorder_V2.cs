@@ -783,16 +783,19 @@ public class AdvRecorder
 				case AdvTagType.List16OfAnsiString255:
 				case AdvTagType.List16OfUTF8String:
 					string[] lines = (string[])statusTagValue;
-					for (int i = 0; i < Math.Min(16, lines.Count()); i++)
-					{
-						if (lines[i] != null)
-						{
-							if (lines[i].Length > 255)
-								AdvLib.FrameAddStatusTagMessage(tagId, lines[i].Substring(0, 255));
-							else
-								AdvLib.FrameAddStatusTagMessage(tagId, lines[i]);
-						}
-					}
+			        if (lines != null)
+			        {
+                        for (int i = 0; i < Math.Min(16, lines.Count()); i++)
+                        {
+                            if (lines[i] != null)
+                            {
+                                if (lines[i].Length > 255)
+                                    AdvLib.FrameAddStatusTagMessage(tagId, lines[i].Substring(0, 255));
+                                else
+                                    AdvLib.FrameAddStatusTagMessage(tagId, lines[i]);
+                            }
+                        }			            
+			        }
 					break;
 			}
 		}
