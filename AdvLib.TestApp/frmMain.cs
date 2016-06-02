@@ -58,144 +58,44 @@ namespace AdvLibTestApp
 		{
 			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\Filename2.adv");
 
-			var recorder = new AdvRecorder();
+		    var config = new AdvGenerationConfig();
+		    config.SaveLocationData = cbxLocationData.Checked;
 
-			// First set the values of the standard file metadata
-			recorder.FileMetaData.RecorderSoftwareName = "AdvLibRecorder";
-			recorder.FileMetaData.RecorderSoftwareVersion = "x.y.z";
-			recorder.FileMetaData.RecorderHardwareName = "a.b.c";
+            // Define the image size and bit depth
+            config.DynaBits = 16;
+            if (rbPixel16.Checked) config.DynaBits = 16;
+            else if (rbPixel12as16.Checked || rbPixel12as12.Checked) config.DynaBits = 12;
+            else if (rbPixel8.Checked) config.DynaBits = 8;
 
-			recorder.FileMetaData.CameraModel = "Flea3 FL3-FW-03S3M";
-			recorder.FileMetaData.CameraSensorInfo = "Sony ICX414AL (1/2\" 648x488 CCD)";
+            config.CameraDepth = 16;
+            if (rbCamera16.Checked) config.CameraDepth = 16;
+            else if (rbCamera12.Checked) config.CameraDepth = 12;
+            else if (rbCamera8.Checked) config.CameraDepth = 8;
 
-			// Then define additional metadata, if required
-			recorder.FileMetaData.AddUserTag("TELESCOPE-NAME", "Large Telescope");
-			recorder.FileMetaData.AddUserTag("TELESCOPE-FL", "8300");
-			recorder.FileMetaData.AddUserTag("TELESCOPE-FD", "6.5");
-			recorder.FileMetaData.AddUserTag("CAMERA-DIGITAL-SAMPLIG", "xxx");
-			recorder.FileMetaData.AddUserTag("CAMERA-HDR-RESPONSE", "yyy");
-			recorder.FileMetaData.AddUserTag("CAMERA-OPTICAL-RESOLUTION", "zzz");
+            config.NormalPixelValue = null;
+            if (nudNormalValue.Value > 0) config.NormalPixelValue = (int)nudNormalValue.Value;
 
-			if (cbxLocationData.Checked)
-			{
-				recorder.LocationData.SetLocation(
-					150 + 38 / 60.0 + 27.7 / 3600.0,
-					-1 * (33 + 39 / 60.0 + 49.3 / 3600.0),
-					284.4);
-			}
+            config.UsesCompression = cbxCompress.Checked;
+            if (rb16BitUShort.Checked)
+                config.SourceFormat = AdvSourceDataFormat.Format16BitUShort;
+            else if (rb16BitByte.Checked)
+                config.SourceFormat = AdvSourceDataFormat.Format16BitLittleEndianByte;
+            else if (rb12BitByte.Checked)
+                config.SourceFormat = AdvSourceDataFormat.Format12BitPackedByte;
+            else if (rb8BitByte.Checked)
+                config.SourceFormat = AdvSourceDataFormat.Format8BitByte;
 
-			// Define the image size and bit depth
-			byte dynaBits = 16;
-			if (rbPixel16.Checked) dynaBits = 16;
-			else if (rbPixel12as16.Checked || rbPixel12as12.Checked) dynaBits = 12;
-			else if (rbPixel8.Checked) dynaBits = 8;
+            config.NumberOfFrames = GetTotalImages();
 
-			byte cameraDepth = 16;
-			if (rbCamera16.Checked) cameraDepth = 16;
-			else if (rbCamera12.Checked) cameraDepth = 12;
-			else if (rbCamera8.Checked) cameraDepth = 8;
+            config.ExposureCallback = GetCurrentImageExposure;
+            config.TimeStampCallback = GetCurrentImageTimeStamp;
+            config.GainCallback = GetCurrentImageGain;
+            config.GammaCallback = GetCurrentImageGamma;
+            config.MassagesCallback = GetCurrentExampleMassages;
+            config.CustomGainCallback = GetCurrentExampleCustomGain;
 
-			int? normalPixelValue = null;
-			if (nudNormalValue.Value > 0) normalPixelValue = (int)nudNormalValue.Value;
-
-			recorder.ImageConfig.SetImageParameters(640, 480, cameraDepth, dynaBits, normalPixelValue);
-
-			// By default no status section values will be recorded. The user must enable the ones they need recorded and 
-			// can also define additional status parameters to be recorded with each video frame
-			recorder.StatusSectionConfig.RecordGain = true;
-			recorder.StatusSectionConfig.RecordGamma = true;
-			int customTagIdCustomGain = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-GAIN", AdvTagType.UInt32);
-			int customTagIdMessages = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-MESSAGES", AdvTagType.List16OfAnsiString255);
-
-
-			recorder.StartRecordingNewFile(fileName);
-
-			AdvRecorder.AdvStatusEntry status = new AdvRecorder.AdvStatusEntry();
-			status.AdditionalStatusTags = new object[2];
-
-			int imagesCount = GetTotalImages();
-			bool useCompression = cbxCompress.Checked;
-
-			for (int i = 0; i < imagesCount; i++)
-			{
-				// NOTE: Moking up some test data
-				uint exposure = GetCurrentImageExposure(i);
-				DateTime startTimestamp = GetCurrentImageTimeStamp(i);
-				DateTime endTimestamp = startTimestamp.AddMilliseconds(exposure/10.0);
-				status.Gain = GetCurrentImageGain(i);
-				status.Gamma = GetCurrentImageGamma(i);
-				status.AdditionalStatusTags[customTagIdMessages] = GetCurrentExampleMassages(i);
-				status.AdditionalStatusTags[customTagIdCustomGain] = GetCurrentExampleCustomGain(i);
-
-				if (rb16BitUShort.Checked)
-				{
-                    ushort[] imagePixels = imageGenerator.GetCurrentImageBytesInt16(i, dynaBits);
-
-					recorder.AddVideoFrame(
-						imagePixels,
-
-						// NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
-						// i.e. it may take longer to compress the data than for the next image to arrive on the buffer
-						useCompression,
-
-						AdvTimeStamp.FromDateTime(startTimestamp),
-						AdvTimeStamp.FromDateTime(endTimestamp),
-						status);
-				}
-				else if (rb16BitByte.Checked)
-				{
-                    byte[] imageBytes = imageGenerator.GetCurrentImageBytes(i, dynaBits);
-
-					recorder.AddVideoFrame(
-						imageBytes,
-
-						// NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
-						// i.e. it may take longer to compress the data than for the next image to arrive on the buffer
-						useCompression,
-						
-						AdvTimeStamp.FromDateTime(startTimestamp),
-						AdvTimeStamp.FromDateTime(endTimestamp),
-						status,
-						
-						AdvImageData.PixelDepth16Bit);
-				}
-				else if (rb12BitByte.Checked)
-				{
-                    byte[] imageBytes = imageGenerator.GetCurrentImageBytes(i, dynaBits);
-
-					recorder.AddVideoFrame(
-						imageBytes,
-
-						// NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
-						// i.e. it may take longer to compress the data than for the next image to arrive on the buffer
-						useCompression,
-
-						AdvTimeStamp.FromDateTime(startTimestamp),
-						AdvTimeStamp.FromDateTime(endTimestamp),
-						status,
-
-						AdvImageData.PixelDepth16Bit);
-				}
-				else if (rb8BitByte.Checked)
-				{
-                    byte[] imageBytes = imageGenerator.GetCurrentImageBytes(i, dynaBits);
-
-					recorder.AddVideoFrame(
-						imageBytes,
-
-						// NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
-						// i.e. it may take longer to compress the data than for the next image to arrive on the buffer
-						useCompression,
-						
-						AdvTimeStamp.FromDateTime(startTimestamp),
-						AdvTimeStamp.FromDateTime(endTimestamp),
-						status,
-						
-						AdvImageData.PixelDepth8Bit);
-				}
-			}
-
-			recorder.FinishRecording();
+            var advGen = new AdvGenerator();
+            advGen.GenerateaAdv_V2(config, fileName);
 
 			ActionFileOperation(fileName);
 		}
