@@ -7,7 +7,7 @@
     <ProjectGuid>{2F43D637-ABE8-4DF9-B227-6990E02EDB2D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AdvLib</RootNamespace>
+    <RootNamespace>Adv</RootNamespace>
     <AssemblyName>AdvLib</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

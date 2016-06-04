@@ -4,43 +4,47 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-public class Library
+namespace Adv
 {
-	[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-	public static extern IntPtr GetModuleHandle(string lpModuleName);
+    public class Library
+    {
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr GetModuleHandle(string lpModuleName);
 
-	[DllImport("kernel32.dll", SetLastError = true)]
-	[PreserveSig]
-	public static extern uint GetModuleFileName([In] IntPtr hModule, [Out] StringBuilder lpFilename, [In] [MarshalAs(UnmanagedType.U4)] int nSize);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [PreserveSig]
+        public static extern uint GetModuleFileName([In] IntPtr hModule, [Out] StringBuilder lpFilename, [In] [MarshalAs(UnmanagedType.U4)] int nSize);
 
-	public static string GetVersion()
-	{
-		return AdvLib.GetLibraryVersion();
-	}
+        public static string GetVersion()
+        {
+            return AdvLib.GetLibraryVersion();
+        }
 
-	public static string GetPlatformId()
-	{
-		return AdvLib.GetLibraryPlatformId();
-	}
+        public static string GetPlatformId()
+        {
+            return AdvLib.GetLibraryPlatformId();
+        }
 
-    public static string GetLibraryBitness()
-	{
-        return AdvLib.GetLibraryBitness();
-	}
- 
-	public static string GetLibraryPath()
-	{
-		string dllName = Is64BitProcess() ? AdvLib.LIBRARY_ADVLIB_CORE64 : AdvLib.LIBRARY_ADVLIB_CORE32;
-		IntPtr handle = GetModuleHandle(dllName);
+        public static string GetLibraryBitness()
+        {
+            return AdvLib.GetLibraryBitness();
+        }
 
-		var outputStr = new StringBuilder(1024);
-		GetModuleFileName(handle, outputStr, 1024);
+        public static string GetLibraryPath()
+        {
+            string dllName = Is64BitProcess() ? AdvLib.LIBRARY_ADVLIB_CORE64 : AdvLib.LIBRARY_ADVLIB_CORE32;
+            IntPtr handle = GetModuleHandle(dllName);
 
-		return outputStr.ToString();
-	}
+            var outputStr = new StringBuilder(1024);
+            GetModuleFileName(handle, outputStr, 1024);
 
-	public static bool Is64BitProcess()
-	{
-		return AdvLib.Is64Bit();
-	}
+            return outputStr.ToString();
+        }
+
+        public static bool Is64BitProcess()
+        {
+            return AdvLib.Is64Bit();
+        }
+    }
 }
+

@@ -8,10 +8,10 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Adv;
 
 namespace Obsolete
 {
-
 	public class AdvFileMetaData
 	{
 		internal Dictionary<string, string> UserMetaData = new Dictionary<string, string>();
