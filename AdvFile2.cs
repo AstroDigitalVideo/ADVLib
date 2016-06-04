@@ -10,7 +10,6 @@ public class DataStreamDefinition
     public int TimingAccuracy;
 }
 
-public class AdvFile2
 public class AdvFile2 : IDisposable
 {
     public DataStreamDefinition MainSteamInfo;

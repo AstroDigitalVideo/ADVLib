@@ -606,7 +606,7 @@ public static class AdvLib
         return bitness > 0 ? string.Format(" ({0} bit)", bitness) : string.Empty;
 	}
 
-    public static uint AdvOpenFile(string fileName)
+    public static int AdvOpenFile(string fileName)
     {
         if (Is64Bit())
             return AdvOpenFile64(fileName);
