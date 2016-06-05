@@ -118,6 +118,7 @@ ClientBin/
 *.pfx
 *.publishsettings
 AdvLib.userprefs
+AdvLib.Linux.userprefs
 
 # RIA/Silverlight projects
 Generated_Code/
