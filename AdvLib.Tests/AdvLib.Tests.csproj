@@ -39,6 +39,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
@@ -67,7 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdvLib.csproj">
-      <Project>{2f43d637-abe8-4df9-b227-6990e02edb2d}</Project>
+      <Project>{2F43D637-ABE8-4DF9-B227-6990E02EDB2D}</Project>
       <Name>AdvLib</Name>
     </ProjectReference>
   </ItemGroup>

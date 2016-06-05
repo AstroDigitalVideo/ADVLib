@@ -10,6 +10,7 @@ using System.Text;
 namespace Adv
 {
 
+#if !__linux__
     internal class NativeMethods
     {
         [DllImport("Kernel32.dll")]
@@ -18,6 +19,7 @@ namespace Adv
         [DllImport("Kernel32.dll")]
         public static extern void QueryPerformanceFrequency(ref long frequency);
     }
+#endif
 
     public enum ResponseMode
     {
@@ -593,7 +595,9 @@ namespace Adv
         public void AddVideoFrame(ushort[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
         {
             long ticks = 0;
+#if !__linux__	
             NativeMethods.QueryPerformanceCounter(ref ticks);
+#endif
 
             AddFrame(MAIN_STREAM_ID, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
 
@@ -608,8 +612,9 @@ namespace Adv
         public void AddCalibrationFrame(ushort[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
         {
             long ticks = 0;
+#if !__linux__	
             NativeMethods.QueryPerformanceCounter(ref ticks);
-
+#endif
             AddFrame(CALIBRATION_STREAM_ID, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
@@ -637,7 +642,9 @@ namespace Adv
         public void AddVideoFrame(byte[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
         {
             long ticks = 0;
-            NativeMethods.QueryPerformanceCounter(ref ticks);
+#if !__linux__	
+			NativeMethods.QueryPerformanceCounter(ref ticks);
+#endif
 
             AddFrame(MAIN_STREAM_ID, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
 
@@ -652,7 +659,9 @@ namespace Adv
         public void AddCalibrationFrame(byte[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
         {
             long ticks = 0;
-            NativeMethods.QueryPerformanceCounter(ref ticks);
+#if !__linux__	
+			NativeMethods.QueryPerformanceCounter(ref ticks);
+#endif
 
             AddFrame(CALIBRATION_STREAM_ID, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
 

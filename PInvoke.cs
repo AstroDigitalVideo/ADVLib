@@ -38,7 +38,7 @@ namespace Adv
 #endif
         internal const string LIBRARY_ADVLIB_CORE32 = "AdvLib.Core32.dll";
         internal const string LIBRARY_ADVLIB_CORE64 = "AdvLib.Core64.dll";
-        internal const string LIBRARY_ADVLIB_CORE_UNIX = "AdvLib.Core";
+        internal const string LIBRARY_ADVLIB_CORE_UNIX = "AdvCore";
 
         #region 32bit externals
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "GetLibraryVersion")]

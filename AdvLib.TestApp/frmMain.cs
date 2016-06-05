@@ -57,7 +57,7 @@ namespace AdvLibTestApp
 
 		private void SaveAdvVer2Sample()
 		{
-			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\Filename2.adv");
+			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + @"Filename2.adv");
 
 		    var config = new AdvGenerationConfig();
 		    config.SaveLocationData = cbxLocationData.Checked;
@@ -156,7 +156,7 @@ namespace AdvLibTestApp
 			int customTagIdCustomGain = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-GAIN", AdvTagType.UInt32);
 			int customTagIdMessages = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-MESSAGES", AdvTagType.List16OfAnsiString255);
 
-			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\Filename.adv");
+			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + @"Filename.adv");
 			recorder.StartRecordingNewFile(fileName);
 
 			Obsolete.AdvStatusEntry status = new Obsolete.AdvStatusEntry();
@@ -349,6 +349,7 @@ namespace AdvLibTestApp
 			}
 		}
 
+#if !__linux__
 		static class NativeMethods
 		{
 			[DllImport("kernel32.dll")]
@@ -361,6 +362,7 @@ namespace AdvLibTestApp
 			[DllImport("kernel32.dll")]
 			public static extern bool FreeLibrary(IntPtr hModule);
 		}
+#endif
 
 		private void btnVerifyLibrary_Click(object sender, EventArgs e)
 		{
