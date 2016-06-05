@@ -86,7 +86,7 @@ namespace AdvLibTestApp
             else if (rb8BitByte.Checked)
                 config.SourceFormat = AdvSourceDataFormat.Format8BitByte;
 
-            config.NumberOfFrames = GetTotalImages();
+			config.NumberOfFrames = GetTotalImages();
 
             config.ExposureCallback = GetCurrentImageExposure;
             config.TimeStampCallback = GetCurrentImageTimeStamp;

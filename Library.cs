@@ -43,7 +43,7 @@ namespace Adv
 
             return outputStr.ToString();
 			#else
-			return "N/A";
+			return System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "libAdvCore.so");
 			#endif
         }
 
