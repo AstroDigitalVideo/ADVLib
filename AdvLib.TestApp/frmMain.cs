@@ -59,6 +59,14 @@ namespace AdvLibTestApp
 		{
 			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + @"Filename2.adv");
 
+		    if (File.Exists(fileName))
+            {
+                if (MessageBox.Show(string.Format("Output file exists:\r\n\r\n{0}\r\n\r\nOverwrite?", fileName), "Confirmation", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    return;
+
+                File.Delete(fileName);
+            }
+
 		    var config = new AdvGenerationConfig();
 		    config.SaveLocationData = cbxLocationData.Checked;
 
@@ -103,6 +111,17 @@ namespace AdvLibTestApp
 
 		private void SaveAdvVer1Sample()
 		{
+            string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + @"Filename.adv");
+
+            if (File.Exists(fileName))
+            {
+                if (MessageBox.Show(string.Format("Output file exists:\r\n\r\n{0}\r\n\r\nOverwrite?", fileName), "Confirmation", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    return;
+
+                File.Delete(fileName);
+            }
+
+
 			var recorder = new Obsolete.AdvVer1.AdvRecorder();
 
 			// First set the values of the standard file metadata
@@ -156,7 +175,6 @@ namespace AdvLibTestApp
 			int customTagIdCustomGain = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-GAIN", AdvTagType.UInt32);
 			int customTagIdMessages = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-MESSAGES", AdvTagType.List16OfAnsiString255);
 
-			string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + @"Filename.adv");
 			recorder.StartRecordingNewFile(fileName);
 
 			Obsolete.AdvStatusEntry status = new Obsolete.AdvStatusEntry();
@@ -269,7 +287,7 @@ namespace AdvLibTestApp
 		private DateTime GetCurrentImageTimeStamp(int frameId)
 		{
 			// TODO: Get the image timestamp. Alternatevly return windows Ticks or year/month/day/hour/min/sec/milliseconds
-			return DateTime.Now;
+		    return new DateTime(2016, 06, 06, 0, 24, 15);
 		}
 
 		private float GetCurrentImageGamma(int frameId)
@@ -348,21 +366,6 @@ namespace AdvLibTestApp
 				rbCamera16.Enabled = true;
 			}
 		}
-
-#if !__linux__
-		static class NativeMethods
-		{
-			[DllImport("kernel32.dll")]
-			public static extern IntPtr LoadLibrary(string dllToLoad);
-
-			[DllImport("kernel32.dll")]
-			public static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
-
-
-			[DllImport("kernel32.dll")]
-			public static extern bool FreeLibrary(IntPtr hModule);
-		}
-#endif
 
 		private void btnVerifyLibrary_Click(object sender, EventArgs e)
 		{

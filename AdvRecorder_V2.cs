@@ -659,7 +659,7 @@ namespace Adv
         public void AddCalibrationFrame(byte[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
         {
             long ticks = 0;
-#if !__linux__	
+#if !__linux__
 			NativeMethods.QueryPerformanceCounter(ref ticks);
 #endif
 
