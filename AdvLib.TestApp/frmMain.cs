@@ -374,9 +374,10 @@ namespace AdvLibTestApp
 
 			    var fi = new FileInfo(path);
 
-                MessageBox.Show(this, 
-                    string.Format("Current process is {3} bit\r\nAdvLib.Core v.{0}{5}\r\nPlatform: {2}\r\n\r\nLocation: {1}\r\n\r\nLast Modified: {4}", 
-                    version, path, platformId, is64Bit ? "64" : "32", fi.LastWriteTime.ToString("dd-MM-yyyy HH:mm:ss"), bitness), 
+                MessageBox.Show(this,
+                    string.Format("CLR Version: {0}\r\nOperating System: {1}\r\n\r\n", Adv.CrossPlatform.ClrVersion, Adv.CrossPlatform.CurrentOSName) + 
+                    string.Format("Current process is {3} bit\r\n{6}: v.{0}{5}\r\nAdvLib.Core Platform: {2}\r\n\r\nLocation: {1}\r\n\r\nLast Modified: {4}",
+                    version, Path.GetDirectoryName(path), platformId, is64Bit ? "64" : "32", fi.LastWriteTime.ToString("dd-MM-yyyy HH:mm:ss"), bitness, Path.GetFileName(path)), 
                     "AdvLib Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			catch (Exception ex)
