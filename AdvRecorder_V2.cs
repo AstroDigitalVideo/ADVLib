@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -406,8 +408,18 @@ namespace Adv
         /// Creates new ADV file and gets it ready for recording 
         /// </summary>
         /// <param name="fileName"></param>
-        public void StartRecordingNewFile(string fileName)
+        public void StartRecordingNewFile(string fileName, bool createNew = false)
         {
+            fileName = Path.GetFullPath(fileName);
+
+            if (File.Exists(fileName))
+            {
+                if (createNew)
+                    File.Delete(fileName);
+                else
+                    throw new AdvLibException(string.Format("{0} already exists.", fileName));
+            }
+
             AdvLib.NewFile(fileName);
 
             AdvLib.SetTimingPrecision(1000, 1, 1000, 1);
@@ -543,7 +555,8 @@ namespace Adv
             m_FirstRecordedFrameTimestamp = 0;
             m_PrevFrameEndTimestampAutoTicks = 0;
 
-            AdvLib.BeginFrame(0, 0, 0, 0);
+            if (!AdvLib.BeginFrame(0, 0, 0, 0))
+                throw new AdvLibException(string.Format("Cannot start recording '{0}'", fileName));
         }
 
         /// <summary>

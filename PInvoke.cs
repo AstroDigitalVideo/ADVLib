@@ -699,11 +699,9 @@ namespace Adv
             try
             {
                 if (Is64Bit())
-                    AdvVer2_BeginFrame64(streamId, startTicks, endTicks, elapsedTicksFromStart);
+                    return AdvVer2_BeginFrame64(streamId, startTicks, endTicks, elapsedTicksFromStart);
                 else
-                    AdvVer2_BeginFrame32(streamId, startTicks, endTicks, elapsedTicksFromStart);
-
-                return true;
+                    return AdvVer2_BeginFrame32(streamId, startTicks, endTicks, elapsedTicksFromStart);
             }
             catch (Exception ex)
             {
