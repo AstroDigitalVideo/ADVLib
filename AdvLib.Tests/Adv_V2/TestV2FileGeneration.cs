@@ -63,6 +63,8 @@ namespace AdvLib.Tests.Adv_V2
         [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win64.GNU.adv")]
         [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win32.MSVC.adv")]
         [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win64.MSVC.adv")]
+        [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Ubuntu32.GNU.adv")]
+        [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Ubuntu64.GNU.adv")]
         public void ReadLinuxFile1(string fileName)
         {
             var hasher = new Hasher();
@@ -82,6 +84,8 @@ namespace AdvLib.Tests.Adv_V2
             string h2 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win32.MSVC.adv");
             string h3 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win64.GNU.adv");
             string h4 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win64.MSVC.adv");
+            string h5 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Ubuntu32.GNU.adv");
+            string h6 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Ubuntu64.GNU.adv");
             Console.WriteLine(h1);
             Console.WriteLine(h2);
             Console.WriteLine(h3);
@@ -89,6 +93,8 @@ namespace AdvLib.Tests.Adv_V2
             Assert.AreEqual(h1, h2);
             Assert.AreEqual(h1, h3);
             Assert.AreEqual(h1, h4);
+            Assert.AreEqual(h1, h5);
+            Assert.AreEqual(h1, h6);
         }
 
     }

@@ -1,0 +1,1 @@
+MONO_LOG_LEVEL=debug LD_LIBRARY_PATH="." mono AdvLib.TestApp.exe > session.log
