@@ -54,6 +54,7 @@
             this.tabRecorder = new System.Windows.Forms.TabPage();
             this.tabStructureViewer = new System.Windows.Forms.TabPage();
             this.tabPlayer = new System.Windows.Forms.TabPage();
+            this.cbxZeroTicks = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -64,7 +65,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(17, 207);
+            this.button1.Location = new System.Drawing.Point(17, 281);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(132, 23);
             this.button1.TabIndex = 0;
@@ -123,9 +124,9 @@
             this.groupBox1.Controls.Add(this.rb16BitUShort);
             this.groupBox1.Controls.Add(this.rb8BitByte);
             this.groupBox1.Controls.Add(this.rb16BitByte);
-            this.groupBox1.Location = new System.Drawing.Point(17, 42);
+            this.groupBox1.Location = new System.Drawing.Point(17, 70);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(184, 123);
+            this.groupBox1.Size = new System.Drawing.Size(184, 154);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Source Pixel Format";
@@ -147,9 +148,9 @@
             this.groupBox2.Controls.Add(this.rbPixel8);
             this.groupBox2.Controls.Add(this.rbPixel12as16);
             this.groupBox2.Controls.Add(this.rbPixel16);
-            this.groupBox2.Location = new System.Drawing.Point(207, 42);
+            this.groupBox2.Location = new System.Drawing.Point(207, 70);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(161, 123);
+            this.groupBox2.Size = new System.Drawing.Size(161, 154);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Image Pixel Format";
@@ -205,9 +206,9 @@
             this.groupBox3.Controls.Add(this.rbCamera8);
             this.groupBox3.Controls.Add(this.rbCamera12);
             this.groupBox3.Controls.Add(this.rbCamera16);
-            this.groupBox3.Location = new System.Drawing.Point(374, 42);
+            this.groupBox3.Location = new System.Drawing.Point(374, 70);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(122, 123);
+            this.groupBox3.Size = new System.Drawing.Size(122, 154);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Camera Depth";
@@ -248,7 +249,7 @@
             // cbxCompress
             // 
             this.cbxCompress.AutoSize = true;
-            this.cbxCompress.Location = new System.Drawing.Point(17, 180);
+            this.cbxCompress.Location = new System.Drawing.Point(17, 254);
             this.cbxCompress.Name = "cbxCompress";
             this.cbxCompress.Size = new System.Drawing.Size(140, 17);
             this.cbxCompress.TabIndex = 8;
@@ -257,7 +258,7 @@
             // 
             // btnVerifyLibrary
             // 
-            this.btnVerifyLibrary.Location = new System.Drawing.Point(364, 207);
+            this.btnVerifyLibrary.Location = new System.Drawing.Point(364, 281);
             this.btnVerifyLibrary.Name = "btnVerifyLibrary";
             this.btnVerifyLibrary.Size = new System.Drawing.Size(132, 23);
             this.btnVerifyLibrary.TabIndex = 9;
@@ -285,7 +286,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(175, 180);
+            this.label1.Location = new System.Drawing.Point(175, 254);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(98, 13);
             this.label1.TabIndex = 11;
@@ -293,7 +294,7 @@
             // 
             // nudNormalValue
             // 
-            this.nudNormalValue.Location = new System.Drawing.Point(280, 178);
+            this.nudNormalValue.Location = new System.Drawing.Point(280, 252);
             this.nudNormalValue.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -316,6 +317,7 @@
             // 
             // tabRecorder
             // 
+            this.tabRecorder.Controls.Add(this.cbxZeroTicks);
             this.tabRecorder.Controls.Add(this.cbxLocationData);
             this.tabRecorder.Controls.Add(this.nudNormalValue);
             this.tabRecorder.Controls.Add(this.button1);
@@ -353,11 +355,21 @@
             this.tabPlayer.Text = "Player";
             this.tabPlayer.UseVisualStyleBackColor = true;
             // 
+            // cbxZeroTicks
+            // 
+            this.cbxZeroTicks.AutoSize = true;
+            this.cbxZeroTicks.Location = new System.Drawing.Point(178, 16);
+            this.cbxZeroTicks.Name = "cbxZeroTicks";
+            this.cbxZeroTicks.Size = new System.Drawing.Size(128, 17);
+            this.cbxZeroTicks.TabIndex = 13;
+            this.cbxZeroTicks.Text = "Save zero clock ticks";
+            this.cbxZeroTicks.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(587, 403);
+            this.ClientSize = new System.Drawing.Size(581, 405);
             this.Controls.Add(this.tcTabs);
             this.Name = "frmMain";
             this.Text = "AdvLib Test Form";
@@ -403,6 +415,7 @@
         private System.Windows.Forms.TabPage tabRecorder;
         private System.Windows.Forms.TabPage tabStructureViewer;
         private System.Windows.Forms.TabPage tabPlayer;
+        private System.Windows.Forms.CheckBox cbxZeroTicks;
 	}
 }
 

@@ -9,18 +9,6 @@ using System.Text;
 
 namespace Adv
 {
-
-#if !__linux__
-    internal class NativeMethods
-    {
-        [DllImport("Kernel32.dll")]
-        public static extern void QueryPerformanceCounter(ref long ticks);
-
-        [DllImport("Kernel32.dll")]
-        public static extern void QueryPerformanceFrequency(ref long frequency);
-    }
-#endif
-
     public enum ResponseMode
     {
         Unknown = 0,
@@ -55,10 +43,12 @@ namespace Adv
         private const byte MAIN_STREAM_ID = 0;
         private const byte CALIBRATION_STREAM_ID = 1;
 
+        private static byte[] STREAM_IDS = new []{ MAIN_STREAM_ID, CALIBRATION_STREAM_ID };
+
         private int m_NumberRecordedFrames = 0;
         private int m_NumberDroppedFrames = 0;
         private long m_FirstRecordedFrameTimestamp = 0;
-        private long m_PrevFrameEndTimestampAutoTicks = 0;
+        private long? m_PrevFrameEndTimestampAutoTicks = 0;
 
         public int NumberDroppedFrames
         {
@@ -406,6 +396,36 @@ namespace Adv
 
         public AdvStatusSectionConfig StatusSectionConfig = new AdvStatusSectionConfig();
 
+        public enum AdvStream
+        {
+            MainStream = 0,
+            CalibrationStream = 1
+        }
+
+        private long m_MainClockFrequency;
+        private int m_MainTicksTimingAccuracy;
+        private Func<long> m_GetMainClockTicksCallback = null;
+
+        private long m_CalibrationClockFrequency;
+        private int m_CalibrationTicksTimingAccuracy;
+        private Func<long> m_GetCalibrationClockTicksCallback = null;
+
+        public void DefineCustomClock(AdvStream advStream, long clockFrequency, int clockAcuracy, Func<long> getClockTicksCallback)
+        {
+            if (advStream == AdvStream.MainStream)
+            {
+                m_MainClockFrequency = clockFrequency;
+                m_MainTicksTimingAccuracy = clockAcuracy;
+                m_GetMainClockTicksCallback = getClockTicksCallback;
+            }
+            else if (advStream == AdvStream.CalibrationStream)
+            {
+                m_CalibrationClockFrequency = clockFrequency;
+                m_CalibrationTicksTimingAccuracy = clockAcuracy;
+                m_GetCalibrationClockTicksCallback = getClockTicksCallback;
+            }
+        }
+
         /// <summary>
         /// Creates new ADV file and gets it ready for recording 
         /// </summary>
@@ -424,7 +444,11 @@ namespace Adv
 
             AdvLib.NewFile(fileName);
 
-            AdvLib.SetTimingPrecision(1000, 1, 1000, 1);
+            if (m_GetMainClockTicksCallback != null)
+                AdvLib.DefineCustomClockForMainStream(m_MainClockFrequency, m_MainTicksTimingAccuracy);
+            
+            if (m_GetCalibrationClockTicksCallback != null)
+                AdvLib.DefineCustomClockForCalibrationStream(m_CalibrationClockFrequency, m_CalibrationTicksTimingAccuracy);
 
             AdvLib.AddMainStreamTag("Name1", "Христо");
             AdvLib.AddMainStreamTag("Name2", "Frédéric");
@@ -569,21 +593,9 @@ namespace Adv
             AdvLib.EndFile();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="streamId"></param>
-        /// <param name="pixels"></param>
-        /// <param name="compressIfPossible"></param>
-        /// <param name="startClockTicks"></param>
-        /// <param name="endClockTicks"></param>
-        /// <param name="startUtcTimeStamp"></param>
-        /// <param name="endUtcTimeStamp"></param>
-        /// <param name="metadata"></param>
-        /// <param name="imageData"></param>
-        public void AddFrame(byte streamId, ushort[] pixels, bool compressIfPossible, long startClockTicks, long endClockTicks, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
+        private void AddFrame(AdvStream advStream, ushort[] pixels, bool compressIfPossible, long? startClockTicks, long? endClockTicks, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
         {
-            BeginVideoFrame(streamId, startClockTicks, endClockTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
+            BeginVideoFrame(advStream, startClockTicks, endClockTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
 
             byte layoutIdForCurrentFramerate = GetImageLayoutId(compressIfPossible);
 
@@ -594,12 +606,10 @@ namespace Adv
 
         public void AddVideoFrame(ushort[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
         {
-            long ticks = 0;
-#if !__linux__	
-            NativeMethods.QueryPerformanceCounter(ref ticks);
-#endif
+            long? ticks = null;
+            if (m_GetMainClockTicksCallback != null) ticks = m_GetMainClockTicksCallback();
 
-            AddFrame(MAIN_STREAM_ID, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
+            AddFrame(AdvStream.MainStream, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
         }
@@ -611,11 +621,10 @@ namespace Adv
 
         public void AddCalibrationFrame(ushort[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
         {
-            long ticks = 0;
-#if !__linux__	
-            NativeMethods.QueryPerformanceCounter(ref ticks);
-#endif
-            AddFrame(CALIBRATION_STREAM_ID, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
+            long? ticks = null;
+            if (m_GetCalibrationClockTicksCallback != null) ticks = m_GetCalibrationClockTicksCallback();
+
+            AddFrame(AdvStream.CalibrationStream, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
         }
@@ -625,12 +634,12 @@ namespace Adv
             AddCalibrationFrame(pixels, compressIfPossible, new AdvTimeStamp(), new AdvTimeStamp(), metadata);
         }
 
-        public void AddFrame(byte streamId, byte[] pixels, bool compressIfPossible, long startClockTicks, long endClockTicks, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
+        private void AddFrame(AdvStream advStream, byte[] pixels, bool compressIfPossible, long? startClockTicks, long? endClockTicks, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
         {
             if (ImageConfig.ImageBitsPerPixel == 12 && imageData != AdvImageData.PixelData12Bit)
                 throw new InvalidOperationException("12bit pixel data can be only saved as 12bit byte array (2 pixels saved in 3 bytes)");
 
-            BeginVideoFrame(streamId, startClockTicks, endClockTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
+            BeginVideoFrame(advStream, startClockTicks, endClockTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
 
             byte layoutIdForCurrentFramerate = GetImageLayoutId(compressIfPossible);
 
@@ -641,12 +650,10 @@ namespace Adv
 
         public void AddVideoFrame(byte[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
         {
-            long ticks = 0;
-#if !__linux__	
-			NativeMethods.QueryPerformanceCounter(ref ticks);
-#endif
+            long? ticks = null;
+            if (m_GetMainClockTicksCallback != null) ticks = m_GetMainClockTicksCallback();
 
-            AddFrame(MAIN_STREAM_ID, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
+            AddFrame(AdvStream.MainStream, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
         }
@@ -658,12 +665,10 @@ namespace Adv
 
         public void AddCalibrationFrame(byte[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
         {
-            long ticks = 0;
-#if !__linux__
-			NativeMethods.QueryPerformanceCounter(ref ticks);
-#endif
+            long? ticks = null;
+            if (m_GetCalibrationClockTicksCallback != null) ticks = m_GetCalibrationClockTicksCallback();
 
-            AddFrame(CALIBRATION_STREAM_ID, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
+            AddFrame(AdvStream.CalibrationStream, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
         }
@@ -693,19 +698,62 @@ namespace Adv
             }
         }
 
-        private void BeginVideoFrame(byte streamId, long startClockTicks, long endClockTicks, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
+        private void BeginVideoFrame(AdvStream advStream, long? startClockTicks, long? endClockTicks, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
         {
-            long elapsedTicks = 0; // since the first recorded frame was taken
-            if (m_NumberRecordedFrames > 0 && m_FirstRecordedFrameTimestamp != 0)
+            byte streamId = STREAM_IDS[(int) advStream];
+            bool frameStartedOk = false;
+
+            if (startClockTicks.HasValue && endClockTicks.HasValue)
             {
-                elapsedTicks = startClockTicks - m_FirstRecordedFrameTimestamp;
+                switch(streamId)
+                {
+                    case MAIN_STREAM_ID:
+                        if (m_GetMainClockTicksCallback == null)
+                            throw new AdvLibException("A custom clock for the Main Stream must be defined when providing start and end clock ticks.");
+                        break;
+
+                    case CALIBRATION_STREAM_ID:
+                        if (m_GetCalibrationClockTicksCallback == null)
+                            throw new AdvLibException("A custom clock for the Calibration Stream must be defined when providing start and end clock ticks.");
+                        break;
+
+                    default:
+                        throw new IndexOutOfRangeException();
+                }
+
+                long elapsedTicks = 0; // since the first recorded frame was taken
+                if (m_NumberRecordedFrames > 0 && m_FirstRecordedFrameTimestamp != 0)
+                {
+                    elapsedTicks = startClockTicks.Value - m_FirstRecordedFrameTimestamp;
+                }
+                else if (m_NumberRecordedFrames == 0)
+                {
+                    m_FirstRecordedFrameTimestamp = startClockTicks.Value;
+                }
+
+                frameStartedOk = AdvLib.BeginFrame(streamId, startClockTicks.Value, endClockTicks.Value, elapsedTicks > 0L ? elapsedTicks : 0L);
             }
-            else if (m_NumberRecordedFrames == 0)
+            else
             {
-                m_FirstRecordedFrameTimestamp = startClockTicks;
+                switch (streamId)
+                {
+                    case MAIN_STREAM_ID:
+                        if (m_GetMainClockTicksCallback != null)
+                            throw new AdvLibException("Must provide start and end clock ticks when a custom clock for the Main Stream is defined.");
+                        break;
+
+                    case CALIBRATION_STREAM_ID:
+                        if (m_GetCalibrationClockTicksCallback != null)
+                            throw new AdvLibException("Must provide start and end clock ticks when a custom clock for the Calibration Stream is defined.");
+                        break;
+
+                    default:
+                        throw new IndexOutOfRangeException();
+                }
+
+                frameStartedOk = AdvLib.BeginFrame(streamId);
             }
 
-            bool frameStartedOk = AdvLib.BeginFrame(streamId, startClockTicks, endClockTicks, elapsedTicks > 0L ? elapsedTicks : 0L);
             if (!frameStartedOk)
             {
                 // If we can't add the first frame, this may be a file creation issue; otherwise increase the dropped frames counter

@@ -103,6 +103,21 @@ namespace AdvLibTestApp
             config.MassagesCallback = GetCurrentExampleMassages;
             config.CustomGainCallback = GetCurrentExampleCustomGain;
 
+		    if (cbxZeroTicks.Checked)
+		    {
+		        config.MainStreamCustomClock = new CustomClockConfig()
+		        {
+		            ClockFrequency = 1,
+		            ClockTicksCallback = () => 0,
+		            TicksTimingAccuracy = 1
+		        };
+		        config.CalibrationStreamCustomClock = new CustomClockConfig()
+		        {
+		            ClockFrequency = 1,
+		            ClockTicksCallback = () => 0,
+		            TicksTimingAccuracy = 1
+		        };
+		    }
             var advGen = new AdvGenerator();
             advGen.GenerateaAdv_V2(config, fileName);
 

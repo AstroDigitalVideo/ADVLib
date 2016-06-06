@@ -26,6 +26,13 @@ namespace AdvLib.Tests.Generators
 
     public delegate uint GetCurrentExampleCustomGainCallback(int frameId);
 
+    public class CustomClockConfig
+    {
+        public Func<long> ClockTicksCallback;
+        public long ClockFrequency;
+        public int TicksTimingAccuracy;
+    }
+
     public class AdvGenerationConfig
     {
         public bool SaveLocationData;
@@ -42,6 +49,9 @@ namespace AdvLib.Tests.Generators
         public GetCurrentImageGainCallback GainCallback;
         public GetCurrentExampleMassagesCallback MassagesCallback;
         public GetCurrentExampleCustomGainCallback CustomGainCallback;
+
+        public CustomClockConfig MainStreamCustomClock;
+        public CustomClockConfig CalibrationStreamCustomClock;
     }
 
     public class AdvGenerator
@@ -85,6 +95,11 @@ namespace AdvLib.Tests.Generators
             int customTagIdCustomGain = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-GAIN", AdvTagType.UInt32);
             int customTagIdMessages = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-MESSAGES", AdvTagType.List16OfAnsiString255);
 
+            if (config.MainStreamCustomClock != null)
+                recorder.DefineCustomClock(AdvRecorder.AdvStream.MainStream, config.MainStreamCustomClock.ClockFrequency, config.MainStreamCustomClock.TicksTimingAccuracy, config.MainStreamCustomClock.ClockTicksCallback);
+
+            if (config.CalibrationStreamCustomClock != null)
+                recorder.DefineCustomClock(AdvRecorder.AdvStream.CalibrationStream, config.CalibrationStreamCustomClock.ClockFrequency, config.CalibrationStreamCustomClock.TicksTimingAccuracy, config.CalibrationStreamCustomClock.ClockTicksCallback);
 
             recorder.StartRecordingNewFile(fileName);
 
