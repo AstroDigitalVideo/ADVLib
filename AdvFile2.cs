@@ -32,8 +32,17 @@ namespace Adv
 
             CalibrationSteamInfo = new DataStreamDefinition();
             AdvLib.GetCalibrationStreamInfo(ref CalibrationSteamInfo.FrameCount, ref CalibrationSteamInfo.ClockFrequency, ref CalibrationSteamInfo.TimingAccuracy);
+        }
 
-
+        public uint[] GetMainFramePixels(uint frameNo)
+        {
+            if (frameNo < MainSteamInfo.FrameCount)
+            {
+                uint[] pixels = AdvLib.GetFramePixels(0, (int)frameNo, 640, 480);
+                return pixels;
+            }
+            else
+                throw new AdvLibException(string.Format("Main frame number must be bwtween 0 and {0}", MainSteamInfo.FrameCount - 1));
         }
 
         public bool Close()

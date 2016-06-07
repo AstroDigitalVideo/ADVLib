@@ -24,6 +24,75 @@ namespace Adv
         List16OfUTF8String = 8,
     };
 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct AdvFileInfo
+    {
+        public int Width;
+        public int Height;
+        public int CountMaintFrames;
+        public int CountCalibrationFrames;
+        public int Bpp;
+        public int MaxPixelVal;
+    };
+
+    [StructLayout(LayoutKind.Explicit)]
+    public class AdvFrameInfoNative
+    {
+        private static DateTime REFERENCE_DATETIME = new DateTime(2010, 1, 1, 0, 0, 0, 0);
+
+        public AdvFrameInfoNative()
+        {
+            MidFrameTimeStampMillisecondsLo = 0;
+            MidFrameTimeStampMillisecondsHi = 0;
+            Exposure10thMs = 0;
+    
+            Gamma = 0f;
+            Gain = 0f;
+            Shutter = 0f;
+            Offset = 0f;
+            
+            GPSTrackedSattelites = 0;
+            GPSAlmanacStatus = 0;
+            GPSFixStatus = 0;
+            GPSAlmanacOffset = 0;
+            
+            VideoCameraFrameIdLo = 0;
+            VideoCameraFrameIdHi = 0;
+            Temperature = 0;
+
+        }
+
+        [FieldOffset(0)]
+        public uint MidFrameTimeStampMillisecondsLo;
+        [FieldOffset(4)]
+        public uint MidFrameTimeStampMillisecondsHi;
+        [FieldOffset(8)]
+        public int Exposure10thMs;
+        [FieldOffset(12)]
+        public float Gamma;
+        [FieldOffset(16)]
+        public float Gain;
+        [FieldOffset(20)]
+        public float Shutter;
+        [FieldOffset(24)]
+        public float Offset;
+        [FieldOffset(28)]
+        public byte GPSTrackedSattelites;
+        [FieldOffset(29)]
+        public byte GPSAlmanacStatus;
+        [FieldOffset(30)]
+        public byte GPSFixStatus;
+        [FieldOffset(31)]
+        public byte GPSAlmanacOffset;
+        [FieldOffset(32)]
+        public uint VideoCameraFrameIdLo;
+        [FieldOffset(36)]
+        public uint VideoCameraFrameIdHi;
+        [FieldOffset(40)]
+        public float Temperature;
+    }
+
+
     public static class AdvLib
     {
 
@@ -242,6 +311,10 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetCalibrationStreamInfo")]
         //void AdvVer2_GetCalibrationStreamInfo(long* numFrames, __int64* calibrationClockFrequency, long* calibrationStreamAccuracy);
         private static extern void AdvVer2_GetCalibrationStreamInfo32(ref int numFrames, ref long calibrationClockFrequency, ref int calibrationStreamAccuracy);
+
+        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
+        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
+        private static extern int AdvVer2_GetFramePixels32(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
         #endregion 
 
         #region 64bit externals
@@ -445,6 +518,11 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetCalibrationStreamInfo")]
         //void AdvVer2_GetCalibrationStreamInfo(long* numFrames, __int64* calibrationClockFrequency, long* calibrationStreamAccuracy);
         private static extern void AdvVer2_GetCalibrationStreamInfo64(ref int numFrames, ref long calibrationClockFrequency, ref int calibrationStreamAccuracy);
+
+        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
+        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
+        private static extern int AdvVer2_GetFramePixels64(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
+
         #endregion
 
         #region UNIX externals
@@ -648,6 +726,11 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetCalibrationStreamInfo")]
         //void AdvVer2_GetCalibrationStreamInfo(long* numFrames, __int64* calibrationClockFrequency, long* calibrationStreamAccuracy);
         private static extern void AdvVer2_GetCalibrationStreamInfoUnix(ref int numFrames, ref long calibrationClockFrequency, ref int calibrationStreamAccuracy);
+
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
+        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
+        private static extern int AdvVer2_GetFramePixelsUnix(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
+
         #endregion
 
         public static string AdvGetCurrentFilePath()
@@ -1213,6 +1296,22 @@ namespace Adv
                 AdvVer2_GetCalibrationStreamInfo64(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
             else
                 AdvVer2_GetCalibrationStreamInfo32(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
+        }
+
+        public static uint[] GetFramePixels(int streamId, int frameNo, int width, int height)
+        {
+			uint[] pixels = new uint[width * height];
+			var frameInfo = new AdvFrameInfoNative();
+			byte[] systemError = new byte[256 * 16];
+
+            if (!CrossPlatform.IsWindows)
+                AdvVer2_GetFramePixelsUnix(streamId, frameNo, pixels, frameInfo, systemError);
+            else if (Is64Bit())
+                AdvVer2_GetFramePixels64(streamId, frameNo, pixels, frameInfo, systemError);
+            else
+                AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfo, systemError);
+
+            return pixels;
         }
     }
 }
