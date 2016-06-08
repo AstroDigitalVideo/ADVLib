@@ -580,9 +580,6 @@ namespace Adv
             m_NumberDroppedFrames = 0;
             m_FirstRecordedFrameTimestamp = 0;
             m_PrevFrameEndTimestampAutoTicks = 0;
-
-            if (!AdvLib.BeginFrame(0, 0, 0, 0))
-                throw new AdvLibException(string.Format("Cannot start recording '{0}'", fileName));
         }
 
         /// <summary>

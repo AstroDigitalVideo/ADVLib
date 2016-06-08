@@ -42,10 +42,11 @@ namespace Adv
 
         public AdvFrameInfoNative()
         {
-            MidFrameTimeStampMillisecondsLo = 0;
-            MidFrameTimeStampMillisecondsHi = 0;
-            Exposure10thMs = 0;
-    
+            StartTicksLo = 0;
+            StartTicksHi = 0;
+            EndTicksLo = 0;
+            EndTicksHi = 0;
+
             Gamma = 0f;
             Gain = 0f;
             Shutter = 0f;
@@ -63,32 +64,34 @@ namespace Adv
         }
 
         [FieldOffset(0)]
-        public uint MidFrameTimeStampMillisecondsLo;
+        public uint StartTicksLo;
         [FieldOffset(4)]
-        public uint MidFrameTimeStampMillisecondsHi;
+        public uint StartTicksHi;
         [FieldOffset(8)]
-        public int Exposure10thMs;
+        public uint EndTicksLo;
         [FieldOffset(12)]
-        public float Gamma;
+        public uint EndTicksHi;
         [FieldOffset(16)]
-        public float Gain;
+        public float Gamma;
         [FieldOffset(20)]
-        public float Shutter;
+        public float Gain;
         [FieldOffset(24)]
-        public float Offset;
+        public float Shutter;
         [FieldOffset(28)]
-        public byte GPSTrackedSattelites;
-        [FieldOffset(29)]
-        public byte GPSAlmanacStatus;
-        [FieldOffset(30)]
-        public byte GPSFixStatus;
-        [FieldOffset(31)]
-        public byte GPSAlmanacOffset;
+        public float Offset;
         [FieldOffset(32)]
-        public uint VideoCameraFrameIdLo;
+        public byte GPSTrackedSattelites;
+        [FieldOffset(33)]
+        public byte GPSAlmanacStatus;
+        [FieldOffset(34)]
+        public byte GPSFixStatus;
+        [FieldOffset(35)]
+        public byte GPSAlmanacOffset;
         [FieldOffset(36)]
-        public uint VideoCameraFrameIdHi;
+        public uint VideoCameraFrameIdLo;
         [FieldOffset(40)]
+        public uint VideoCameraFrameIdHi;
+        [FieldOffset(44)]
         public float Temperature;
     }
 

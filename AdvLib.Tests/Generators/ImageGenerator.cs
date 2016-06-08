@@ -251,5 +251,17 @@ namespace AdvLib.Tests.Generators
 
             return true;
         }
+
+        internal bool VerifyImagePattern1UInt32(uint[] pixels, byte dynaBits)
+        {
+            var bytes = new byte[pixels.Length];
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                bytes[2 * i] = (byte) (pixels[i] & 0xFF);
+                bytes[2 * i + 1] = (byte)((pixels[i] >> 8) & 0xFF);
+            }
+
+            return VerifyImagePattern1Bytes(bytes, dynaBits);
+        }
     }
 }

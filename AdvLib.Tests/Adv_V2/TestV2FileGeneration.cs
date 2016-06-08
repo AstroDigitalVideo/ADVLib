@@ -40,7 +40,11 @@ namespace AdvLib.Tests.Adv_V2
 
                 // Verify
                 file = new AdvFile2(fileName);
+                uint[] pixels = file.GetMainFramePixels(0);
                 
+                var imageGenerator = new ImageGenerator();
+                var verified = imageGenerator.VerifyImagePattern1UInt32(pixels, cfg.DynaBits);
+                Assert.IsTrue(verified);
             }
             finally
             {
