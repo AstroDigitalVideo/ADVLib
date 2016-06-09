@@ -252,8 +252,8 @@ namespace Adv
         private static extern void AdvVer2_DefineImageSection32(ushort width, ushort height, byte dataBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageLayout")]
-        //void AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp, int keyFrame, const char* diffCorrFromBaseFrame);
-        private static extern void AdvVer2_DefineImageLayout32(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp, int keyFrame, [MarshalAs(UnmanagedType.LPStr)]string diffCorrFromBaseFrame);
+        //void AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp);
+        private static extern void AdvVer2_DefineImageLayout32(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSectionTag")]
         //unsigned int AdvVer2_DefineStatusSectionTag(const char* tagName, int tagType);
@@ -459,8 +459,8 @@ namespace Adv
         private static extern void AdvVer2_DefineImageSection64(ushort width, ushort height, byte dataBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageLayout")]
-        //void AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp, int keyFrame, const char* diffCorrFromBaseFrame);
-        private static extern void AdvVer2_DefineImageLayout64(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp, int keyFrame, [MarshalAs(UnmanagedType.LPStr)]string diffCorrFromBaseFrame);
+        //void AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp);
+        private static extern void AdvVer2_DefineImageLayout64(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSectionTag")]
         //unsigned int AdvVer2_DefineStatusSectionTag(const char* tagName, int tagType);
@@ -667,8 +667,8 @@ namespace Adv
         private static extern void AdvVer2_DefineImageSectionUnix(ushort width, ushort height, byte dataBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageLayout")]
-        //void AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp, int keyFrame, const char* diffCorrFromBaseFrame);
-        private static extern void AdvVer2_DefineImageLayoutUnix(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp, int keyFrame, [MarshalAs(UnmanagedType.LPStr)]string diffCorrFromBaseFrame);
+        //void AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp);
+        private static extern void AdvVer2_DefineImageLayoutUnix(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSectionTag")]
         //unsigned int AdvVer2_DefineStatusSectionTag(const char* tagName, int tagType);
@@ -1141,14 +1141,14 @@ namespace Adv
                 AdvVer2_DefineImageSection32(width, height, dataBpp);
         }
 
-        public static void DefineImageLayout(byte layoutId, string layoutType, string compression, byte layoutBpp, int keyFrame, string diffCorrFromBaseFrame)
+        public static void DefineImageLayout(byte layoutId, string layoutType, string compression, byte layoutBpp)
         {
             if (!CrossPlatform.IsWindows)
-                AdvVer2_DefineImageLayoutUnix(layoutId, layoutType, compression, layoutBpp, keyFrame, diffCorrFromBaseFrame);
+                AdvVer2_DefineImageLayoutUnix(layoutId, layoutType, compression, layoutBpp);
             else if (Is64Bit())
-                AdvVer2_DefineImageLayout64(layoutId, layoutType, compression, layoutBpp, keyFrame, diffCorrFromBaseFrame);
+                AdvVer2_DefineImageLayout64(layoutId, layoutType, compression, layoutBpp);
             else
-                AdvVer2_DefineImageLayout32(layoutId, layoutType, compression, layoutBpp, keyFrame, diffCorrFromBaseFrame);
+                AdvVer2_DefineImageLayout32(layoutId, layoutType, compression, layoutBpp);
         }
 
         public static uint DefineStatusSectionTag(string tagName, AdvTagType tagType)

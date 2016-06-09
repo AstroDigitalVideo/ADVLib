@@ -254,7 +254,7 @@ namespace AdvLib.Tests.Generators
 
         internal bool VerifyImagePattern1UInt32(uint[] pixels, byte dynaBits)
         {
-            var bytes = new byte[pixels.Length];
+            var bytes = new byte[2 * pixels.Length];
             for (int i = 0; i < pixels.Length; i++)
             {
                 bytes[2 * i] = (byte) (pixels[i] & 0xFF);

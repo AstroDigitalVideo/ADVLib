@@ -513,11 +513,11 @@ namespace Adv
             if (ImageConfig.ImagePixelNormalValue.HasValue) AdvLib.AddOrUpdateImageSectionTag("IMAGE-PIX-NORM-VAL", ImageConfig.ImagePixelNormalValue.Value.ToString(CultureInfo.InvariantCulture));
             if (!string.IsNullOrEmpty(ImageConfig.ImageBayerPattern)) AdvLib.AddOrUpdateImageSectionTag("IMAGE-BAYER-PATTERN", ImageConfig.ImageBayerPattern);
 
-            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_1_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16, 0, null);
-            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_2_COMPRESSED, "FULL-IMAGE-RAW", "LAGARITH16", 16, 0, null);
-            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_3_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 12, 0, null);
-            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_4_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 8, 0, null);
-            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_5_COMPRESSED, "FULL-IMAGE-RAW", "QUICKLZ", 8, 0, null);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_1_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_2_COMPRESSED, "FULL-IMAGE-RAW", "LAGARITH16", 16);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_3_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 12);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_4_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 8);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_5_COMPRESSED, "FULL-IMAGE-RAW", "QUICKLZ", 8);
 
             //SystemTime - The system clock reading at the time the frame has been recorded in the file (as a backup time)
 

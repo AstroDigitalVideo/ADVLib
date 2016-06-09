@@ -63,14 +63,15 @@ namespace AdvLib.Tests.Adv_V2
         }
 
         [Test]
-        [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win32.GNU.adv")]
-        [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win64.GNU.adv")]
-        [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win32.MSVC.adv")]
-        [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win64.MSVC.adv")]
-        [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Ubuntu32.GNU.adv")]
-        [TestCase(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Ubuntu64.GNU.adv")]
+        [TestCase(@"TestFiles\UNCOMPRESSED\TestFile.Win32.GNU.adv")]
+        [TestCase(@"TestFiles\UNCOMPRESSED\TestFile.Win64.GNU.adv")]
+        [TestCase(@"TestFiles\UNCOMPRESSED\TestFile.Win32.MSVC.adv")]
+        [TestCase(@"TestFiles\UNCOMPRESSED\TestFile.Win64.MSVC.adv")]
+        [TestCase(@"TestFiles\UNCOMPRESSED\TestFile.Ubuntu32.GNU.adv")]
+        [TestCase(@"TestFiles\UNCOMPRESSED\TestFile.Ubuntu64.GNU.adv")]
         public void ReadLinuxFile1(string fileName)
         {
+            fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\" + fileName);
             var hasher = new Hasher();
             string h1 = hasher.CalcMd5(fileName);
             Console.WriteLine(h1);
@@ -84,12 +85,12 @@ namespace AdvLib.Tests.Adv_V2
         public void CompareFiles()
         {
             var hasher = new Hasher();
-            string h1 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win32.GNU.adv");
-            string h2 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win32.MSVC.adv");
-            string h3 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win64.GNU.adv");
-            string h4 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Win64.MSVC.adv");
-            string h5 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Ubuntu32.GNU.adv");
-            string h6 = hasher.CalcMd5(@"F:\WORK\ADVVer2\ADVLib\AdvLib.Tests\TestFiles\UNCOMPRESSED\TestFile.Ubuntu64.GNU.adv");
+            string h1 = hasher.CalcMd5(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\" + @"TestFiles\UNCOMPRESSED\TestFile.Win32.GNU.adv"));
+            string h2 = hasher.CalcMd5(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\" + @"TestFiles\UNCOMPRESSED\TestFile.Win32.MSVC.adv"));
+            string h3 = hasher.CalcMd5(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\" + @"TestFiles\UNCOMPRESSED\TestFile.Win64.GNU.adv"));
+            string h4 = hasher.CalcMd5(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\" + @"TestFiles\UNCOMPRESSED\TestFile.Win64.MSVC.adv"));
+            string h5 = hasher.CalcMd5(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\" + @"TestFiles\UNCOMPRESSED\TestFile.Ubuntu32.GNU.adv"));
+            string h6 = hasher.CalcMd5(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\" + @"TestFiles\UNCOMPRESSED\TestFile.Ubuntu64.GNU.adv"));
             Console.WriteLine(h1);
             Console.WriteLine(h2);
             Console.WriteLine(h3);
