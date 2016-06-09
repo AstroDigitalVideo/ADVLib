@@ -29,6 +29,8 @@ namespace AdvLib.Tests.Generators
                     pixels[i] = 0x7FF0;
                 else if (dynaBits == 12)
                     pixels[i] = 0x07FF;
+                else if (dynaBits == 8)
+                    pixels[i] = 0x7F;
             }
 
             // There is a pixel wide line from top left - down and right with full intensity (0x0FFF)
@@ -38,6 +40,8 @@ namespace AdvLib.Tests.Generators
                     pixels[(x * 640 + x)] = 0xFFF0;
                 else if (dynaBits == 12)
                     pixels[(x * 640 + x)] = 0x0FFF;
+                else if (dynaBits == 8)
+                    pixels[(x * 640 + x)] = 0xFF;
             }
 
             // There is a pixel wide line from top right - down and left with zero intensity (0x0000)
@@ -107,7 +111,7 @@ namespace AdvLib.Tests.Generators
 
                 for (int x = 0; x < 480; x++)
                 {
-                    pixels[x * 640 + x + 1] = 0xFF;
+                    pixels[x * 640 + x] = 0xFF;
                 }
 
                 for (int x = 0; x < 480; x++)
@@ -232,12 +236,12 @@ namespace AdvLib.Tests.Generators
 
                 for (int x = 0; x < 480; x++)
                 {
-                    if (pixels[x * 640 + x + 1] != 0xFF && pixels[x * 640 + x + 1] != 0x11)
+                    if (pixels[x * 640 + x] != 0xFF && pixels[x * 640 + x] != 0x11)
                     {
-                        Console.WriteLine(string.Format("Pixel ({0}, {1}) is supposed to be 0xFF but is instead 0x{2}", x + 1, x, Convert.ToString(pixels[x * 640 + x + 1], 16)));
+                        Console.WriteLine(string.Format("Pixel ({0}, {1}) is supposed to be 0xFF but is instead 0x{2}", x + 1, x, Convert.ToString(pixels[x * 640 + x], 16)));
                         return false;
                     }
-                    pixels[x * 640 + x + 1] = 0x11;
+                    pixels[x * 640 + x] = 0x11;
                 }
 
                 for (int i = 0; i < pixels.Length; i++)
@@ -262,6 +266,31 @@ namespace AdvLib.Tests.Generators
             }
 
             return VerifyImagePattern1Bytes(bytes, dynaBits);
+        }
+
+        internal bool VerifyImagePattern1UInt16(ushort[] pixels, byte dynaBits)
+        {
+            if (dynaBits == 8)
+            {
+                var bytes = new byte[pixels.Length];
+                for (int i = 0; i < pixels.Length; i++)
+                {
+                    bytes[i] = (byte)(pixels[i] & 0xFF);
+                }
+
+                return VerifyImagePattern1Bytes(bytes, 8);  
+            }
+            else
+            {
+                var bytes = new byte[2 * pixels.Length];
+                for (int i = 0; i < pixels.Length; i++)
+                {
+                    bytes[2 * i] = (byte)(pixels[i] & 0xFF);
+                    bytes[2 * i + 1] = (byte)((pixels[i] >> 8) & 0xFF);
+                }
+
+                return VerifyImagePattern1Bytes(bytes, dynaBits);                
+            }
         }
     }
 }

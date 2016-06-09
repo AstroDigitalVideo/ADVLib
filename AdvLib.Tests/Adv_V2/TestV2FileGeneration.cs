@@ -17,14 +17,14 @@ namespace AdvLib.Tests.Adv_V2
     public class TestV2FileGeneration
     {
         [Test]
-        public void SimpleTest()
+        public void TestPixelDeserialization_Uncompressed_16_16_16BitLittleEndianByte()
         {
             var fileGen = new AdvGenerator();
             var cfg = new AdvGenerationConfig()
             {
                 CameraDepth = 16,
                 DynaBits = 16,
-                SourceFormat = AdvSourceDataFormat.Format16BitUShort,
+                SourceFormat = AdvSourceDataFormat.Format16BitLittleEndianByte,
                 NumberOfFrames = 10,
                 UsesCompression = false,
                 NormalPixelValue = null
@@ -61,6 +61,53 @@ namespace AdvLib.Tests.Adv_V2
                 }
             }
         }
+
+        [Test]
+        public void TestPixelDeserialization_Uncompressed_16_16_16BitUShort()
+        {
+            var fileGen = new AdvGenerator();
+            var cfg = new AdvGenerationConfig()
+            {
+                CameraDepth = 16,
+                DynaBits = 16,
+                SourceFormat = AdvSourceDataFormat.Format16BitUShort,
+                NumberOfFrames = 10,
+                UsesCompression = false,
+                NormalPixelValue = null
+            };
+
+            string fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+            if (File.Exists(fileName)) File.Delete(fileName);
+            AdvFile2 file = null;
+            try
+            {
+                // Generate
+                fileGen.GenerateaAdv_V2(cfg, fileName);
+
+                // Verify
+                file = new AdvFile2(fileName);
+                uint[] pixels = file.GetMainFramePixels(0);
+
+                var imageGenerator = new ImageGenerator();
+                var verified = imageGenerator.VerifyImagePattern1UInt32(pixels, cfg.DynaBits);
+                Assert.IsTrue(verified);
+            }
+            finally
+            {
+                try
+                {
+                    if (file != null) file.Close();
+                    if (File.Exists(fileName))
+                        File.Delete(fileName);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    Trace.WriteLine(ex);
+                }
+            }
+        }
+
 
         [Test]
         [TestCase(@"TestFiles\UNCOMPRESSED\TestFile.Win32.GNU.adv")]
