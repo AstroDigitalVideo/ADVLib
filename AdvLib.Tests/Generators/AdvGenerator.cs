@@ -37,7 +37,6 @@ namespace AdvLib.Tests.Generators
     {
         public bool SaveLocationData;
         public byte DynaBits;
-        public byte CameraDepth;
         public int? NormalPixelValue;
         public AdvSourceDataFormat SourceFormat;
         public bool UsesCompression;
@@ -86,7 +85,7 @@ namespace AdvLib.Tests.Generators
                     284.4);
             }
 
-            recorder.ImageConfig.SetImageParameters(640, 480, config.CameraDepth, config.DynaBits, config.NormalPixelValue);
+            recorder.ImageConfig.SetImageParameters(640, 480, config.DynaBits, config.NormalPixelValue);
 
             // By default no status section values will be recorded. The user must enable the ones they need recorded and 
             // can also define additional status parameters to be recorded with each video frame

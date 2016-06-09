@@ -81,9 +81,8 @@ namespace Adv
         {
             public ushort ImageWidth { get; private set; }
             public ushort ImageHeight { get; private set; }
-            public byte CameraBitsPerPixel { get; private set; }
-            public int? ImagePixelNormalValue { get; private set; }
-            public int ImageBitsPerPixel { get; private set; }
+            public int? ImagePixelMaxValue { get; private set; }
+            public byte ImageBitsPerPixel { get; private set; }
             public bool ImageBigEndian { get; set; }
             public string ImageBayerPattern { get; set; }
 
@@ -91,42 +90,47 @@ namespace Adv
             /// Sets the image configuration. Here are some examples: 
             /// 
             /// 8 bit camera, running with x4 frames on the fly integration, pixel values saved as 16 bit:
-            /// Camera Bit Depth: 8 bit
             /// Image Bits Per Pixel: 16 bit
-            /// Pixel Normal Value: 0x3FC (1020)
+            /// Pixel Max Value: 0x3FC (1020)
             /// 
-            /// 14 bit camera with image saved as 16 bit:
+            /// 14 bit camera with image saved as 16 bit (unscaled):
             /// 
-            /// Camera Bit Depth: 14 bit
             /// Image Bits Per Pixel: 16 bit
-            /// Pixel Normal Value: null
+            /// Pixel Max Value: 0x3FFF (16383)
             /// 
+            /// 14 bit camera with image scaled to and saved as 16 bit:
+            /// 
+            /// Image Bits Per Pixel: 16 bit
+            /// Pixel Max Value: null
+            /// 
+            /// 16 bit camera with image saved as 16 bit:
+            /// 
+            /// Image Bits Per Pixel: 16 bit
+            /// Pixel Max Value: null
+            ///            
             /// 12 bit camera with image saved as 12 bit (2 pixels in 3 bytes):
             /// 
-            /// Camera Bit Depth: 12 bit
             /// Image Bits Per Pixel: 12 bit
-            /// Pixel Normal Value: null
+            /// Pixel Max Value: null
             /// </summary>
             /// <param name="width">The width of the image in pixels.</param>
             /// <param name="height">The height of the image in pixels.</param>
-            /// <param name="cameraBitDepth">The native camera bit depth.</param>
             /// <param name="imageBitsPerPixel">The bit depth of the pixel values saved in the image.</param>
-            /// <param name="pixelNormalValue">The upper limit of the dynamic range of the image expressed as the maximum pixel value (or <b>null</b> if not applicable).</param>
-            public void SetImageParameters(ushort width, ushort height, byte cameraBitDepth, byte imageBitsPerPixel, int? pixelNormalValue)
+            /// <param name="pixelMaxValue">The upper limit of the dynamic range of the image expressed as the maximum pixel value (or <b>null</b> if not applicable).</param>
+            public void SetImageParameters(ushort width, ushort height, byte imageBitsPerPixel, int? pixelMaxValue)
             {
                 ImageWidth = width;
                 ImageHeight = height;
-                CameraBitsPerPixel = cameraBitDepth;
                 ImageBitsPerPixel = imageBitsPerPixel;
-                ImagePixelNormalValue = null;
+                ImagePixelMaxValue = null;
 
-                if (pixelNormalValue.HasValue && pixelNormalValue.Value != 0)
+                if (pixelMaxValue.HasValue && pixelMaxValue.Value != 0)
                 {
-                    int normValBitDepth = (int)Math.Ceiling(Math.Log(pixelNormalValue.Value, 2));
-                    if (cameraBitDepth > normValBitDepth)
-                        throw new AdvLibException(string.Format("pixelNormalValue {0} must be greater or equal to the cameraBitDepth ({1} bit) max value of {2}", pixelNormalValue, cameraBitDepth, Math.Pow(2, cameraBitDepth)));
+                    int normValBitDepth = (int)Math.Ceiling(Math.Log(pixelMaxValue.Value, 2));
+                    if (imageBitsPerPixel > normValBitDepth)
+                        throw new AdvLibException(string.Format("pixelMaxValue {0} must be less or equal to the imageBitsPerPixel's ({1} bit) max value of {2}", pixelMaxValue, imageBitsPerPixel, Math.Pow(2, imageBitsPerPixel)));
 
-                    ImagePixelNormalValue = pixelNormalValue;
+                    ImagePixelMaxValue = pixelMaxValue;
                 }
             }
 
@@ -307,7 +311,6 @@ namespace Adv
 
             public string CameraModel { get; set; }
             public string CameraSensorInfo { get; set; }
-            public int CameraBitPix { get; set; }
 
             public int BinningX { get; set; }
             public int BinningY { get; set; }
@@ -477,7 +480,6 @@ namespace Adv
 
             if (!string.IsNullOrEmpty(FileMetaData.CameraModel)) AdvLib.AddFileTag("CAMERA-MODEL", FileMetaData.CameraModel);
             if (!string.IsNullOrEmpty(FileMetaData.CameraSensorInfo)) AdvLib.AddFileTag("CAMERA-SENSOR-INFO", FileMetaData.CameraSensorInfo);
-            if (FileMetaData.CameraBitPix > 0) AdvLib.AddFileTag("CAMERA-BITPIX", FileMetaData.CameraBitPix.ToString(CultureInfo.InvariantCulture));
 
             if (FileMetaData.BinningX > 0) AdvLib.AddFileTag("BINNING-X", FileMetaData.BinningX.ToString(CultureInfo.InvariantCulture));
             if (FileMetaData.BinningY > 0) AdvLib.AddFileTag("BINNING-Y", FileMetaData.BinningY.ToString(CultureInfo.InvariantCulture));
@@ -507,10 +509,10 @@ namespace Adv
                 AdvLib.AddFileTag(key, FileMetaData.UserMetaData[key]);
             }
 
-            AdvLib.DefineImageSection(ImageConfig.ImageWidth, ImageConfig.ImageHeight, ImageConfig.CameraBitsPerPixel);
+            AdvLib.DefineImageSection(ImageConfig.ImageWidth, ImageConfig.ImageHeight, ImageConfig.ImageBitsPerPixel);
             AdvLib.AddOrUpdateImageSectionTag("IMAGE-BYTE-ORDER", ImageConfig.ImageBigEndian ? "BIG-ENDIAN" : "LITTLE-ENDIAN");
             AdvLib.AddOrUpdateImageSectionTag("IMAGE-BITPIX", ImageConfig.ImageBitsPerPixel.ToString(CultureInfo.InvariantCulture));
-            if (ImageConfig.ImagePixelNormalValue.HasValue) AdvLib.AddOrUpdateImageSectionTag("IMAGE-PIX-NORM-VAL", ImageConfig.ImagePixelNormalValue.Value.ToString(CultureInfo.InvariantCulture));
+            if (ImageConfig.ImagePixelMaxValue.HasValue) AdvLib.AddOrUpdateImageSectionTag("IMAGE-PIX-NORM-VAL", ImageConfig.ImagePixelMaxValue.Value.ToString(CultureInfo.InvariantCulture));
             if (!string.IsNullOrEmpty(ImageConfig.ImageBayerPattern)) AdvLib.AddOrUpdateImageSectionTag("IMAGE-BAYER-PATTERN", ImageConfig.ImageBayerPattern);
 
             AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_1_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);

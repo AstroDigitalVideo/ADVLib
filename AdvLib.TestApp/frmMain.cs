@@ -73,16 +73,11 @@ namespace AdvLibTestApp
             // Define the image size and bit depth
             config.DynaBits = 16;
             if (rbPixel16.Checked) config.DynaBits = 16;
-            else if (rbPixel12as16.Checked || rbPixel12as12.Checked) config.DynaBits = 12;
+            else if (rbPixel12.Checked) config.DynaBits = 12;
             else if (rbPixel8.Checked) config.DynaBits = 8;
 
-            config.CameraDepth = 16;
-            if (rbCamera16.Checked) config.CameraDepth = 16;
-            else if (rbCamera12.Checked) config.CameraDepth = 12;
-            else if (rbCamera8.Checked) config.CameraDepth = 8;
-
             config.NormalPixelValue = null;
-            if (nudNormalValue.Value > 0) config.NormalPixelValue = (int)nudNormalValue.Value;
+            if (nudMaxPixelValue.Value > 0) config.NormalPixelValue = (int)nudMaxPixelValue.Value;
 
             config.UsesCompression = cbxCompress.Checked;
             if (rb16BitUShort.Checked)
@@ -173,15 +168,10 @@ namespace AdvLibTestApp
 			// Define the image size and bit depth
 			byte dynaBits = 16;
 			if (rbPixel16.Checked) dynaBits = 16;
-			else if (rbPixel12as16.Checked) dynaBits = 12;
+			else if (rbPixel12.Checked) dynaBits = 12;
 			else if (rbPixel8.Checked) dynaBits = 8;
 
-			byte cameraDepth = 16;
-			if (rbCamera16.Checked) cameraDepth = 16;
-			else if (rbCamera12.Checked) cameraDepth = 12;
-			else if (rbCamera8.Checked) cameraDepth = 8;
-
-			recorder.ImageConfig.SetImageParameters(640, 480, cameraDepth, dynaBits);
+            recorder.ImageConfig.SetImageParameters(640, 480, dynaBits);
 
 			// By default no status section values will be recorded. The user must enable the ones they need recorded and 
 			// can also define additional status parameters to be recorded with each video frame
@@ -336,50 +326,22 @@ namespace AdvLibTestApp
 			{
 				rbPixel16.Checked = true;
 				rbPixel16.Enabled = true;
-				rbPixel12as16.Enabled = true;
-				rbPixel12as12.Enabled = false;
-				rbPixel8.Enabled = false;
-				rbCamera16.Checked = true;
-				rbCamera16.Enabled = true;
-				rbCamera12.Enabled = true;
-				rbCamera8.Enabled = false;
+				rbPixel12.Enabled = true;
+				rbPixel8.Enabled = true;
 			}
 			else if (rb12BitByte.Checked)
-			{				
+			{
+                rbPixel12.Checked = true;
 				rbPixel16.Enabled = false;
-				rbPixel12as16.Enabled = false;
-				rbPixel12as12.Enabled = true;
-				rbPixel12as12.Checked = true;
+				rbPixel12.Enabled = true;
 				rbPixel8.Enabled = false;
-				rbCamera16.Checked = false;
-				rbCamera16.Enabled = false;
-				rbCamera12.Enabled = true;
-				rbCamera8.Enabled = false;
 			}
 			else
 			{
 				rbPixel8.Checked = true;
 				rbPixel16.Enabled = false;
-				rbPixel12as16.Enabled = false;
-				rbPixel12as12.Enabled = false;
+				rbPixel12.Enabled = false;
 				rbPixel8.Enabled = true;
-				rbCamera8.Checked = true;
-				rbCamera16.Enabled = false;
-				rbCamera12.Enabled = false;
-				rbCamera8.Enabled = true;
-			}
-		}
-
-		private void OnPixelFormatChanged(object sender, EventArgs e)
-		{
-			if (rbPixel12as16.Checked || rbPixel12as12.Checked)
-			{
-				rbCamera16.Enabled = false;
-				rbCamera12.Checked = true;
-			}
-			else
-			{
-				rbCamera16.Enabled = true;
 			}
 		}
 
@@ -411,15 +373,12 @@ namespace AdvLibTestApp
 		{
 			if (cbxADV1.Checked)
 			{
-				rbPixel12as12.Enabled = false;
 				rb12BitByte.Enabled = false;
 				rb16BitUShort.Checked = true;
 				rbPixel16.Checked = true;
-				rbCamera16.Checked = true;
 			}
 			else
 			{
-				rbPixel12as12.Enabled = true;
 				rb12BitByte.Enabled = true;
 			}
 		}

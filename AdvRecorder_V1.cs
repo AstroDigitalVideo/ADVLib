@@ -57,16 +57,11 @@ namespace Obsolete
 		/// </summary>
 		/// <param name="width">The width of the image in pixels.</param>
 		/// <param name="height">The height of the image in pixels.</param>
-		/// <param name="cameraBitDepth">The native camera bith depth.</param>
 		/// <param name="imageDynamicBitDepth">The bit depth of the dynamic range of the saved images.</param>
-		public void SetImageParameters(ushort width, ushort height, byte cameraBitDepth, byte imageDynamicBitDepth)
+		public void SetImageParameters(ushort width, ushort height, byte imageDynamicBitDepth)
 		{
-			if (cameraBitDepth > imageDynamicBitDepth)
-				throw new AdvLibException("imageDynamicBitDepth must be greater or equal to cameraBitDepth");
-
 			ImageWidth = width;
 			ImageHeight = height;
-			CameraBitsPerPixel = cameraBitDepth;
 			ImageBitsPerPixel = imageDynamicBitDepth;
 		}
 	}

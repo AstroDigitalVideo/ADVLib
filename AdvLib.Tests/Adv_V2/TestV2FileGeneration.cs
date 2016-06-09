@@ -17,12 +17,11 @@ namespace AdvLib.Tests.Adv_V2
     public class TestV2FileGeneration
     {
         [Test]
-        public void TestPixelDeserialization_Uncompressed_16_16_16BitLittleEndianByte()
+        public void TestPixelDeserialization_Uncompressed_16_16BitLittleEndianByte()
         {
             var fileGen = new AdvGenerator();
             var cfg = new AdvGenerationConfig()
             {
-                CameraDepth = 16,
                 DynaBits = 16,
                 SourceFormat = AdvSourceDataFormat.Format16BitLittleEndianByte,
                 NumberOfFrames = 10,
@@ -63,12 +62,11 @@ namespace AdvLib.Tests.Adv_V2
         }
 
         [Test]
-        public void TestPixelDeserialization_Uncompressed_16_16_16BitUShort()
+        public void TestPixelDeserialization_Uncompressed_16_16BitUShort()
         {
             var fileGen = new AdvGenerator();
             var cfg = new AdvGenerationConfig()
             {
-                CameraDepth = 16,
                 DynaBits = 16,
                 SourceFormat = AdvSourceDataFormat.Format16BitUShort,
                 NumberOfFrames = 10,
