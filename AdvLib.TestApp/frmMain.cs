@@ -269,8 +269,10 @@ namespace AdvLibTestApp
 
 	    private void LoadFileStructure(string fileName)
 	    {
-	        var file = new AdvFile2(fileName);
-	        var pixels = file.GetMainFramePixels(0);
+	        using (var file = new AdvFile2(fileName))
+	        {
+                var pixels = file.GetMainFramePixels(0);    
+	        }	        
 	    }
 
         private void PlayFile(string fileName)

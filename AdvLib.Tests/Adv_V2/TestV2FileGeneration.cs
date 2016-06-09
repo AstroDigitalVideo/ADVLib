@@ -38,12 +38,14 @@ namespace AdvLib.Tests.Adv_V2
                 fileGen.GenerateaAdv_V2(cfg, fileName);
 
                 // Verify
-                file = new AdvFile2(fileName);
-                uint[] pixels = file.GetMainFramePixels(0);
-                
-                var imageGenerator = new ImageGenerator();
-                var verified = imageGenerator.VerifyImagePattern1UInt32(pixels, cfg.DynaBits);
-                Assert.IsTrue(verified);
+                using (file = new AdvFile2(fileName))
+                {
+                    uint[] pixels = file.GetMainFramePixels(0);
+
+                    var imageGenerator = new ImageGenerator();
+                    var verified = imageGenerator.VerifyImagePattern1UInt32(pixels, cfg.DynaBits);
+                    Assert.IsTrue(verified);                    
+                }
             }
             finally
             {
@@ -83,12 +85,14 @@ namespace AdvLib.Tests.Adv_V2
                 fileGen.GenerateaAdv_V2(cfg, fileName);
 
                 // Verify
-                file = new AdvFile2(fileName);
-                uint[] pixels = file.GetMainFramePixels(0);
+                using (file = new AdvFile2(fileName))
+                {
+                    uint[] pixels = file.GetMainFramePixels(0);
 
-                var imageGenerator = new ImageGenerator();
-                var verified = imageGenerator.VerifyImagePattern1UInt32(pixels, cfg.DynaBits);
-                Assert.IsTrue(verified);
+                    var imageGenerator = new ImageGenerator();
+                    var verified = imageGenerator.VerifyImagePattern1UInt32(pixels, cfg.DynaBits);
+                    Assert.IsTrue(verified);                    
+                }
             }
             finally
             {
@@ -121,9 +125,11 @@ namespace AdvLib.Tests.Adv_V2
             string h1 = hasher.CalcMd5(fileName);
             Console.WriteLine(h1);
 
-            var file = new AdvFile2(fileName);
-            Console.WriteLine("MainSteamInfo.FrameCount: " + file.MainSteamInfo.FrameCount);
-            Console.WriteLine("CalibrationSteamInfo.FrameCount: " + file.CalibrationSteamInfo.FrameCount);
+            using (var file = new AdvFile2(fileName))
+            {
+                Console.WriteLine("MainSteamInfo.FrameCount: " + file.MainSteamInfo.FrameCount);
+                Console.WriteLine("CalibrationSteamInfo.FrameCount: " + file.CalibrationSteamInfo.FrameCount);                
+            }
         }
 
         [Test]
