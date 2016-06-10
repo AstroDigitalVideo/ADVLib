@@ -258,14 +258,27 @@ namespace AdvLib.Tests.Generators
 
         internal bool VerifyImagePattern1UInt32(uint[] pixels, byte dynaBits)
         {
-            var bytes = new byte[2 * pixels.Length];
-            for (int i = 0; i < pixels.Length; i++)
+            if (dynaBits == 8)
             {
-                bytes[2 * i] = (byte) (pixels[i] & 0xFF);
-                bytes[2 * i + 1] = (byte)((pixels[i] >> 8) & 0xFF);
-            }
+                var bytes = new byte[pixels.Length];
+                for (int i = 0; i < pixels.Length; i++)
+                {
+                    bytes[i] = (byte) (pixels[i] & 0xFF);
+                }
 
-            return VerifyImagePattern1Bytes(bytes, dynaBits);
+                return VerifyImagePattern1Bytes(bytes, 8);
+            }
+            else
+            {
+                var bytes = new byte[2 * pixels.Length];
+                for (int i = 0; i < pixels.Length; i++)
+                {
+                    bytes[2 * i] = (byte)(pixels[i] & 0xFF);
+                    bytes[2 * i + 1] = (byte)((pixels[i] >> 8) & 0xFF);
+                }
+
+                return VerifyImagePattern1Bytes(bytes, dynaBits);                
+            }
         }
 
         internal bool VerifyImagePattern1UInt16(ushort[] pixels, byte dynaBits)

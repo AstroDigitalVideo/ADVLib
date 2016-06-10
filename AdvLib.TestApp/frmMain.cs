@@ -324,14 +324,21 @@ namespace AdvLibTestApp
 
         private void OnImageFormatChanged(object sender, EventArgs e)
 		{
-			if (rb16BitUShort.Checked || rb16BitByte.Checked)
+			if (rb16BitUShort.Checked)
 			{
 				rbPixel16.Checked = true;
 				rbPixel16.Enabled = true;
 				rbPixel12.Enabled = true;
 				rbPixel8.Enabled = true;
 			}
-			else if (rb12BitByte.Checked)
+            else if (rb16BitByte.Checked)
+            {
+                rbPixel16.Checked = true;
+                rbPixel16.Enabled = true;
+                rbPixel12.Enabled = false;
+                rbPixel8.Enabled = false;
+            }
+            else if (rb12BitByte.Checked)
 			{
                 rbPixel12.Checked = true;
 				rbPixel16.Enabled = false;

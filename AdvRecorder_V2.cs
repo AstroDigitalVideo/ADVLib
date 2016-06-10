@@ -596,7 +596,7 @@ namespace Adv
         {
             BeginVideoFrame(advStream, startClockTicks, endClockTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
 
-            byte layoutIdForCurrentFramerate = GetImageLayoutId(compressIfPossible);
+            byte layoutIdForCurrentFramerate = GetImageLayoutId(compressIfPossible, true);
 
             AdvLib.FrameAddImage(layoutIdForCurrentFramerate, pixels, 16);
 
@@ -640,9 +640,9 @@ namespace Adv
 
             BeginVideoFrame(advStream, startClockTicks, endClockTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
 
-            byte layoutIdForCurrentFramerate = GetImageLayoutId(compressIfPossible);
+            byte layoutIdForCurrentFramerate = GetImageLayoutId(compressIfPossible, false);
 
-            AdvLib.FrameAddImageBytes(layoutIdForCurrentFramerate, pixels, 16);
+            AdvLib.FrameAddImageBytes(layoutIdForCurrentFramerate, pixels, ImageConfig.ImageBitsPerPixel);
 
             AdvLib.EndFrame();
         }
@@ -677,8 +677,17 @@ namespace Adv
             AddCalibrationFrame(pixels, compressIfPossible, new AdvTimeStamp(), new AdvTimeStamp(), metadata, imageData);
         }
 
-        private byte GetImageLayoutId(bool useCompression)
+        private byte GetImageLayoutId(bool useCompression, bool inputAs16BitArray)
         {
+            if (inputAs16BitArray)
+            {
+                // When the input data is 16bit we always save as 16 bit regardless of the ImageBitsPerPixel
+                return useCompression
+                           ? CFG_ADV_LAYOUT_2_COMPRESSED /* "FULL-IMAGE-RAW", "LAGARITH16", 16, 0 */
+                           : CFG_ADV_LAYOUT_1_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 16 */
+            }
+
+            // When the input data is byte array we choose an image layout based on the ImageBitsPerPixel
             if (ImageConfig.ImageBitsPerPixel <= 8)
             {
                 return useCompression

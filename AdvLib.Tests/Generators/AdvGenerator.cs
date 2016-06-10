@@ -163,7 +163,7 @@ namespace AdvLib.Tests.Generators
                         AdvTimeStamp.FromDateTime(endTimestamp),
                         status,
 
-                        AdvImageData.PixelDepth16Bit);
+                        AdvImageData.PixelData12Bit);
                 }
                 else if (config.SourceFormat == AdvSourceDataFormat.Format8BitByte)
                 {

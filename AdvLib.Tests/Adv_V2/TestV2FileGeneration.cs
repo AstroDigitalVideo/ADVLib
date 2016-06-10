@@ -17,16 +17,33 @@ namespace AdvLib.Tests.Adv_V2
     public class TestV2FileGeneration
     {
         [Test]
-        public void TestPixelDeserialization_Uncompressed_16_16BitLittleEndianByte()
+        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8)]
+        [TestCase(AdvSourceDataFormat.Format8BitByte, 8)]
+        public void TestPixelDeserialization_Uncompressed(AdvSourceDataFormat dataFormat, byte dynaBits)
         {
             var fileGen = new AdvGenerator();
             var cfg = new AdvGenerationConfig()
             {
-                DynaBits = 16,
-                SourceFormat = AdvSourceDataFormat.Format16BitLittleEndianByte,
-                NumberOfFrames = 10,
+                DynaBits = dynaBits,
+                SourceFormat = dataFormat,
+                NumberOfFrames = 1,
                 UsesCompression = false,
-                NormalPixelValue = null
+                NormalPixelValue = null,
+                MainStreamCustomClock = new CustomClockConfig()
+		        {
+		            ClockFrequency = 1,
+		            ClockTicksCallback = () => 0,
+		            TicksTimingAccuracy = 1
+		        },
+                CalibrationStreamCustomClock = new CustomClockConfig()
+		        {
+		            ClockFrequency = 1,
+		            ClockTicksCallback = () => 0,
+		            TicksTimingAccuracy = 1
+		        }
             };
 
             string fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
@@ -36,6 +53,10 @@ namespace AdvLib.Tests.Adv_V2
             {
                 // Generate
                 fileGen.GenerateaAdv_V2(cfg, fileName);
+
+                var hasher = new Hasher();
+                string h1 = hasher.CalcMd5(fileName);
+                Console.WriteLine("File hash for {0} at {1} bits: {2}", dataFormat, dynaBits, h1);
 
                 // Verify
                 using (file = new AdvFile2(fileName))
@@ -62,54 +83,6 @@ namespace AdvLib.Tests.Adv_V2
                 }
             }
         }
-
-        [Test]
-        public void TestPixelDeserialization_Uncompressed_16_16BitUShort()
-        {
-            var fileGen = new AdvGenerator();
-            var cfg = new AdvGenerationConfig()
-            {
-                DynaBits = 16,
-                SourceFormat = AdvSourceDataFormat.Format16BitUShort,
-                NumberOfFrames = 10,
-                UsesCompression = false,
-                NormalPixelValue = null
-            };
-
-            string fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
-            if (File.Exists(fileName)) File.Delete(fileName);
-            AdvFile2 file = null;
-            try
-            {
-                // Generate
-                fileGen.GenerateaAdv_V2(cfg, fileName);
-
-                // Verify
-                using (file = new AdvFile2(fileName))
-                {
-                    uint[] pixels = file.GetMainFramePixels(0);
-
-                    var imageGenerator = new ImageGenerator();
-                    var verified = imageGenerator.VerifyImagePattern1UInt32(pixels, cfg.DynaBits);
-                    Assert.IsTrue(verified);                    
-                }
-            }
-            finally
-            {
-                try
-                {
-                    if (file != null) file.Close();
-                    if (File.Exists(fileName))
-                        File.Delete(fileName);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                    Trace.WriteLine(ex);
-                }
-            }
-        }
-
 
         [Test]
         [TestCase(@"TestFiles\UNCOMPRESSED\TestFile.Win32.GNU.adv")]
