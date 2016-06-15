@@ -50,6 +50,8 @@
             this.cbxZeroTicks = new System.Windows.Forms.CheckBox();
             this.tabStructureViewer = new System.Windows.Forms.TabPage();
             this.tabPlayer = new System.Windows.Forms.TabPage();
+            this.rb24bitRGB = new System.Windows.Forms.RadioButton();
+            this.rb24bitBGR = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxPixelValue)).BeginInit();
@@ -114,13 +116,15 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rb24bitBGR);
+            this.groupBox1.Controls.Add(this.rb24bitRGB);
             this.groupBox1.Controls.Add(this.rb12BitByte);
             this.groupBox1.Controls.Add(this.rb16BitUShort);
             this.groupBox1.Controls.Add(this.rb8BitByte);
             this.groupBox1.Controls.Add(this.rb16BitByte);
             this.groupBox1.Location = new System.Drawing.Point(17, 33);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(184, 154);
+            this.groupBox1.Size = new System.Drawing.Size(184, 171);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Raw Source Pixel Format";
@@ -145,7 +149,7 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Location = new System.Drawing.Point(207, 33);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(161, 154);
+            this.groupBox2.Size = new System.Drawing.Size(161, 171);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Image BPP (Bits per Pixel)";
@@ -232,7 +236,7 @@
             // cbxADV1
             // 
             this.cbxADV1.AutoSize = true;
-            this.cbxADV1.Location = new System.Drawing.Point(399, 170);
+            this.cbxADV1.Location = new System.Drawing.Point(399, 178);
             this.cbxADV1.Name = "cbxADV1";
             this.cbxADV1.Size = new System.Drawing.Size(117, 17);
             this.cbxADV1.TabIndex = 10;
@@ -298,6 +302,28 @@
             this.tabPlayer.Text = "Player";
             this.tabPlayer.UseVisualStyleBackColor = true;
             // 
+            // rb24bitRGB
+            // 
+            this.rb24bitRGB.AutoSize = true;
+            this.rb24bitRGB.Location = new System.Drawing.Point(18, 116);
+            this.rb24bitRGB.Name = "rb24bitRGB";
+            this.rb24bitRGB.Size = new System.Drawing.Size(109, 17);
+            this.rb24bitRGB.TabIndex = 6;
+            this.rb24bitRGB.Text = "24-bit RGB, byte[]";
+            this.rb24bitRGB.UseVisualStyleBackColor = true;
+            this.rb24bitRGB.CheckedChanged += new System.EventHandler(this.OnImageFormatChanged);
+            // 
+            // rb24bitBGR
+            // 
+            this.rb24bitBGR.AutoSize = true;
+            this.rb24bitBGR.Location = new System.Drawing.Point(18, 139);
+            this.rb24bitBGR.Name = "rb24bitBGR";
+            this.rb24bitBGR.Size = new System.Drawing.Size(109, 17);
+            this.rb24bitBGR.TabIndex = 7;
+            this.rb24bitBGR.Text = "24-bit BGR, byte[]";
+            this.rb24bitBGR.UseVisualStyleBackColor = true;
+            this.rb24bitBGR.CheckedChanged += new System.EventHandler(this.OnImageFormatChanged);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -342,6 +368,8 @@
         private System.Windows.Forms.TabPage tabStructureViewer;
         private System.Windows.Forms.TabPage tabPlayer;
         private System.Windows.Forms.CheckBox cbxZeroTicks;
+        private System.Windows.Forms.RadioButton rb24bitBGR;
+        private System.Windows.Forms.RadioButton rb24bitRGB;
 	}
 }
 

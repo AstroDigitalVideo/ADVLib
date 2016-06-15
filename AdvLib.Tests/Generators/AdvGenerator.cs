@@ -11,7 +11,8 @@ namespace AdvLib.Tests.Generators
         Format8BitByte,
         Format12BitPackedByte,
         Format16BitLittleEndianByte,
-        Format16BitUShort
+        Format16BitUShort,
+        Format24BitColour
     }
 
     public delegate uint GetCurrentImageExposureCallback(int frameId);
@@ -39,6 +40,7 @@ namespace AdvLib.Tests.Generators
         public byte DynaBits;
         public int? NormalPixelValue;
         public AdvSourceDataFormat SourceFormat;
+        public BayerPattern? BayerPattern;
         public bool UsesCompression;
         public int NumberOfFrames;
 
@@ -100,6 +102,9 @@ namespace AdvLib.Tests.Generators
             if (config.CalibrationStreamCustomClock != null)
                 recorder.DefineCustomClock(AdvRecorder.AdvStream.CalibrationStream, config.CalibrationStreamCustomClock.ClockFrequency, config.CalibrationStreamCustomClock.TicksTimingAccuracy, config.CalibrationStreamCustomClock.ClockTicksCallback);
 
+            if (config.BayerPattern != null)
+                recorder.ImageConfig.SetBayerPattern(config.BayerPattern.Value);
+
             recorder.StartRecordingNewFile(fileName);
 
             AdvRecorder.AdvStatusEntry status = new AdvRecorder.AdvStatusEntry();
@@ -129,7 +134,8 @@ namespace AdvLib.Tests.Generators
 
                         AdvTimeStamp.FromDateTime(startTimestamp),
                         AdvTimeStamp.FromDateTime(endTimestamp),
-                        status);
+                        status,
+                        AdvImageData.PixelDepth16Bit);
                 }
                 else if (config.SourceFormat == AdvSourceDataFormat.Format16BitLittleEndianByte)
                 {
@@ -181,6 +187,10 @@ namespace AdvLib.Tests.Generators
                         status,
 
                         AdvImageData.PixelDepth8Bit);
+                }
+                else if (config.SourceFormat == AdvSourceDataFormat.Format24BitColour)
+                {
+                    throw new NotImplementedException();
                 }
             }
 

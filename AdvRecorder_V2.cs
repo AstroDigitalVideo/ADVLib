@@ -26,19 +26,31 @@ namespace Adv
 
     public enum BayerPattern
     {
-        RGGB, // Camera produces RGGB encoded Bayer array images 
-        CMYG, // Camera produces CMYG encoded Bayer array images 
-        CMYG2, //Camera produces CMYG2 encoded Bayer array images 
-        LRGB // Camera produces Kodak TRUESENSE Bayer LRGB array images 
+        MONOCHROME = 0,
+        RGGB, // Camera produces RGGB encoded Bayer array images. Defined in ASCOM.
+        CMYG, // Camera produces CMYG encoded Bayer array images. Defined in ASCOM. 
+        CMYG2, //Camera produces CMYG2 encoded Bayer array images. Defined in ASCOM.
+        LRGB, // Camera produces Kodak TRUESENSE Bayer LRGB array images. Defined in ASCOM. 
+        GRBG, // Variant of RGGB. Defined for SER files.
+        GBRG, // Variant of RGGB. Defined for SER files.
+        YCMY, // Variant of CMY. Defined for SER files.
+        YMCY, // Variant of CMY. Defined for SER files.
+        MYYC, // Variant of CMY. Defined for SER files.
+        RGB,
+        BGR
     }
 
     public class AdvRecorder
     {
-        private const byte CFG_ADV_LAYOUT_1_UNCOMPRESSED = 1;
-        private const byte CFG_ADV_LAYOUT_2_COMPRESSED = 2;
-        private const byte CFG_ADV_LAYOUT_3_UNCOMPRESSED = 3;
-        private const byte CFG_ADV_LAYOUT_4_UNCOMPRESSED = 4;
-        private const byte CFG_ADV_LAYOUT_5_COMPRESSED = 5;
+        private const byte CFG_ADV_LAYOUT_1_RAW_UNCOMPRESSED = 1;
+        private const byte CFG_ADV_LAYOUT_2_RAW_COMPRESSED = 2;
+        private const byte CFG_ADV_LAYOUT_3_RAW_UNCOMPRESSED = 3;
+        private const byte CFG_ADV_LAYOUT_4_RAW_UNCOMPRESSED = 4;
+        private const byte CFG_ADV_LAYOUT_5_RAW_COMPRESSED = 5;
+        private const byte CFG_ADV_LAYOUT_6_PACKED12_UNCOMPRESSED = 6;
+        private const byte CFG_ADV_LAYOUT_7_PACKED12_COMPRESSED = 7;
+        private const byte CFG_ADV_LAYOUT_8_COLOUR24_UNCOMPRESSED = 8;
+        private const byte CFG_ADV_LAYOUT_9_PACKED24_COMPRESSED = 9;
 
         private const byte MAIN_STREAM_ID = 0;
         private const byte CALIBRATION_STREAM_ID = 1;
@@ -84,7 +96,7 @@ namespace Adv
             public int? ImagePixelMaxValue { get; private set; }
             public byte ImageBitsPerPixel { get; private set; }
             public bool ImageBigEndian { get; set; }
-            public string ImageBayerPattern { get; set; }
+            public BayerPattern ImageBayerPattern { get; set; }
 
             /// <summary>
             /// Sets the image configuration. Here are some examples: 
@@ -139,15 +151,6 @@ namespace Adv
             /// </summary>
             /// <param name="pattern">The bayer pattern to be set</param>
             public void SetBayerPattern(BayerPattern pattern)
-            {
-                ImageBayerPattern = pattern.ToString();
-            }
-
-            /// <summary>
-            /// Sets the bayer pattern used by the CCD colour chip to a user defined value
-            /// </summary>
-            /// <param name="pattern">The bayer pattern to be set</param>
-            public void SetBayerPattern(string pattern)
             {
                 ImageBayerPattern = pattern;
             }
@@ -405,6 +408,7 @@ namespace Adv
             CalibrationStream = 1
         }
 
+        private bool m_BayerPatternIsRGBorGBR;
         private long m_MainClockFrequency;
         private int m_MainTicksTimingAccuracy;
         private Func<long> m_GetMainClockTicksCallback = null;
@@ -512,14 +516,23 @@ namespace Adv
             AdvLib.DefineImageSection(ImageConfig.ImageWidth, ImageConfig.ImageHeight, ImageConfig.ImageBitsPerPixel);
             AdvLib.AddOrUpdateImageSectionTag("IMAGE-BYTE-ORDER", ImageConfig.ImageBigEndian ? "BIG-ENDIAN" : "LITTLE-ENDIAN");
             AdvLib.AddOrUpdateImageSectionTag("IMAGE-BITPIX", ImageConfig.ImageBitsPerPixel.ToString(CultureInfo.InvariantCulture));
-            if (ImageConfig.ImagePixelMaxValue.HasValue) AdvLib.AddOrUpdateImageSectionTag("IMAGE-PIX-NORM-VAL", ImageConfig.ImagePixelMaxValue.Value.ToString(CultureInfo.InvariantCulture));
-            if (!string.IsNullOrEmpty(ImageConfig.ImageBayerPattern)) AdvLib.AddOrUpdateImageSectionTag("IMAGE-BAYER-PATTERN", ImageConfig.ImageBayerPattern);
+            if (ImageConfig.ImagePixelMaxValue.HasValue) AdvLib.AddOrUpdateImageSectionTag("IMAGE-MAX-PIXEL-VALUE", ImageConfig.ImagePixelMaxValue.Value.ToString(CultureInfo.InvariantCulture));
+            if (ImageConfig.ImageBayerPattern > 0)
+            {
+                AdvLib.AddOrUpdateImageSectionTag("IMAGE-BAYER-PATTERN", ImageConfig.ImageBayerPattern.ToString());
+                m_BayerPatternIsRGBorGBR = ImageConfig.ImageBayerPattern == BayerPattern.BGR ||
+                                           ImageConfig.ImageBayerPattern == BayerPattern.RGB;
+            }
 
-            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_1_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
-            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_2_COMPRESSED, "FULL-IMAGE-RAW", "LAGARITH16", 16);
-            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_3_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 12);
-            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_4_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 8);
-            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_5_COMPRESSED, "FULL-IMAGE-RAW", "QUICKLZ", 8);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_1_RAW_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_2_RAW_COMPRESSED, "FULL-IMAGE-RAW", "LAGARITH16", 16);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_3_RAW_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 12);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_4_RAW_UNCOMPRESSED, "FULL-IMAGE-RAW", "UNCOMPRESSED", 8);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_5_RAW_COMPRESSED, "FULL-IMAGE-RAW", "QUICKLZ", 8);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_6_PACKED12_UNCOMPRESSED, "12BIT-IMAGE-PACKED", "UNCOMPRESSED", 12);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_7_PACKED12_COMPRESSED, "12BIT-IMAGE-PACKED", "LAGARITH16", 12);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_8_COLOUR24_UNCOMPRESSED, "8BIT-COLOR-IMAGE", "UNCOMPRESSED", 8);
+            AdvLib.DefineImageLayout(CFG_ADV_LAYOUT_9_PACKED24_COMPRESSED, "8BIT-COLOR-IMAGE", "QUICKLZ", 8);
 
             //SystemTime - The system clock reading at the time the frame has been recorded in the file (as a backup time)
 
@@ -592,55 +605,67 @@ namespace Adv
             AdvLib.EndFile();
         }
 
-        private void AddFrame(AdvStream advStream, ushort[] pixels, bool compressIfPossible, long? startClockTicks, long? endClockTicks, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
+        private void AddFrame(AdvStream advStream, ushort[] pixels, bool compressIfPossible, long? startClockTicks, long? endClockTicks, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
         {
+            if (m_BayerPatternIsRGBorGBR)
+                throw new InvalidOperationException("To add a 24bit colour image in an RGB or BGR ImageBayerPattern the pixel data must be passed as a byte[].");
+
             BeginVideoFrame(advStream, startClockTicks, endClockTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
 
-            byte layoutIdForCurrentFramerate = GetImageLayoutId(compressIfPossible, true);
+            byte layoutIdForCurrentFramerate = GetImageLayoutId(compressIfPossible, true, imageData);
+
+            if (layoutIdForCurrentFramerate == CFG_ADV_LAYOUT_8_COLOUR24_UNCOMPRESSED || layoutIdForCurrentFramerate == CFG_ADV_LAYOUT_9_PACKED24_COMPRESSED)
+                throw new InvalidOperationException(String.Format("This image layout ({0}) cannot be used when pixels are passed as ushort[]", layoutIdForCurrentFramerate));
 
             AdvLib.FrameAddImage(layoutIdForCurrentFramerate, pixels, 16);
 
             AdvLib.EndFrame();
         }
 
-        public void AddVideoFrame(ushort[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
+        public void AddVideoFrame(ushort[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
         {
             long? ticks = null;
             if (m_GetMainClockTicksCallback != null) ticks = m_GetMainClockTicksCallback();
 
-            AddFrame(AdvStream.MainStream, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
+            AddFrame(AdvStream.MainStream, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
         }
 
-        public void AddVideoFrame(ushort[] pixels, bool compressIfPossible, AdvStatusEntry metadata)
+        public void AddVideoFrame(ushort[] pixels, bool compressIfPossible, AdvStatusEntry metadata, AdvImageData imageData)
         {
-            AddVideoFrame(pixels, compressIfPossible, new AdvTimeStamp(), new AdvTimeStamp(), metadata);
+            AddVideoFrame(pixels, compressIfPossible, new AdvTimeStamp(), new AdvTimeStamp(), metadata, imageData);
         }
 
-        public void AddCalibrationFrame(ushort[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata)
+        public void AddCalibrationFrame(ushort[] pixels, bool compressIfPossible, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
         {
             long? ticks = null;
             if (m_GetCalibrationClockTicksCallback != null) ticks = m_GetCalibrationClockTicksCallback();
 
-            AddFrame(AdvStream.CalibrationStream, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
+            AddFrame(AdvStream.CalibrationStream, pixels, compressIfPossible, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
         }
 
-        public void AddCalibrationFrame(ushort[] pixels, bool compressIfPossible, AdvStatusEntry metadata)
+        public void AddCalibrationFrame(ushort[] pixels, bool compressIfPossible, AdvStatusEntry metadata, AdvImageData imageData)
         {
-            AddCalibrationFrame(pixels, compressIfPossible, new AdvTimeStamp(), new AdvTimeStamp(), metadata);
+            AddCalibrationFrame(pixels, compressIfPossible, new AdvTimeStamp(), new AdvTimeStamp(), metadata, imageData);
         }
 
         private void AddFrame(AdvStream advStream, byte[] pixels, bool compressIfPossible, long? startClockTicks, long? endClockTicks, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
         {
             if (ImageConfig.ImageBitsPerPixel == 12 && imageData != AdvImageData.PixelData12Bit)
                 throw new InvalidOperationException("12bit pixel data can be only saved as 12bit byte array (2 pixels saved in 3 bytes)");
-
+            
+            if (imageData == AdvImageData.PixelData24BitColor && !m_BayerPatternIsRGBorGBR)
+                throw new InvalidOperationException("24bit colour pixel data can be only saved with an RGB or BGR ImageBayerPattern.");
+            
             BeginVideoFrame(advStream, startClockTicks, endClockTicks, startUtcTimeStamp, endUtcTimeStamp, metadata);
 
-            byte layoutIdForCurrentFramerate = GetImageLayoutId(compressIfPossible, false);
+            byte layoutIdForCurrentFramerate = GetImageLayoutId(compressIfPossible, false, imageData);
+
+            if (m_BayerPatternIsRGBorGBR && layoutIdForCurrentFramerate != CFG_ADV_LAYOUT_8_COLOUR24_UNCOMPRESSED && layoutIdForCurrentFramerate != CFG_ADV_LAYOUT_9_PACKED24_COMPRESSED)
+                throw new InvalidOperationException("When an RGB or BGR ImageBayerPattern is in use an 8BIT-COLOR-IMAGE image layout must be selected.");
 
             AdvLib.FrameAddImageBytes(layoutIdForCurrentFramerate, pixels, ImageConfig.ImageBitsPerPixel);
 
@@ -677,32 +702,32 @@ namespace Adv
             AddCalibrationFrame(pixels, compressIfPossible, new AdvTimeStamp(), new AdvTimeStamp(), metadata, imageData);
         }
 
-        private byte GetImageLayoutId(bool useCompression, bool inputAs16BitArray)
+        private byte GetImageLayoutId(bool useCompression, bool inputAs16BitArray, AdvImageData imageData)
         {
             if (inputAs16BitArray)
             {
                 // When the input data is 16bit we always save as 16 bit regardless of the ImageBitsPerPixel
                 return useCompression
-                           ? CFG_ADV_LAYOUT_2_COMPRESSED /* "FULL-IMAGE-RAW", "LAGARITH16", 16, 0 */
-                           : CFG_ADV_LAYOUT_1_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 16 */
+                           ? CFG_ADV_LAYOUT_2_RAW_COMPRESSED /* "FULL-IMAGE-RAW", "LAGARITH16", 16, 0 */
+                           : CFG_ADV_LAYOUT_1_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 16 */
             }
 
             // When the input data is byte array we choose an image layout based on the ImageBitsPerPixel
             if (ImageConfig.ImageBitsPerPixel <= 8)
             {
                 return useCompression
-                           ? CFG_ADV_LAYOUT_5_COMPRESSED /* "FULL-IMAGE-RAW", "QUICKLZ", 8, 0 */
-                           : CFG_ADV_LAYOUT_4_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 8 */
+                           ? CFG_ADV_LAYOUT_5_RAW_COMPRESSED /* "FULL-IMAGE-RAW", "QUICKLZ", 8, 0 */
+                           : CFG_ADV_LAYOUT_4_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 8 */
             }
             else if (ImageConfig.ImageBitsPerPixel == 12)
             {
-                return CFG_ADV_LAYOUT_3_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 12 */
+                return CFG_ADV_LAYOUT_3_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 12 */
             }
             else
             {
                 return useCompression
-                           ? CFG_ADV_LAYOUT_2_COMPRESSED /* "FULL-IMAGE-RAW", "LAGARITH16", 16, 0 */
-                           : CFG_ADV_LAYOUT_1_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 16 */
+                           ? CFG_ADV_LAYOUT_2_RAW_COMPRESSED /* "FULL-IMAGE-RAW", "LAGARITH16", 16, 0 */
+                           : CFG_ADV_LAYOUT_1_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 16 */
             }
         }
 

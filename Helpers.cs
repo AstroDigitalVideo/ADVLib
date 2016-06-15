@@ -28,7 +28,8 @@ namespace Adv
     {
         PixelDepth16Bit,
         PixelData12Bit,
-        PixelDepth8Bit
+        PixelDepth8Bit,
+        PixelData24BitColor
     }
 
     /// <summary>

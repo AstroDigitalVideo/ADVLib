@@ -88,8 +88,13 @@ namespace AdvLibTestApp
                 config.SourceFormat = AdvSourceDataFormat.Format12BitPackedByte;
             else if (rb8BitByte.Checked)
                 config.SourceFormat = AdvSourceDataFormat.Format8BitByte;
+            else if (rb24bitRGB.Checked || rb24bitBGR.Checked)
+            {
+                config.SourceFormat = AdvSourceDataFormat.Format24BitColour;
+                config.BayerPattern = rb24bitRGB.Checked ? BayerPattern.RGB : BayerPattern.BGR;
+            }
 
-			config.NumberOfFrames = GetTotalImages();
+		    config.NumberOfFrames = GetTotalImages();
 
             config.ExposureCallback = GetCurrentImageExposure;
             config.TimeStampCallback = GetCurrentImageTimeStamp;
