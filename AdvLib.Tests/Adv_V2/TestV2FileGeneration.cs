@@ -17,12 +17,22 @@ namespace AdvLib.Tests.Adv_V2
     public class TestV2FileGeneration
     {
         [Test]
-        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16)]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16)]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12)]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8)]
-        [TestCase(AdvSourceDataFormat.Format8BitByte, 8)]
-        public void TestPixelDeserialization_Uncompressed(AdvSourceDataFormat dataFormat, byte dynaBits)
+        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Uncompressed)]
+        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Lagarith16)]
+        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.QuickLZ)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Uncompressed)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Lagarith16)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.QuickLZ)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.Uncompressed)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.Lagarith16)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.QuickLZ)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Uncompressed)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Lagarith16)]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.QuickLZ)]
+        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Uncompressed)]
+        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Lagarith16)]
+        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.QuickLZ)]
+        public void TestPixelDeserialization(AdvSourceDataFormat dataFormat, byte dynaBits, CompressionType compression)
         {
             var fileGen = new AdvGenerator();
             var cfg = new AdvGenerationConfig()
@@ -30,7 +40,7 @@ namespace AdvLib.Tests.Adv_V2
                 DynaBits = dynaBits,
                 SourceFormat = dataFormat,
                 NumberOfFrames = 1,
-                Compression = CompressionType.Uncompressed,
+                Compression = compression,
                 NormalPixelValue = null,
                 MainStreamCustomClock = new CustomClockConfig()
 		        {

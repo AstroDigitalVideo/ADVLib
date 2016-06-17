@@ -720,6 +720,8 @@ namespace Adv
         {
             if (inputAs16BitArray)
             {
+                if (imageData != AdvImageData.PixelDepth16Bit) throw new NotSupportedException();
+
                 // When the input data is 16bit we always save as 16 bit regardless of the ImageBitsPerPixel
                 return useCompression
                     ? (preferredCompression.HasValue && preferredCompression.Value == PreferredCompression.QuickLZ
@@ -731,23 +733,38 @@ namespace Adv
             // When the input data is byte array we choose an image layout based on the ImageBitsPerPixel
             if (ImageConfig.ImageBitsPerPixel <= 8)
             {
+                if (imageData != AdvImageData.PixelDepth8Bit) throw new NotSupportedException();
+
                 return useCompression
-                           ? (preferredCompression.HasValue && preferredCompression.Value == PreferredCompression.Lagarith16
+                    ? (preferredCompression.HasValue && preferredCompression.Value == PreferredCompression.Lagarith16
                             ? CFG_ADV_LAYOUT_7_RAW_COMPRESSED_LTH16  /* "FULL-IMAGE-RAW", "QUICKLZ", 8, 0 */
                             : CFG_ADV_LAYOUT_6_RAW_COMPRESSED_QLZ    /* "FULL-IMAGE-RAW", "QUICKLZ", 8, 0 */)
-                           : CFG_ADV_LAYOUT_5_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 8 */
+                    : CFG_ADV_LAYOUT_5_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 8 */
             }
             else if (ImageConfig.ImageBitsPerPixel == 12)
             {
-                return CFG_ADV_LAYOUT_4_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 12 */
+                if (imageData == AdvImageData.PixelDepth16Bit) 
+                    return CFG_ADV_LAYOUT_4_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 12 */
+                else if (imageData == AdvImageData.PixelData12Bit) 
+                    // NOTE: Think about this more. What is the difference between wanting to use a 12bit packed layout and passing the 12bit input data as bytes (2 per pixel) or shorts (1 per pixel)
+                    // Should the input actually contain packed 12bit data (3 bytes per 2 pixels) and if not then how is this case going to be supported??
+                    // TODO: Use the '12BIT-IMAGE-PACKED' image layouts 
+                    throw new NotImplementedException("TODO");
+                else
+                    throw new NotSupportedException("TODO");
             }
             else
             {
+                // NOTE: 16bit data presented as little endian byte array
+                if (imageData != AdvImageData.PixelDepth16Bit) throw new NotSupportedException();
+
+                // TODO: What about big endian data?
+
                 return useCompression
-                           ? (preferredCompression.HasValue && preferredCompression.Value == PreferredCompression.QuickLZ
+                    ? (preferredCompression.HasValue && preferredCompression.Value == PreferredCompression.QuickLZ
                             ? CFG_ADV_LAYOUT_3_RAW_COMPRESSED_QLZ   /* "FULL-IMAGE-RAW", "QUICKLZ", 16, 0 */
                             : CFG_ADV_LAYOUT_2_RAW_COMPRESSED_LTH16 /* "FULL-IMAGE-RAW", "LAGARITH16", 16, 0 */)
-                           : CFG_ADV_LAYOUT_1_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 16 */
+                    : CFG_ADV_LAYOUT_1_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 16 */
             }
         }
 
