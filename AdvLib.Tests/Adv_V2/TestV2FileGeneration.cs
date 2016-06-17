@@ -30,7 +30,7 @@ namespace AdvLib.Tests.Adv_V2
                 DynaBits = dynaBits,
                 SourceFormat = dataFormat,
                 NumberOfFrames = 1,
-                UsesCompression = false,
+                Compression = CompressionType.Uncompressed,
                 NormalPixelValue = null,
                 MainStreamCustomClock = new CustomClockConfig()
 		        {

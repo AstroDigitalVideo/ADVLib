@@ -79,7 +79,10 @@ namespace AdvLibTestApp
             config.NormalPixelValue = null;
             if (nudMaxPixelValue.Value > 0) config.NormalPixelValue = (int)nudMaxPixelValue.Value;
 
-            config.UsesCompression = cbxCompress.Checked;
+            config.Compression = CompressionType.Uncompressed;
+            if (cbxCompress.Checked)
+                config.Compression = rbLagarith16.Checked ? CompressionType.Lagarith16 : CompressionType.QuickLZ;
+
             if (rb16BitUShort.Checked)
                 config.SourceFormat = AdvSourceDataFormat.Format16BitUShort;
             else if (rb16BitByte.Checked)
@@ -396,5 +399,10 @@ namespace AdvLibTestApp
 				rb12BitByte.Enabled = true;
 			}
 		}
+
+        private void cbxCompress_CheckedChanged(object sender, EventArgs e)
+        {
+            gbxCompression.Enabled = cbxCompress.Checked;
+        }
 	}
 }

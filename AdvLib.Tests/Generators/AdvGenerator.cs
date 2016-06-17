@@ -34,6 +34,13 @@ namespace AdvLib.Tests.Generators
         public int TicksTimingAccuracy;
     }
 
+    public enum CompressionType
+    {
+        Uncompressed,
+        QuickLZ,
+        Lagarith16
+    }
+
     public class AdvGenerationConfig
     {
         public bool SaveLocationData;
@@ -41,7 +48,7 @@ namespace AdvLib.Tests.Generators
         public int? NormalPixelValue;
         public AdvSourceDataFormat SourceFormat;
         public BayerPattern? BayerPattern;
-        public bool UsesCompression;
+        public CompressionType Compression;
         public int NumberOfFrames;
 
         public GetCurrentImageExposureCallback ExposureCallback;
@@ -130,7 +137,9 @@ namespace AdvLib.Tests.Generators
 
                         // NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
                         // i.e. it may take longer to compress the data than for the next image to arrive on the buffer
-                        config.UsesCompression,
+                        config.Compression != CompressionType.Uncompressed,
+
+                        config.Compression == CompressionType.Lagarith16 ? PreferredCompression.Lagarith16 : PreferredCompression.QuickLZ,
 
                         AdvTimeStamp.FromDateTime(startTimestamp),
                         AdvTimeStamp.FromDateTime(endTimestamp),
@@ -146,7 +155,9 @@ namespace AdvLib.Tests.Generators
 
                         // NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
                         // i.e. it may take longer to compress the data than for the next image to arrive on the buffer
-                        config.UsesCompression,
+                        config.Compression != CompressionType.Uncompressed,
+
+                        config.Compression == CompressionType.Lagarith16 ? PreferredCompression.Lagarith16 : PreferredCompression.QuickLZ,
 
                         AdvTimeStamp.FromDateTime(startTimestamp),
                         AdvTimeStamp.FromDateTime(endTimestamp),
@@ -163,7 +174,9 @@ namespace AdvLib.Tests.Generators
 
                         // NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
                         // i.e. it may take longer to compress the data than for the next image to arrive on the buffer
-                        config.UsesCompression,
+                        config.Compression != CompressionType.Uncompressed,
+
+                        config.Compression == CompressionType.Lagarith16 ? PreferredCompression.Lagarith16 : PreferredCompression.QuickLZ,
 
                         AdvTimeStamp.FromDateTime(startTimestamp),
                         AdvTimeStamp.FromDateTime(endTimestamp),
@@ -180,7 +193,9 @@ namespace AdvLib.Tests.Generators
 
                         // NOTE: Use with caution! Using compression is slower and may not work at high frame rates 
                         // i.e. it may take longer to compress the data than for the next image to arrive on the buffer
-                        config.UsesCompression,
+                        config.Compression != CompressionType.Uncompressed,
+
+                        config.Compression == CompressionType.Lagarith16 ? PreferredCompression.Lagarith16 : PreferredCompression.QuickLZ,
 
                         AdvTimeStamp.FromDateTime(startTimestamp),
                         AdvTimeStamp.FromDateTime(endTimestamp),

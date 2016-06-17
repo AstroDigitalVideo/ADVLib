@@ -52,11 +52,15 @@
             this.tabPlayer = new System.Windows.Forms.TabPage();
             this.rb24bitRGB = new System.Windows.Forms.RadioButton();
             this.rb24bitBGR = new System.Windows.Forms.RadioButton();
+            this.gbxCompression = new System.Windows.Forms.GroupBox();
+            this.rbQuickLZ = new System.Windows.Forms.RadioButton();
+            this.rbLagarith16 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxPixelValue)).BeginInit();
             this.tcTabs.SuspendLayout();
             this.tabRecorder.SuspendLayout();
+            this.gbxCompression.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -216,6 +220,7 @@
             this.cbxCompress.TabIndex = 8;
             this.cbxCompress.Text = "Use Image Compression";
             this.cbxCompress.UseVisualStyleBackColor = true;
+            this.cbxCompress.CheckedChanged += new System.EventHandler(this.cbxCompress_CheckedChanged);
             // 
             // btnVerifyLibrary
             // 
@@ -257,6 +262,7 @@
             // 
             // tabRecorder
             // 
+            this.tabRecorder.Controls.Add(this.gbxCompression);
             this.tabRecorder.Controls.Add(this.cbxZeroTicks);
             this.tabRecorder.Controls.Add(this.cbxLocationData);
             this.tabRecorder.Controls.Add(this.button1);
@@ -324,6 +330,39 @@
             this.rb24bitBGR.UseVisualStyleBackColor = true;
             this.rb24bitBGR.CheckedChanged += new System.EventHandler(this.OnImageFormatChanged);
             // 
+            // gbxCompression
+            // 
+            this.gbxCompression.Controls.Add(this.rbLagarith16);
+            this.gbxCompression.Controls.Add(this.rbQuickLZ);
+            this.gbxCompression.Enabled = false;
+            this.gbxCompression.Location = new System.Drawing.Point(416, 100);
+            this.gbxCompression.Name = "gbxCompression";
+            this.gbxCompression.Size = new System.Drawing.Size(123, 68);
+            this.gbxCompression.TabIndex = 14;
+            this.gbxCompression.TabStop = false;
+            // 
+            // rbQuickLZ
+            // 
+            this.rbQuickLZ.AutoSize = true;
+            this.rbQuickLZ.Checked = true;
+            this.rbQuickLZ.Location = new System.Drawing.Point(13, 19);
+            this.rbQuickLZ.Name = "rbQuickLZ";
+            this.rbQuickLZ.Size = new System.Drawing.Size(66, 17);
+            this.rbQuickLZ.TabIndex = 0;
+            this.rbQuickLZ.TabStop = true;
+            this.rbQuickLZ.Text = "QuickLZ";
+            this.rbQuickLZ.UseVisualStyleBackColor = true;
+            // 
+            // rbLagarith16
+            // 
+            this.rbLagarith16.AutoSize = true;
+            this.rbLagarith16.Location = new System.Drawing.Point(13, 42);
+            this.rbLagarith16.Name = "rbLagarith16";
+            this.rbLagarith16.Size = new System.Drawing.Size(75, 17);
+            this.rbLagarith16.TabIndex = 1;
+            this.rbLagarith16.Text = "Lagarith16";
+            this.rbLagarith16.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -340,6 +379,8 @@
             this.tcTabs.ResumeLayout(false);
             this.tabRecorder.ResumeLayout(false);
             this.tabRecorder.PerformLayout();
+            this.gbxCompression.ResumeLayout(false);
+            this.gbxCompression.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -370,6 +411,9 @@
         private System.Windows.Forms.CheckBox cbxZeroTicks;
         private System.Windows.Forms.RadioButton rb24bitBGR;
         private System.Windows.Forms.RadioButton rb24bitRGB;
+        private System.Windows.Forms.GroupBox gbxCompression;
+        private System.Windows.Forms.RadioButton rbLagarith16;
+        private System.Windows.Forms.RadioButton rbQuickLZ;
 	}
 }
 
