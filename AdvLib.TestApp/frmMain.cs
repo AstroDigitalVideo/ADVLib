@@ -404,5 +404,67 @@ namespace AdvLibTestApp
         {
             gbxCompression.Enabled = cbxCompress.Checked;
         }
+
+	    private int m_TotalTestsToRun = 0;
+
+	    private void StartRunningTests(int totalNumberOfTests)
+	    {
+	        pbar.Visible = true;
+	        pbar.Minimum = 0;
+	        pbar.Maximum = totalNumberOfTests;
+	        pbar.Value = 0;
+	        pbar.ForeColor = SystemColors.Highlight;
+	        pbar.Update();
+
+	        m_TotalTestsToRun = totalNumberOfTests;
+
+            lblRanTests.Text = string.Format("0/{0}", totalNumberOfTests);
+	        lblRanTests.Update();
+	    }
+
+        private void ProgressRunningTests(int numberCompleted, int numberFailed)
+        {
+            pbar.Value = Math.Min(pbar.Maximum, numberCompleted);
+            pbar.Update();
+
+            UpdatePBarColor(numberFailed);
+
+            if (numberFailed > 0)
+                lblRanTests.Text = string.Format("{0}/{1}\t\t{2} failed!", numberCompleted, m_TotalTestsToRun, numberFailed);
+            else
+                lblRanTests.Text = string.Format("{0}/{1}", numberCompleted, m_TotalTestsToRun);
+
+            lblRanTests.Update();
+        }
+
+	    private void StopRunningTests(int numberFailed)
+	    {
+	        pbar.Value = pbar.Maximum;
+
+	        UpdatePBarColor(numberFailed);
+
+            if (numberFailed > 0)
+                MessageBox.Show(string.Format("{0} tests failed", numberFailed));
+
+            pbar.Update();
+	    }
+
+        private void UpdatePBarColor(int numberFailed)
+	    {
+            if (numberFailed > 0)
+                pbar.ForeColor = Color.Red;
+            else
+                pbar.ForeColor = Color.Lime;
+	    }
+
+
+	    private void btnRunTests_Click(object sender, EventArgs e)
+        {
+            var runner = new NUnitTestRunner();
+            runner.RunTests(
+                (i) => this.Invoke(new Action<int>(StartRunningTests), i),
+                (i, j) => this.Invoke(new Action<int, int>(ProgressRunningTests), i, j),
+                (i) => this.Invoke(new Action<int>(StopRunningTests), i));
+        }
 	}
 }

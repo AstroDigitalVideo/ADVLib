@@ -34,6 +34,8 @@
             this.rb16BitByte = new System.Windows.Forms.RadioButton();
             this.rb8BitByte = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rb24bitBGR = new System.Windows.Forms.RadioButton();
+            this.rb24bitRGB = new System.Windows.Forms.RadioButton();
             this.rb12BitByte = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rbPixel8 = new System.Windows.Forms.RadioButton();
@@ -47,14 +49,15 @@
             this.cbxADV1 = new System.Windows.Forms.CheckBox();
             this.tcTabs = new System.Windows.Forms.TabControl();
             this.tabRecorder = new System.Windows.Forms.TabPage();
+            this.gbxCompression = new System.Windows.Forms.GroupBox();
+            this.rbLagarith16 = new System.Windows.Forms.RadioButton();
+            this.rbQuickLZ = new System.Windows.Forms.RadioButton();
             this.cbxZeroTicks = new System.Windows.Forms.CheckBox();
             this.tabStructureViewer = new System.Windows.Forms.TabPage();
             this.tabPlayer = new System.Windows.Forms.TabPage();
-            this.rb24bitRGB = new System.Windows.Forms.RadioButton();
-            this.rb24bitBGR = new System.Windows.Forms.RadioButton();
-            this.gbxCompression = new System.Windows.Forms.GroupBox();
-            this.rbQuickLZ = new System.Windows.Forms.RadioButton();
-            this.rbLagarith16 = new System.Windows.Forms.RadioButton();
+            this.btnRunTests = new System.Windows.Forms.Button();
+            this.pbar = new System.Windows.Forms.ProgressBar();
+            this.lblRanTests = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxPixelValue)).BeginInit();
@@ -132,6 +135,28 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Raw Source Pixel Format";
+            // 
+            // rb24bitBGR
+            // 
+            this.rb24bitBGR.AutoSize = true;
+            this.rb24bitBGR.Location = new System.Drawing.Point(18, 139);
+            this.rb24bitBGR.Name = "rb24bitBGR";
+            this.rb24bitBGR.Size = new System.Drawing.Size(109, 17);
+            this.rb24bitBGR.TabIndex = 7;
+            this.rb24bitBGR.Text = "24-bit BGR, byte[]";
+            this.rb24bitBGR.UseVisualStyleBackColor = true;
+            this.rb24bitBGR.CheckedChanged += new System.EventHandler(this.OnImageFormatChanged);
+            // 
+            // rb24bitRGB
+            // 
+            this.rb24bitRGB.AutoSize = true;
+            this.rb24bitRGB.Location = new System.Drawing.Point(18, 116);
+            this.rb24bitRGB.Name = "rb24bitRGB";
+            this.rb24bitRGB.Size = new System.Drawing.Size(109, 17);
+            this.rb24bitRGB.TabIndex = 6;
+            this.rb24bitRGB.Text = "24-bit RGB, byte[]";
+            this.rb24bitRGB.UseVisualStyleBackColor = true;
+            this.rb24bitRGB.CheckedChanged += new System.EventHandler(this.OnImageFormatChanged);
             // 
             // rb12BitByte
             // 
@@ -262,6 +287,9 @@
             // 
             // tabRecorder
             // 
+            this.tabRecorder.Controls.Add(this.lblRanTests);
+            this.tabRecorder.Controls.Add(this.pbar);
+            this.tabRecorder.Controls.Add(this.btnRunTests);
             this.tabRecorder.Controls.Add(this.gbxCompression);
             this.tabRecorder.Controls.Add(this.cbxZeroTicks);
             this.tabRecorder.Controls.Add(this.cbxLocationData);
@@ -278,6 +306,39 @@
             this.tabRecorder.TabIndex = 0;
             this.tabRecorder.Text = "Recorder";
             this.tabRecorder.UseVisualStyleBackColor = true;
+            // 
+            // gbxCompression
+            // 
+            this.gbxCompression.Controls.Add(this.rbLagarith16);
+            this.gbxCompression.Controls.Add(this.rbQuickLZ);
+            this.gbxCompression.Enabled = false;
+            this.gbxCompression.Location = new System.Drawing.Point(416, 100);
+            this.gbxCompression.Name = "gbxCompression";
+            this.gbxCompression.Size = new System.Drawing.Size(123, 68);
+            this.gbxCompression.TabIndex = 14;
+            this.gbxCompression.TabStop = false;
+            // 
+            // rbLagarith16
+            // 
+            this.rbLagarith16.AutoSize = true;
+            this.rbLagarith16.Location = new System.Drawing.Point(13, 42);
+            this.rbLagarith16.Name = "rbLagarith16";
+            this.rbLagarith16.Size = new System.Drawing.Size(75, 17);
+            this.rbLagarith16.TabIndex = 1;
+            this.rbLagarith16.Text = "Lagarith16";
+            this.rbLagarith16.UseVisualStyleBackColor = true;
+            // 
+            // rbQuickLZ
+            // 
+            this.rbQuickLZ.AutoSize = true;
+            this.rbQuickLZ.Checked = true;
+            this.rbQuickLZ.Location = new System.Drawing.Point(13, 19);
+            this.rbQuickLZ.Name = "rbQuickLZ";
+            this.rbQuickLZ.Size = new System.Drawing.Size(66, 17);
+            this.rbQuickLZ.TabIndex = 0;
+            this.rbQuickLZ.TabStop = true;
+            this.rbQuickLZ.Text = "QuickLZ";
+            this.rbQuickLZ.UseVisualStyleBackColor = true;
             // 
             // cbxZeroTicks
             // 
@@ -308,60 +369,31 @@
             this.tabPlayer.Text = "Player";
             this.tabPlayer.UseVisualStyleBackColor = true;
             // 
-            // rb24bitRGB
+            // btnRunTests
             // 
-            this.rb24bitRGB.AutoSize = true;
-            this.rb24bitRGB.Location = new System.Drawing.Point(18, 116);
-            this.rb24bitRGB.Name = "rb24bitRGB";
-            this.rb24bitRGB.Size = new System.Drawing.Size(109, 17);
-            this.rb24bitRGB.TabIndex = 6;
-            this.rb24bitRGB.Text = "24-bit RGB, byte[]";
-            this.rb24bitRGB.UseVisualStyleBackColor = true;
-            this.rb24bitRGB.CheckedChanged += new System.EventHandler(this.OnImageFormatChanged);
+            this.btnRunTests.Location = new System.Drawing.Point(17, 313);
+            this.btnRunTests.Name = "btnRunTests";
+            this.btnRunTests.Size = new System.Drawing.Size(132, 23);
+            this.btnRunTests.TabIndex = 15;
+            this.btnRunTests.Text = "Run All Tests";
+            this.btnRunTests.UseVisualStyleBackColor = true;
+            this.btnRunTests.Click += new System.EventHandler(this.btnRunTests_Click);
             // 
-            // rb24bitBGR
+            // pbar
             // 
-            this.rb24bitBGR.AutoSize = true;
-            this.rb24bitBGR.Location = new System.Drawing.Point(18, 139);
-            this.rb24bitBGR.Name = "rb24bitBGR";
-            this.rb24bitBGR.Size = new System.Drawing.Size(109, 17);
-            this.rb24bitBGR.TabIndex = 7;
-            this.rb24bitBGR.Text = "24-bit BGR, byte[]";
-            this.rb24bitBGR.UseVisualStyleBackColor = true;
-            this.rb24bitBGR.CheckedChanged += new System.EventHandler(this.OnImageFormatChanged);
+            this.pbar.Location = new System.Drawing.Point(167, 313);
+            this.pbar.Name = "pbar";
+            this.pbar.Size = new System.Drawing.Size(372, 23);
+            this.pbar.TabIndex = 16;
+            this.pbar.Visible = false;
             // 
-            // gbxCompression
+            // lblRanTests
             // 
-            this.gbxCompression.Controls.Add(this.rbLagarith16);
-            this.gbxCompression.Controls.Add(this.rbQuickLZ);
-            this.gbxCompression.Enabled = false;
-            this.gbxCompression.Location = new System.Drawing.Point(416, 100);
-            this.gbxCompression.Name = "gbxCompression";
-            this.gbxCompression.Size = new System.Drawing.Size(123, 68);
-            this.gbxCompression.TabIndex = 14;
-            this.gbxCompression.TabStop = false;
-            // 
-            // rbQuickLZ
-            // 
-            this.rbQuickLZ.AutoSize = true;
-            this.rbQuickLZ.Checked = true;
-            this.rbQuickLZ.Location = new System.Drawing.Point(13, 19);
-            this.rbQuickLZ.Name = "rbQuickLZ";
-            this.rbQuickLZ.Size = new System.Drawing.Size(66, 17);
-            this.rbQuickLZ.TabIndex = 0;
-            this.rbQuickLZ.TabStop = true;
-            this.rbQuickLZ.Text = "QuickLZ";
-            this.rbQuickLZ.UseVisualStyleBackColor = true;
-            // 
-            // rbLagarith16
-            // 
-            this.rbLagarith16.AutoSize = true;
-            this.rbLagarith16.Location = new System.Drawing.Point(13, 42);
-            this.rbLagarith16.Name = "rbLagarith16";
-            this.rbLagarith16.Size = new System.Drawing.Size(75, 17);
-            this.rbLagarith16.TabIndex = 1;
-            this.rbLagarith16.Text = "Lagarith16";
-            this.rbLagarith16.UseVisualStyleBackColor = true;
+            this.lblRanTests.AutoSize = true;
+            this.lblRanTests.Location = new System.Drawing.Point(167, 341);
+            this.lblRanTests.Name = "lblRanTests";
+            this.lblRanTests.Size = new System.Drawing.Size(0, 13);
+            this.lblRanTests.TabIndex = 17;
             // 
             // frmMain
             // 
@@ -414,6 +446,9 @@
         private System.Windows.Forms.GroupBox gbxCompression;
         private System.Windows.Forms.RadioButton rbLagarith16;
         private System.Windows.Forms.RadioButton rbQuickLZ;
+        private System.Windows.Forms.Button btnRunTests;
+        private System.Windows.Forms.ProgressBar pbar;
+        private System.Windows.Forms.Label lblRanTests;
 	}
 }
 
