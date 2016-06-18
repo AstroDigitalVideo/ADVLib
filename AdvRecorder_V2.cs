@@ -462,10 +462,10 @@ namespace Adv
             AdvLib.NewFile(fileName);
 
             if (m_GetMainClockTicksCallback != null)
-                AdvLib.DefineCustomClockForMainStream(m_MainClockFrequency, m_MainTicksTimingAccuracy);
+                AdvLib.DefineExternalClockForMainStream(m_MainClockFrequency, m_MainTicksTimingAccuracy);
             
             if (m_GetCalibrationClockTicksCallback != null)
-                AdvLib.DefineCustomClockForCalibrationStream(m_CalibrationClockFrequency, m_CalibrationTicksTimingAccuracy);
+                AdvLib.DefineExternalClockForCalibrationStream(m_CalibrationClockFrequency, m_CalibrationTicksTimingAccuracy);
 
             AdvLib.AddMainStreamTag("Name1", "Христо");
             AdvLib.AddMainStreamTag("Name2", "Frédéric");

@@ -223,13 +223,13 @@ namespace Adv
         //DLL_PUBLIC void AdvVer2_SetTicksTimingPrecision(int mainStreamAccuracy, int calibrationStreamAccuracy);
         private static extern void AdvVer2_SetTicksTimingPrecision32(int mainStreamAccuracy, int calibrationStreamAccuracy);
 
-        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineCustomClockForMainStream")]
-        //DLL_PUBLIC void AdvVer2_DefineCustomClockForMainStream(__int64 clockFrequency, int ticksTimingAccuracy);
-        private static extern void AdvVer2_DefineCustomClockForMainStream32(long clockFrequency, int ticksTimingAccuracy);
+        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineExternalClockForMainStream")]
+        //DLL_PUBLIC void AdvVer2_DefineExternalClockForMainStream(__int64 clockFrequency, int ticksTimingAccuracy);
+        private static extern void AdvVer2_DefineExternalClockForMainStream32(long clockFrequency, int ticksTimingAccuracy);
 
-        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineCustomClockForCalibrationStream")]
-        //DLL_PUBLIC void AAdvVer2_DefineCustomClockForCalibrationStream(__int64 clockFrequency, int ticksTimingAccuracy);
-        private static extern void AdvVer2_DefineCustomClockForCalibrationStream32(long clockFrequency, int ticksTimingAccuracy);
+        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineExternalClockForCalibrationStream")]
+        //DLL_PUBLIC void AAdvVer2_DefineExternalClockForCalibrationStream(__int64 clockFrequency, int ticksTimingAccuracy);
+        private static extern void AdvVer2_DefineExternalClockForCalibrationStream32(long clockFrequency, int ticksTimingAccuracy);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddMainStreamTag")]
         //DLL_PUBLIC unsigned int AdvVer2_AddMainStreamTag(const char* tagName, const char* tagValue);
@@ -430,13 +430,13 @@ namespace Adv
         //DLL_PUBLIC void AdvVer2_SetTicksTimingPrecision(int mainStreamAccuracy, int calibrationStreamAccuracy);
         private static extern void AdvVer2_SetTicksTimingPrecision64(int mainStreamAccuracy, int calibrationStreamAccuracy);
 
-        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineCustomClockForMainStream")]
-        //DLL_PUBLIC void AdvVer2_DefineCustomClockForMainStream(__int64 clockFrequency, int ticksTimingAccuracy);
-        private static extern void AdvVer2_DefineCustomClockForMainStream64(long clockFrequency, int ticksTimingAccuracy);
+        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineExternalClockForMainStream")]
+        //DLL_PUBLIC void AdvVer2_DefineExternalClockForMainStream(__int64 clockFrequency, int ticksTimingAccuracy);
+        private static extern void AdvVer2_DefineExternalClockForMainStream64(long clockFrequency, int ticksTimingAccuracy);
 
-        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineCustomClockForCalibrationStream")]
-        //DLL_PUBLIC void AAdvVer2_DefineCustomClockForCalibrationStream(__int64 clockFrequency, int ticksTimingAccuracy);
-        private static extern void AdvVer2_DefineCustomClockForCalibrationStream64(long clockFrequency, int ticksTimingAccuracy);
+        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineExternalClockForCalibrationStream")]
+        //DLL_PUBLIC void AAdvVer2_DefineExternalClockForCalibrationStream(__int64 clockFrequency, int ticksTimingAccuracy);
+        private static extern void AdvVer2_DefineExternalClockForCalibrationStream64(long clockFrequency, int ticksTimingAccuracy);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddMainStreamTag")]
         //DLL_PUBLIC unsigned int AdvVer2_AddMainStreamTag(const char* tagName, const char* tagValue);
@@ -638,13 +638,13 @@ namespace Adv
         //DLL_PUBLIC void AdvVer2_SetTicksTimingPrecision(int mainStreamAccuracy, int calibrationStreamAccuracy);
         private static extern void AdvVer2_SetTicksTimingPrecisionUnix(int mainStreamAccuracy, int calibrationStreamAccuracy);
 
-        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineCustomClockForMainStream")]
-        //DLL_PUBLIC void AdvVer2_DefineCustomClockForMainStream(__int64 clockFrequency, int ticksTimingAccuracy);
-        private static extern void AdvVer2_DefineCustomClockForMainStreamUnix(long clockFrequency, int ticksTimingAccuracy);
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineExternalClockForMainStream")]
+        //DLL_PUBLIC void AdvVer2_DefineExternalClockForMainStream(__int64 clockFrequency, int ticksTimingAccuracy);
+        private static extern void AdvVer2_DefineExternalClockForMainStreamUnix(long clockFrequency, int ticksTimingAccuracy);
 
-        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineCustomClockForCalibrationStream")]
-        //DLL_PUBLIC void AAdvVer2_DefineCustomClockForCalibrationStream(__int64 clockFrequency, int ticksTimingAccuracy);
-        private static extern void AdvVer2_DefineCustomClockForCalibrationStreamUnix(long clockFrequency, int ticksTimingAccuracy);
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineExternalClockForCalibrationStream")]
+        //DLL_PUBLIC void AAdvVer2_DefineExternalClockForCalibrationStream(__int64 clockFrequency, int ticksTimingAccuracy);
+        private static extern void AdvVer2_DefineExternalClockForCalibrationStreamUnix(long clockFrequency, int ticksTimingAccuracy);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddMainStreamTag")]
         //DLL_PUBLIC unsigned int AdvVer2_AddMainStreamTag(const char* tagName, const char* tagValue);
@@ -1111,24 +1111,24 @@ namespace Adv
             }
         }
 
-        public static void DefineCustomClockForMainStream(long clockFrequency, int ticksTimingAccuracy)
+        public static void DefineExternalClockForMainStream(long clockFrequency, int ticksTimingAccuracy)
         {
             if (!CrossPlatform.IsWindows)
-                AdvVer2_DefineCustomClockForMainStreamUnix(clockFrequency, ticksTimingAccuracy);
+                AdvVer2_DefineExternalClockForMainStreamUnix(clockFrequency, ticksTimingAccuracy);
             else if (Is64Bit())
-                AdvVer2_DefineCustomClockForMainStream64(clockFrequency, ticksTimingAccuracy);
+                AdvVer2_DefineExternalClockForMainStream64(clockFrequency, ticksTimingAccuracy);
             else
-                AdvVer2_DefineCustomClockForMainStream32(clockFrequency, ticksTimingAccuracy);
+                AdvVer2_DefineExternalClockForMainStream32(clockFrequency, ticksTimingAccuracy);
         }
 
-        public static void DefineCustomClockForCalibrationStream(long clockFrequency, int ticksTimingAccuracy)
+        public static void DefineExternalClockForCalibrationStream(long clockFrequency, int ticksTimingAccuracy)
         {
             if (!CrossPlatform.IsWindows)
-                AdvVer2_DefineCustomClockForCalibrationStreamUnix(clockFrequency, ticksTimingAccuracy);
+                AdvVer2_DefineExternalClockForCalibrationStreamUnix(clockFrequency, ticksTimingAccuracy);
             else if (Is64Bit())
-                AdvVer2_DefineCustomClockForCalibrationStream64(clockFrequency, ticksTimingAccuracy);
+                AdvVer2_DefineExternalClockForCalibrationStream64(clockFrequency, ticksTimingAccuracy);
             else
-                AdvVer2_DefineCustomClockForCalibrationStream32(clockFrequency, ticksTimingAccuracy);
+                AdvVer2_DefineExternalClockForCalibrationStream32(clockFrequency, ticksTimingAccuracy);
         }
 
         public static void DefineImageSection(ushort width, ushort height, byte dataBpp)
