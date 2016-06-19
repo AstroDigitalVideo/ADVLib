@@ -459,7 +459,23 @@ namespace AdvLibTestApp
 
 
 	    private void btnRunTests_Click(object sender, EventArgs e)
-        {
+	    {
+            try
+            {
+                string platformId = Library.GetPlatformId();
+                string path = Library.GetLibraryPath();
+
+                var fi = new FileInfo(path);
+
+                lblLibVersion.Text = string.Format("{2}, {0}, {1}", platformId, fi.LastWriteTime.ToString("dd-MM-yyyy HH:mm:ss"), Path.GetFileName(path));
+                lblLibVersion.Update();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message + "\r\n\r\n" + ex.StackTrace, ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+	        
             var runner = new NUnitTestRunner();
             runner.RunTests(
                 (i) => this.Invoke(new Action<int>(StartRunningTests), i),

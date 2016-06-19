@@ -49,15 +49,16 @@
             this.cbxADV1 = new System.Windows.Forms.CheckBox();
             this.tcTabs = new System.Windows.Forms.TabControl();
             this.tabRecorder = new System.Windows.Forms.TabPage();
+            this.lblRanTests = new System.Windows.Forms.Label();
+            this.pbar = new System.Windows.Forms.ProgressBar();
+            this.btnRunTests = new System.Windows.Forms.Button();
             this.gbxCompression = new System.Windows.Forms.GroupBox();
             this.rbLagarith16 = new System.Windows.Forms.RadioButton();
             this.rbQuickLZ = new System.Windows.Forms.RadioButton();
             this.cbxZeroTicks = new System.Windows.Forms.CheckBox();
             this.tabStructureViewer = new System.Windows.Forms.TabPage();
             this.tabPlayer = new System.Windows.Forms.TabPage();
-            this.btnRunTests = new System.Windows.Forms.Button();
-            this.pbar = new System.Windows.Forms.ProgressBar();
-            this.lblRanTests = new System.Windows.Forms.Label();
+            this.lblLibVersion = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxPixelValue)).BeginInit();
@@ -287,6 +288,7 @@
             // 
             // tabRecorder
             // 
+            this.tabRecorder.Controls.Add(this.lblLibVersion);
             this.tabRecorder.Controls.Add(this.lblRanTests);
             this.tabRecorder.Controls.Add(this.pbar);
             this.tabRecorder.Controls.Add(this.btnRunTests);
@@ -306,6 +308,32 @@
             this.tabRecorder.TabIndex = 0;
             this.tabRecorder.Text = "Recorder";
             this.tabRecorder.UseVisualStyleBackColor = true;
+            // 
+            // lblRanTests
+            // 
+            this.lblRanTests.AutoSize = true;
+            this.lblRanTests.Location = new System.Drawing.Point(167, 341);
+            this.lblRanTests.Name = "lblRanTests";
+            this.lblRanTests.Size = new System.Drawing.Size(0, 13);
+            this.lblRanTests.TabIndex = 17;
+            // 
+            // pbar
+            // 
+            this.pbar.Location = new System.Drawing.Point(167, 313);
+            this.pbar.Name = "pbar";
+            this.pbar.Size = new System.Drawing.Size(372, 23);
+            this.pbar.TabIndex = 16;
+            this.pbar.Visible = false;
+            // 
+            // btnRunTests
+            // 
+            this.btnRunTests.Location = new System.Drawing.Point(17, 313);
+            this.btnRunTests.Name = "btnRunTests";
+            this.btnRunTests.Size = new System.Drawing.Size(132, 23);
+            this.btnRunTests.TabIndex = 15;
+            this.btnRunTests.Text = "Run All Tests";
+            this.btnRunTests.UseVisualStyleBackColor = true;
+            this.btnRunTests.Click += new System.EventHandler(this.btnRunTests_Click);
             // 
             // gbxCompression
             // 
@@ -369,31 +397,13 @@
             this.tabPlayer.Text = "Player";
             this.tabPlayer.UseVisualStyleBackColor = true;
             // 
-            // btnRunTests
+            // lblLibVersion
             // 
-            this.btnRunTests.Location = new System.Drawing.Point(17, 313);
-            this.btnRunTests.Name = "btnRunTests";
-            this.btnRunTests.Size = new System.Drawing.Size(132, 23);
-            this.btnRunTests.TabIndex = 15;
-            this.btnRunTests.Text = "Run All Tests";
-            this.btnRunTests.UseVisualStyleBackColor = true;
-            this.btnRunTests.Click += new System.EventHandler(this.btnRunTests_Click);
-            // 
-            // pbar
-            // 
-            this.pbar.Location = new System.Drawing.Point(167, 313);
-            this.pbar.Name = "pbar";
-            this.pbar.Size = new System.Drawing.Size(372, 23);
-            this.pbar.TabIndex = 16;
-            this.pbar.Visible = false;
-            // 
-            // lblRanTests
-            // 
-            this.lblRanTests.AutoSize = true;
-            this.lblRanTests.Location = new System.Drawing.Point(167, 341);
-            this.lblRanTests.Name = "lblRanTests";
-            this.lblRanTests.Size = new System.Drawing.Size(0, 13);
-            this.lblRanTests.TabIndex = 17;
+            this.lblLibVersion.AutoSize = true;
+            this.lblLibVersion.Location = new System.Drawing.Point(167, 295);
+            this.lblLibVersion.Name = "lblLibVersion";
+            this.lblLibVersion.Size = new System.Drawing.Size(0, 13);
+            this.lblLibVersion.TabIndex = 18;
             // 
             // frmMain
             // 
@@ -449,6 +459,7 @@
         private System.Windows.Forms.Button btnRunTests;
         private System.Windows.Forms.ProgressBar pbar;
         private System.Windows.Forms.Label lblRanTests;
+        private System.Windows.Forms.Label lblLibVersion;
 	}
 }
 
