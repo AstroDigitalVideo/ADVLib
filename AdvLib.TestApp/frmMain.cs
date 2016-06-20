@@ -430,7 +430,7 @@ namespace AdvLibTestApp
             UpdatePBarColor(numberFailed);
 
             if (numberFailed > 0)
-                lblRanTests.Text = string.Format("{0}/{1}\t\t{2} failed!", numberCompleted, m_TotalTestsToRun, numberFailed);
+                lblRanTests.Text = string.Format("{0}/{1}            {2} failed!", numberCompleted, m_TotalTestsToRun, numberFailed);
             else
                 lblRanTests.Text = string.Format("{0}/{1}", numberCompleted, m_TotalTestsToRun);
 

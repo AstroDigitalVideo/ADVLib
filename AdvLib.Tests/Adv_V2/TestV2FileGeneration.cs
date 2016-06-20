@@ -75,7 +75,7 @@ namespace AdvLib.Tests.Adv_V2
 
                     var imageGenerator = new ImageGenerator();
                     var verified = imageGenerator.VerifyImagePattern1UInt32(pixels, cfg.DynaBits);
-                    Assert.IsTrue(verified);                    
+                    Assert.IsTrue(verified);
                 }
             }
             finally
