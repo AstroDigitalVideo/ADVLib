@@ -722,6 +722,16 @@ namespace Adv
             {
                 if (imageData != AdvImageData.PixelDepth16Bit) throw new NotSupportedException();
 
+                if (ImageConfig.ImageBitsPerPixel == 12)
+                {
+                    // Input data come as 16bit pixels but actual bit depth is 12bit. We can use a 12bit packed layout    
+                    return useCompression
+                        ? (preferredCompression.HasValue && preferredCompression.Value == PreferredCompression.Lagarith16
+                                ? CFG_ADV_LAYOUT_9_PACKED12_COMPRESSED_LTH16  /* "12BIT-IMAGE-PACKED", "QUICKLZ", 8, 0 */
+                                : CFG_ADV_LAYOUT_10_PACKED12_COMPRESSED_QLZ   /* "12BIT-IMAGE-PACKED", "QUICKLZ", 8, 0 */)
+                        : CFG_ADV_LAYOUT_8_PACKED12_UNCOMPRESSED; /* "12BIT-IMAGE-PACKED", "UNCOMPRESSED", 8 */
+                }
+
                 // When the input data is 16bit we always save as 16 bit regardless of the ImageBitsPerPixel
                 return useCompression
                     ? (preferredCompression.HasValue && preferredCompression.Value == PreferredCompression.QuickLZ
@@ -745,11 +755,16 @@ namespace Adv
             {
                 if (imageData == AdvImageData.PixelDepth16Bit) 
                     return CFG_ADV_LAYOUT_4_RAW_UNCOMPRESSED; /* "FULL-IMAGE-RAW", "UNCOMPRESSED", 12 */
-                else if (imageData == AdvImageData.PixelData12Bit) 
+                else if (imageData == AdvImageData.PixelData12Bit)
                     // NOTE: Think about this more. What is the difference between wanting to use a 12bit packed layout and passing the 12bit input data as bytes (2 per pixel) or shorts (1 per pixel)
                     // Should the input actually contain packed 12bit data (3 bytes per 2 pixels) and if not then how is this case going to be supported??
-                    // TODO: Use the '12BIT-IMAGE-PACKED' image layouts 
-                    throw new NotImplementedException("TODO");
+                {
+                    return useCompression
+                        ? (preferredCompression.HasValue && preferredCompression.Value == PreferredCompression.Lagarith16
+                                ? CFG_ADV_LAYOUT_9_PACKED12_COMPRESSED_LTH16  /* "12BIT-IMAGE-PACKED", "QUICKLZ", 8, 0 */
+                                : CFG_ADV_LAYOUT_10_PACKED12_COMPRESSED_QLZ   /* "12BIT-IMAGE-PACKED", "QUICKLZ", 8, 0 */)
+                        : CFG_ADV_LAYOUT_8_PACKED12_UNCOMPRESSED; /* "12BIT-IMAGE-PACKED", "UNCOMPRESSED", 8 */
+                }
                 else
                     throw new NotSupportedException("TODO");
             }

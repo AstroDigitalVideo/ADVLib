@@ -296,12 +296,12 @@ namespace Adv
         private static extern void AdvVer2_FrameAddStatusTag64_32(uint tagIndex, ulong tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImage")]
-        //void AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
-        private static extern void AdvVer2_FrameAddImage_32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
+        //HRESULT AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
+        private static extern int AdvVer2_FrameAddImage_32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImageBytes")]
-        //void AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
-        private static extern void AdvVer2_FrameAddImageBytes_32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
+        //HRESULT AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
+        private static extern int AdvVer2_FrameAddImageBytes_32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
         //void AdvVer2_EndFrame();
@@ -503,12 +503,12 @@ namespace Adv
         private static extern void AdvVer2_FrameAddStatusTag64_64(uint tagIndex, ulong tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImage")]
-        //void AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
-        private static extern void AdvVer2_FrameAddImage_64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
+        //HRESULT AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
+        private static extern int AdvVer2_FrameAddImage_64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImageBytes")]
-        //void AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
-        private static extern void AdvVer2_FrameAddImageBytes_64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
+        //HRESULT AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
+        private static extern int AdvVer2_FrameAddImageBytes_64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
         //void AdvVer2_EndFrame();
@@ -711,12 +711,12 @@ namespace Adv
         private static extern void AdvVer2_FrameAddStatusTag64_Unix(uint tagIndex, ulong tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImage")]
-        //void AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
-        private static extern void AdvVer2_FrameAddImage_Unix(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
+        //HRESULT AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
+        private static extern int AdvVer2_FrameAddImage_Unix(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImageBytes")]
-        //void AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
-        private static extern void AdvVer2_FrameAddImageBytes_Unix(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
+        //HRESULT AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
+        private static extern int AdvVer2_FrameAddImageBytes_Unix(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
         //void AdvVer2_EndFrame();
@@ -1253,22 +1253,28 @@ namespace Adv
 
         public static void FrameAddImage(byte layoutId, ushort[] pixels, byte pixelsBpp)
         {
+            var rv = 0;
             if (!CrossPlatform.IsWindows)
-                AdvVer2_FrameAddImage_Unix(layoutId, pixels, pixelsBpp);
+                rv = AdvVer2_FrameAddImage_Unix(layoutId, pixels, pixelsBpp);
             else if (Is64Bit())
-                AdvVer2_FrameAddImage_64(layoutId, pixels, pixelsBpp);
+                rv = AdvVer2_FrameAddImage_64(layoutId, pixels, pixelsBpp);
             else
-                AdvVer2_FrameAddImage_32(layoutId, pixels, pixelsBpp);
+                rv = AdvVer2_FrameAddImage_32(layoutId, pixels, pixelsBpp);
+
+            if (rv != 0) throw new AdvLibException("AdvVer2_FrameAddImage failed!");
         }
 
         public static void FrameAddImageBytes(byte layoutId, byte[] pixels, byte pixelsBpp)
         {
+            var rv = 0;
             if (!CrossPlatform.IsWindows)
-                AdvVer2_FrameAddImageBytes_Unix(layoutId, pixels, pixelsBpp);
+                rv = AdvVer2_FrameAddImageBytes_Unix(layoutId, pixels, pixelsBpp);
             else if (Is64Bit())
-                AdvVer2_FrameAddImageBytes_64(layoutId, pixels, pixelsBpp);
+                rv = AdvVer2_FrameAddImageBytes_64(layoutId, pixels, pixelsBpp);
             else
-                AdvVer2_FrameAddImageBytes_32(layoutId, pixels, pixelsBpp);
+                rv = AdvVer2_FrameAddImageBytes_32(layoutId, pixels, pixelsBpp);
+
+            if (rv != 0) throw new AdvLibException("AdvVer2_FrameAddImageBytes failed!");
         }
 
         public static void EndFrame()
