@@ -41,19 +41,7 @@ namespace AdvLib.Tests.Adv_V2
                 SourceFormat = dataFormat,
                 NumberOfFrames = 1,
                 Compression = compression,
-                NormalPixelValue = null,
-                MainStreamCustomClock = new CustomClockConfig()
-		        {
-		            ClockFrequency = 1,
-		            ClockTicksCallback = () => 0,
-		            TicksTimingAccuracy = 1
-		        },
-                CalibrationStreamCustomClock = new CustomClockConfig()
-		        {
-		            ClockFrequency = 1,
-		            ClockTicksCallback = () => 0,
-		            TicksTimingAccuracy = 1
-		        }
+                NormalPixelValue = null
             };
 
             string fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
@@ -92,6 +80,72 @@ namespace AdvLib.Tests.Adv_V2
                     Trace.WriteLine(ex);
                 }
             }
+        }
+
+        [Test]
+        public void TestZeroTimeGeneratedFilesHaveSameHashes()
+        {
+            var fileGen = new AdvGenerator();
+            var cfg = new AdvGenerationConfig()
+            {
+                DynaBits = 16,
+                SourceFormat = AdvSourceDataFormat.Format16BitUShort,
+                NumberOfFrames = 1,
+                Compression = CompressionType.Uncompressed,
+                NormalPixelValue = null,
+                MainStreamCustomClock = new CustomClockConfig()
+                {
+                    ClockFrequency = 1,
+                    ClockTicksCallback = () => 0,
+                    TicksTimingAccuracy = 1
+                },
+                CalibrationStreamCustomClock = new CustomClockConfig()
+                {
+                    ClockFrequency = 1,
+                    ClockTicksCallback = () => 0,
+                    TicksTimingAccuracy = 1
+                },
+                TimeStampCallback = new GetCurrentImageTimeStampCallback((frameId) => DateTime.MinValue)
+            };
+
+            string fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+            string fileName2 = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+
+            fileName = @"C:\Work\ADV Version 2\First.adv.bin";
+            fileName2 = @"C:\Work\ADV Version 2\Second.adv.bin";
+            
+            if (File.Exists(fileName)) File.Delete(fileName);
+            if (File.Exists(fileName2)) File.Delete(fileName2);
+
+            try
+            {
+                // Generate
+                fileGen.GenerateaAdv_V2(cfg, fileName);
+                var hasher = new Hasher();
+                string h1 = hasher.CalcMd5(fileName);
+
+                fileGen.GenerateaAdv_V2(cfg, fileName2);
+                string h2 = hasher.CalcMd5(fileName2);
+
+                // Verify
+                Assert.AreEqual(h1, h2);
+            }
+            finally
+            {
+                try
+                {
+                    //if (File.Exists(fileName))
+                    //    File.Delete(fileName);
+
+                    //if (File.Exists(fileName2))
+                    //    File.Delete(fileName2);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    Trace.WriteLine(ex);
+                }
+            }            
         }
 
         //[Test]

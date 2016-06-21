@@ -51,6 +51,8 @@ namespace AdvLib.Tests.Generators
         public CompressionType Compression;
         public int NumberOfFrames;
 
+        public long UtcTimestampAccuracyInNanoseconds;
+
         public GetCurrentImageExposureCallback ExposureCallback;
         public GetCurrentImageTimeStampCallback TimeStampCallback;
         public GetCurrentImageGammaCallback GammaCallback;
@@ -112,7 +114,7 @@ namespace AdvLib.Tests.Generators
             if (config.BayerPattern != null)
                 recorder.ImageConfig.SetBayerPattern(config.BayerPattern.Value);
 
-            recorder.StartRecordingNewFile(fileName);
+            recorder.StartRecordingNewFile(fileName, config.UtcTimestampAccuracyInNanoseconds);
 
             AdvRecorder.AdvStatusEntry status = new AdvRecorder.AdvStatusEntry();
             status.AdditionalStatusTags = new object[2];

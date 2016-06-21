@@ -185,7 +185,7 @@ namespace Obsolete
 
 			private int m_NumberRecordedFrames = 0;
 			private int m_NumberDroppedFrames = 0;
-			private long m_FirstRecordedFrameTimestamp = 0;
+			private ulong m_FirstRecordedFrameTimestamp = 0;
 
 			public int NumberDroppedFrames
 			{
@@ -386,7 +386,7 @@ namespace Obsolete
 
 			private void BeginVideoFrame(AdvTimeStamp timeStamp, uint exposureIn10thMilliseconds, AdvStatusEntry metadata)
 			{
-				long elapsedTimeMilliseconds = 0; // since the first recorded frame was taken
+				ulong elapsedTimeMilliseconds = 0; // since the first recorded frame was taken
 				if (m_NumberRecordedFrames > 0 && m_FirstRecordedFrameTimestamp != 0)
 				{
 					elapsedTimeMilliseconds = timeStamp.MillisecondsAfterAdvZeroEpoch - m_FirstRecordedFrameTimestamp;
@@ -396,7 +396,7 @@ namespace Obsolete
 					m_FirstRecordedFrameTimestamp = timeStamp.MillisecondsAfterAdvZeroEpoch;
 				}
 
-				bool frameStartedOk = AdvLib.Obsolete.AdvVer1.BeginFrame(timeStamp.MillisecondsAfterAdvZeroEpoch,
+				bool frameStartedOk = AdvLib.Obsolete.AdvVer1.BeginFrame((long)timeStamp.MillisecondsAfterAdvZeroEpoch,
 																elapsedTimeMilliseconds > 0 ? (uint)elapsedTimeMilliseconds : 0,
 																exposureIn10thMilliseconds);
 				if (!frameStartedOk)

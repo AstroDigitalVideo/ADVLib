@@ -79,8 +79,6 @@ namespace Adv
 
         private Dictionary<string, uint> m_AdditionalStatusSectionTagIds = new Dictionary<string, uint>();
 
-        private uint m_TAGID_UTCStartTimestamp;
-        private uint m_TAGID_UTCEndTimestamp;
         private uint m_TAGID_SystemTime;
         private uint m_TAGID_TrackedSatellites;
         private uint m_TAGID_AlmanacStatus;
@@ -447,7 +445,7 @@ namespace Adv
         /// Creates new ADV file and gets it ready for recording 
         /// </summary>
         /// <param name="fileName"></param>
-        public void StartRecordingNewFile(string fileName, bool createNew = false)
+        public void StartRecordingNewFile(string fileName, long utcTimestampAccuracyInNanoseconds, bool createNew = false)
         {
             fileName = Path.GetFullPath(fileName);
 
@@ -524,6 +522,7 @@ namespace Adv
             }
 
             AdvLib.DefineImageSection(ImageConfig.ImageWidth, ImageConfig.ImageHeight, ImageConfig.ImageBitsPerPixel);
+            AdvLib.DefineStatusSection(utcTimestampAccuracyInNanoseconds);
             AdvLib.AddOrUpdateImageSectionTag("IMAGE-BYTE-ORDER", ImageConfig.ImageBigEndian ? "BIG-ENDIAN" : "LITTLE-ENDIAN");
             AdvLib.AddOrUpdateImageSectionTag("IMAGE-BITPIX", ImageConfig.ImageBitsPerPixel.ToString(CultureInfo.InvariantCulture));
             if (ImageConfig.ImagePixelMaxValue.HasValue) AdvLib.AddOrUpdateImageSectionTag("IMAGE-MAX-PIXEL-VALUE", ImageConfig.ImagePixelMaxValue.Value.ToString(CultureInfo.InvariantCulture));
@@ -565,10 +564,6 @@ namespace Adv
 
             //UserCommand - A list of commands issued by the user during the generation of the current video frame. The commands are saved as free text (for example: Changed gain)
             //SystemError - A list of errors that were detected by the system during the generation of the current video frame. 
-
-
-            m_TAGID_UTCStartTimestamp = AdvLib.DefineStatusSectionTag("UTCStartTimeStamp", AdvTagType.ULong64);
-            m_TAGID_UTCEndTimestamp = AdvLib.DefineStatusSectionTag("UTCEndTimeStamp", AdvTagType.ULong64);
 
             if (StatusSectionConfig.RecordSystemTime) m_TAGID_SystemTime = AdvLib.DefineStatusSectionTag("SystemTime", AdvTagType.ULong64);
 
@@ -816,7 +811,7 @@ namespace Adv
                     m_FirstRecordedFrameTimestamp = startClockTicks.Value;
                 }
 
-                frameStartedOk = AdvLib.BeginFrame(streamId, startClockTicks.Value, endClockTicks.Value, elapsedTicks > 0L ? elapsedTicks : 0L);
+                frameStartedOk = AdvLib.BeginFrame(streamId, startClockTicks.Value, endClockTicks.Value, elapsedTicks > 0L ? elapsedTicks : 0L, startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch, (uint)(endUtcTimeStamp.NanosecondsAfterAdvZeroEpoch - startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch));
             }
             else
             {
@@ -836,7 +831,7 @@ namespace Adv
                         throw new IndexOutOfRangeException();
                 }
 
-                frameStartedOk = AdvLib.BeginFrame(streamId);
+                frameStartedOk = AdvLib.BeginFrame(streamId, startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch, (uint)(endUtcTimeStamp.NanosecondsAfterAdvZeroEpoch - startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch));
             }
 
             if (!frameStartedOk)
@@ -846,9 +841,6 @@ namespace Adv
                     m_NumberDroppedFrames++;
                 return;
             }
-
-            if (startUtcTimeStamp.MillisecondsAfterAdvZeroEpoch > 0) AdvLib.FrameAddStatusTag64(m_TAGID_UTCStartTimestamp, (ulong)startUtcTimeStamp.MillisecondsAfterAdvZeroEpoch);
-            if (endUtcTimeStamp.MillisecondsAfterAdvZeroEpoch > 0) AdvLib.FrameAddStatusTag64(m_TAGID_UTCEndTimestamp, (ulong)endUtcTimeStamp.MillisecondsAfterAdvZeroEpoch);
 
             if (StatusSectionConfig.RecordSystemTime)
                 AdvLib.FrameAddStatusTag64(m_TAGID_SystemTime,

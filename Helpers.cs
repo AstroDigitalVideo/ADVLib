@@ -37,26 +37,29 @@ namespace Adv
     /// </summary>
     public struct AdvTimeStamp
     {
-        public const long ADV_EPOCH_ZERO_TICKS = 633979008000000000;
+        public const ulong ADV_EPOCH_ZERO_TICKS = 633979008000000000;
 
-        public long MillisecondsAfterAdvZeroEpoch;
+        public ulong NanosecondsAfterAdvZeroEpoch;
 
-        public static AdvTimeStamp FromWindowsTicks(long windowsTicks)
+        public ulong MillisecondsAfterAdvZeroEpoch;
+
+        public static AdvTimeStamp FromWindowsTicks(ulong windowsTicks)
         {
             return new AdvTimeStamp()
             {
+                NanosecondsAfterAdvZeroEpoch = (windowsTicks - ADV_EPOCH_ZERO_TICKS) * 10,
                 MillisecondsAfterAdvZeroEpoch = (windowsTicks - ADV_EPOCH_ZERO_TICKS) / 10000
             };
         }
 
         public static AdvTimeStamp FromDateTime(DateTime dateTime)
         {
-            return AdvTimeStamp.FromWindowsTicks(dateTime.Ticks);
+            return AdvTimeStamp.FromWindowsTicks((ulong)dateTime.Ticks);
         }
 
         public static AdvTimeStamp FromDateTime(int year, int month, int day, int hours, int minutes, int seconds, int milliseconds)
         {
-            return AdvTimeStamp.FromWindowsTicks(new DateTime(year, month, day, hours, minutes, seconds, milliseconds).Ticks);
+            return AdvTimeStamp.FromWindowsTicks((ulong)new DateTime(year, month, day, hours, minutes, seconds, milliseconds).Ticks);
         }
     }
 }
