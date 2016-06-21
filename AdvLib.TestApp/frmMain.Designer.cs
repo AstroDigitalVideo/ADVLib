@@ -59,6 +59,7 @@
             this.tabStructureViewer = new System.Windows.Forms.TabPage();
             this.tabPlayer = new System.Windows.Forms.TabPage();
             this.lblLibVersion = new System.Windows.Forms.Label();
+            this.btnGenSpecExample = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxPixelValue)).BeginInit();
@@ -250,7 +251,7 @@
             // 
             // btnVerifyLibrary
             // 
-            this.btnVerifyLibrary.Location = new System.Drawing.Point(364, 244);
+            this.btnVerifyLibrary.Location = new System.Drawing.Point(170, 244);
             this.btnVerifyLibrary.Name = "btnVerifyLibrary";
             this.btnVerifyLibrary.Size = new System.Drawing.Size(132, 23);
             this.btnVerifyLibrary.TabIndex = 9;
@@ -288,6 +289,7 @@
             // 
             // tabRecorder
             // 
+            this.tabRecorder.Controls.Add(this.btnGenSpecExample);
             this.tabRecorder.Controls.Add(this.lblLibVersion);
             this.tabRecorder.Controls.Add(this.lblRanTests);
             this.tabRecorder.Controls.Add(this.pbar);
@@ -405,6 +407,16 @@
             this.lblLibVersion.Size = new System.Drawing.Size(0, 13);
             this.lblLibVersion.TabIndex = 18;
             // 
+            // btnGenSpecExample
+            // 
+            this.btnGenSpecExample.Location = new System.Drawing.Point(387, 244);
+            this.btnGenSpecExample.Name = "btnGenSpecExample";
+            this.btnGenSpecExample.Size = new System.Drawing.Size(152, 23);
+            this.btnGenSpecExample.TabIndex = 19;
+            this.btnGenSpecExample.Text = "Generate Spec Example File";
+            this.btnGenSpecExample.UseVisualStyleBackColor = true;
+            this.btnGenSpecExample.Click += new System.EventHandler(this.btnGenSpecExample_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -460,6 +472,7 @@
         private System.Windows.Forms.ProgressBar pbar;
         private System.Windows.Forms.Label lblRanTests;
         private System.Windows.Forms.Label lblLibVersion;
+        private System.Windows.Forms.Button btnGenSpecExample;
 	}
 }
 

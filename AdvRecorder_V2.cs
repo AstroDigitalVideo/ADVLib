@@ -465,10 +465,6 @@ namespace Adv
             if (m_GetCalibrationClockTicksCallback != null)
                 AdvLib.DefineExternalClockForCalibrationStream(m_CalibrationClockFrequency, m_CalibrationTicksTimingAccuracy);
 
-            AdvLib.AddMainStreamTag("Name1", "Христо");
-            AdvLib.AddMainStreamTag("Name2", "Frédéric");
-            AdvLib.AddCalibrationStreamTag("Name1", "好的茶");
-
             if (string.IsNullOrEmpty(FileMetaData.RecorderSoftwareName)) throw new ArgumentException("FileMetaData.RecorderSoftwareName must be specified.");
             if (string.IsNullOrEmpty(FileMetaData.RecorderSoftwareVersion)) throw new ArgumentException("FileMetaData.RecorderSoftwareVersion must be specified.");
             if (string.IsNullOrEmpty(FileMetaData.CameraModel)) throw new ArgumentException("FileMetaData.CameraModel must be specified.");

@@ -482,5 +482,21 @@ namespace AdvLibTestApp
                 (i, j) => this.Invoke(new Action<int, int>(ProgressRunningTests), i, j),
                 (i) => this.Invoke(new Action<int>(StopRunningTests), i));
         }
+
+        private void btnGenSpecExample_Click(object sender, EventArgs e)
+        {
+            string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + @"SpecExample.adv.bin");
+
+            if (File.Exists(fileName))
+            {
+                if (MessageBox.Show(string.Format("Output file exists:\r\n\r\n{0}\r\n\r\nOverwrite?", fileName), "Confirmation", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    return;
+
+                File.Delete(fileName);
+            }
+
+            var advGen = new AdvGenerator();
+            advGen.GenerateSpecExampleFile(fileName);
+        }
 	}
 }

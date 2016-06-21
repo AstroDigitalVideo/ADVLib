@@ -213,5 +213,25 @@ namespace AdvLib.Tests.Generators
 
             recorder.FinishRecording();
         }
+
+        public void GenerateSpecExampleFile(string fileName)
+        {
+            Adv.AdvLib.NewFile(fileName);
+
+            Adv.AdvLib.DefineExternalClockForMainStream(76900, 77);
+            Adv.AdvLib.DefineExternalClockForCalibrationStream(76900, 77);
+
+            Adv.AdvLib.AddMainStreamTag("Name1", "Христо");
+            Adv.AdvLib.AddMainStreamTag("Name2", "Frédéric");
+            Adv.AdvLib.AddCalibrationStreamTag("Name1", "好的茶");
+
+            Adv.AdvLib.DefineImageSection(640, 480, 16);
+            Adv.AdvLib.DefineStatusSection(5000000 /* 5ms */);
+            Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
+
+            Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
+            Adv.AdvLib.EndFile();
+            
+        }
     }
 }
