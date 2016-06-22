@@ -31,8 +31,18 @@ namespace Adv
         public int Height;
         public int CountMaintFrames;
         public int CountCalibrationFrames;
-        public int Bpp;
-        public int MaxPixelVal;
+        public int DataBpp;
+        public int MaxPixelValue;
+        public long MainClockFrequency;
+        public int MainStreamAccuracy;
+        public long CalibrationClockFrequency;
+        public int CalibrationStreamAccuracy;
+        public byte MainStreamTagsCount;
+        public byte CalibrationStreamTagsCount;
+        public byte SystemMetadataTagsCount;
+        public byte UserMetadataTagsCount;
+        long UtcTimestampAccuracyInNanoseconds;
+        public bool IsColourImage;
     };
 
     [StructLayout(LayoutKind.Explicit)]
@@ -123,8 +133,8 @@ namespace Adv
         private static extern int GetLibraryBitness32();
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvOpenFile")]
-        //unsigned int AdvOpenFile(const char* fileName);
-        private static extern int AdvOpenFile32(string fileName);
+        //unsigned int AdvOpenFile(const char* fileName, AdvLib2::AdvFileInfo* fileInfo);
+        private static extern int AdvOpenFile32(string fileName, [In, Out] ref AdvFileInfo fileInfo);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvCloseFile")]
         //unsigned int AdvCloseFile();
@@ -311,14 +321,6 @@ namespace Adv
         //void AdvVer2_EndFrame();
         private static extern void AdvVer2_EndFrame32();
 
-        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetMainStreamInfo")]
-        //void AdvVer2_GetMainStreamInfo(long* numFrames, __int64* mainClockFrequency, long* mainStreamAccuracy);
-        private static extern void AdvVer2_GetMainStreamInfo32(ref int numFrames, ref long mainClockFrequency, ref int mainStreamAccuracy);
-
-        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetCalibrationStreamInfo")]
-        //void AdvVer2_GetCalibrationStreamInfo(long* numFrames, __int64* calibrationClockFrequency, long* calibrationStreamAccuracy);
-        private static extern void AdvVer2_GetCalibrationStreamInfo32(ref int numFrames, ref long calibrationClockFrequency, ref int calibrationStreamAccuracy);
-
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
         private static extern int AdvVer2_GetFramePixels32(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
@@ -335,8 +337,8 @@ namespace Adv
         private static extern int GetLibraryBitness64();
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvOpenFile")]
-        //unsigned int AdvOpenFile(const char* fileName);
-        private static extern int AdvOpenFile64(string fileName);
+        //unsigned int AdvOpenFile(const char* fileName, AdvLib2::AdvFileInfo* fileInfo);
+        private static extern int AdvOpenFile64(string fileName, [In, Out] ref AdvFileInfo fileInfo);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvCloseFile")]
         //unsigned int AdvCloseFile();
@@ -522,14 +524,6 @@ namespace Adv
         //void AdvVer2_EndFrame();
         private static extern void AdvVer2_EndFrame64();
 
-        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetMainStreamInfo")]
-        //void AdvVer2_GetMainStreamInfo(long* numFrames, __int64* mainClockFrequency, long* mainStreamAccuracy);
-        private static extern void AdvVer2_GetMainStreamInfo64(ref int numFrames, ref long mainClockFrequency, ref int mainStreamAccuracy);
-
-        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetCalibrationStreamInfo")]
-        //void AdvVer2_GetCalibrationStreamInfo(long* numFrames, __int64* calibrationClockFrequency, long* calibrationStreamAccuracy);
-        private static extern void AdvVer2_GetCalibrationStreamInfo64(ref int numFrames, ref long calibrationClockFrequency, ref int calibrationStreamAccuracy);
-
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
         private static extern int AdvVer2_GetFramePixels64(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
@@ -547,8 +541,8 @@ namespace Adv
         private static extern int GetLibraryBitnessUnix();
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvOpenFile")]
-        //unsigned int AdvOpenFile(const char* fileName);
-        private static extern int AdvOpenFileUnix(string fileName);
+        //unsigned int AdvOpenFile(const char* fileName, AdvLib2::AdvFileInfo* fileInfo);
+        private static extern int AdvOpenFileUnix(string fileName, [In, Out] ref AdvFileInfo fileInfo);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvCloseFile")]
         //unsigned int AdvCloseFile();
@@ -733,14 +727,6 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
         //void AdvVer2_EndFrame();
         private static extern void AdvVer2_EndFrameUnix();
-
-        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetMainStreamInfo")]
-        //void AdvVer2_GetMainStreamInfo(long* numFrames, __int64* mainClockFrequency, long* mainStreamAccuracy);
-        private static extern void AdvVer2_GetMainStreamInfoUnix(ref int numFrames, ref long mainClockFrequency, ref int mainStreamAccuracy);
-
-        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetCalibrationStreamInfo")]
-        //void AdvVer2_GetCalibrationStreamInfo(long* numFrames, __int64* calibrationClockFrequency, long* calibrationStreamAccuracy);
-        private static extern void AdvVer2_GetCalibrationStreamInfoUnix(ref int numFrames, ref long calibrationClockFrequency, ref int calibrationStreamAccuracy);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
@@ -983,14 +969,16 @@ namespace Adv
             return bitness > 0 ? string.Format(" ({0} bit)", bitness) : string.Empty;
         }
 
-        public static int AdvOpenFile(string fileName)
+        public static int AdvOpenFile(string fileName, out AdvFileInfo fileInfo)
         {
+            fileInfo = new AdvFileInfo();
+
             if (!CrossPlatform.IsWindows)
-                return AdvOpenFileUnix(fileName);
+                return AdvOpenFileUnix(fileName, ref fileInfo);
             else if (Is64Bit())
-                return AdvOpenFile64(fileName);
+                return AdvOpenFile64(fileName, ref fileInfo);
             else
-                return AdvOpenFile32(fileName);
+                return AdvOpenFile32(fileName, ref fileInfo);
         }
 
         public static uint AdvCloseFile()
@@ -1307,26 +1295,6 @@ namespace Adv
                 AdvVer2_EndFrame64();
             else
                 AdvVer2_EndFrame32();
-        }
-
-        public static void GetMainStreamInfo(ref int numFrames, ref long mainClockFrequency, ref int mainStreamAccuracy)
-        {
-            if (!CrossPlatform.IsWindows)
-                AdvVer2_GetMainStreamInfoUnix(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
-            else if (Is64Bit())
-                AdvVer2_GetMainStreamInfo64(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
-            else
-                AdvVer2_GetMainStreamInfo32(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
-        }
-
-        public static void GetCalibrationStreamInfo(ref int numFrames, ref long mainClockFrequency, ref int mainStreamAccuracy)
-        {
-            if (!CrossPlatform.IsWindows)
-                AdvVer2_GetCalibrationStreamInfoUnix(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
-            else if (Is64Bit())
-                AdvVer2_GetCalibrationStreamInfo64(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
-            else
-                AdvVer2_GetCalibrationStreamInfo32(ref numFrames, ref mainClockFrequency, ref mainStreamAccuracy);
         }
 
         public static uint[] GetFramePixels(int streamId, int frameNo, int width, int height)

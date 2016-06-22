@@ -147,7 +147,7 @@ namespace Adv
                 if (pixelMaxValue.HasValue && pixelMaxValue.Value != 0)
                 {
                     int normValBitDepth = (int)Math.Ceiling(Math.Log(pixelMaxValue.Value, 2));
-                    if (imageBitsPerPixel > normValBitDepth)
+                    if (imageBitsPerPixel < normValBitDepth)
                         throw new AdvLibException(string.Format("pixelMaxValue {0} must be less or equal to the imageBitsPerPixel's ({1} bit) max value of {2}", pixelMaxValue, imageBitsPerPixel, Math.Pow(2, imageBitsPerPixel)));
 
                     ImagePixelMaxValue = pixelMaxValue;

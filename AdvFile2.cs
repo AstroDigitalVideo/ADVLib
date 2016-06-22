@@ -19,7 +19,8 @@ namespace Adv
 
         public AdvFile2(string fileName)
         {
-            int fileVersionOrErrorCode = AdvLib.AdvOpenFile(fileName);
+            AdvFileInfo fileInfo;
+            int fileVersionOrErrorCode = AdvLib.AdvOpenFile(fileName, out fileInfo);
             if (fileVersionOrErrorCode == 0)
                 throw new AdvLibException(string.Format("'{0}' is not an ADV file.", fileName));
             else if (fileVersionOrErrorCode < 0)
@@ -28,10 +29,14 @@ namespace Adv
                 throw new AdvLibException(string.Format("'{0}' is not an ADV version 2 file.", fileName));
 
             MainSteamInfo = new DataStreamDefinition();
-            AdvLib.GetMainStreamInfo(ref MainSteamInfo.FrameCount, ref MainSteamInfo.ClockFrequency, ref MainSteamInfo.TimingAccuracy);
+            MainSteamInfo.FrameCount = fileInfo.CountMaintFrames;
+            MainSteamInfo.ClockFrequency = fileInfo.MainClockFrequency;
+            MainSteamInfo.TimingAccuracy = fileInfo.MainStreamAccuracy;
 
             CalibrationSteamInfo = new DataStreamDefinition();
-            AdvLib.GetCalibrationStreamInfo(ref CalibrationSteamInfo.FrameCount, ref CalibrationSteamInfo.ClockFrequency, ref CalibrationSteamInfo.TimingAccuracy);
+            CalibrationSteamInfo.FrameCount = fileInfo.CountCalibrationFrames;
+            CalibrationSteamInfo.ClockFrequency = fileInfo.CalibrationClockFrequency;
+            CalibrationSteamInfo.TimingAccuracy = fileInfo.CalibrationStreamAccuracy;
         }
 
         public uint[] GetMainFramePixels(uint frameNo)
