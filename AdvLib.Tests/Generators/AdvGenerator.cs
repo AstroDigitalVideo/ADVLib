@@ -62,6 +62,9 @@ namespace AdvLib.Tests.Generators
 
         public CustomClockConfig MainStreamCustomClock;
         public CustomClockConfig CalibrationStreamCustomClock;
+
+        public Dictionary<string, string> MainStreamMetadata = new Dictionary<string, string>();
+        public Dictionary<string, string> CalibrationStreamMetadata = new Dictionary<string, string>();
     }
 
     public class AdvGenerator
@@ -113,6 +116,12 @@ namespace AdvLib.Tests.Generators
 
             if (config.BayerPattern != null)
                 recorder.ImageConfig.SetBayerPattern(config.BayerPattern.Value);
+
+            foreach (string key in config.MainStreamMetadata.Keys)
+                recorder.FileMetaData.AddMainStreamTag(key, config.MainStreamMetadata[key]);
+
+            foreach (string key in config.CalibrationStreamMetadata.Keys)
+                recorder.FileMetaData.AddCalibrationStreamTag(key, config.CalibrationStreamMetadata[key]);
 
             recorder.StartRecordingNewFile(fileName, config.UtcTimestampAccuracyInNanoseconds);
 

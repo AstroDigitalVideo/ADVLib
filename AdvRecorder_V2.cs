@@ -314,6 +314,8 @@ namespace Adv
             }
 
             internal Dictionary<string, string> UserMetaData = new Dictionary<string, string>();
+            internal Dictionary<string, string> MainStreamMetaData = new Dictionary<string, string>();
+            internal Dictionary<string, string> CalibrationStreamMetaData = new Dictionary<string, string>();
 
             public string RecorderSoftwareName { get; set; }
             public string RecorderSoftwareVersion { get; set; }
@@ -353,6 +355,16 @@ namespace Adv
             public void AddUserTag(string tagName, string tagValue)
             {
                 UserMetaData[tagName] = tagValue;
+            }
+
+            public void AddMainStreamTag(string tagName, string tagValue)
+            {
+                MainStreamMetaData[tagName] = tagValue;
+            }
+
+            public void AddCalibrationStreamTag(string tagName, string tagValue)
+            {
+                CalibrationStreamMetaData[tagName] = tagValue;
             }
         }
 
@@ -512,10 +524,14 @@ namespace Adv
                 AdvLib.AddFileTag("NTP-SERVER-DETAILS", string.Join(";", FileMetaData.NtpServers.ServerDetails.ToArray()));
             }
 
+            foreach (string key in FileMetaData.MainStreamMetaData.Keys)
+                AdvLib.AddMainStreamTag(key, FileMetaData.MainStreamMetaData[key]);
+
+            foreach (string key in FileMetaData.CalibrationStreamMetaData.Keys)
+                AdvLib.AddCalibrationStreamTag(key, FileMetaData.CalibrationStreamMetaData[key]);
+
             foreach (string key in FileMetaData.UserMetaData.Keys)
-            {
                 AdvLib.AddFileTag(key, FileMetaData.UserMetaData[key]);
-            }
 
             AdvLib.DefineImageSection(ImageConfig.ImageWidth, ImageConfig.ImageHeight, ImageConfig.ImageBitsPerPixel);
             AdvLib.DefineStatusSection(utcTimestampAccuracyInNanoseconds);

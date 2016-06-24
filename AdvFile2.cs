@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -10,12 +11,21 @@ namespace Adv
         public int FrameCount;
         public long ClockFrequency;
         public int TimingAccuracy;
+
+        public Dictionary<string, string> MetadataTags = new Dictionary<string, string>();
     }
 
     public class AdvFile2 : IDisposable
     {
         public DataStreamDefinition MainSteamInfo;
         public DataStreamDefinition CalibrationSteamInfo;
+
+        public int Width;
+        public int Height;
+        public int DataBpp;
+        public int MaxPixelValue;
+        public bool IsColourImage;
+        public long UtcTimestampAccuracyInNanoseconds;
 
         public AdvFile2(string fileName)
         {
@@ -37,6 +47,39 @@ namespace Adv
             CalibrationSteamInfo.FrameCount = fileInfo.CountCalibrationFrames;
             CalibrationSteamInfo.ClockFrequency = fileInfo.CalibrationClockFrequency;
             CalibrationSteamInfo.TimingAccuracy = fileInfo.CalibrationStreamAccuracy;
+
+            Width = fileInfo.Width;
+            Height = fileInfo.Height;
+
+            DataBpp = fileInfo.DataBpp;
+            MaxPixelValue = fileInfo.MaxPixelValue;
+            IsColourImage = fileInfo.IsColourImage;
+            UtcTimestampAccuracyInNanoseconds = fileInfo.UtcTimestampAccuracyInNanoseconds;
+
+            LoadTags(fileInfo);
+        }
+
+        private void LoadTags(AdvFileInfo fileInfo)
+        {
+            for (int i = 0; i < fileInfo.MainStreamTagsCount; i++)
+            {
+                string name;
+                string value;
+                if (AdvLib.GetMainStreamTag(i, out name, out value))
+                    MainSteamInfo.MetadataTags.Add(name, value);
+            }
+
+            for (int i = 0; i < fileInfo.CalibrationStreamTagsCount; i++)
+            {
+                string name;
+                string value;
+                if (AdvLib.GetCalibrationStreamTag(i, out name, out value))
+                    CalibrationSteamInfo.MetadataTags.Add(name, value);
+            }
+
+
+            //fileInfo.SystemMetadataTagsCount;
+            //fileInfo.UserMetadataTagsCount;
         }
 
         public uint[] GetMainFramePixels(uint frameNo)

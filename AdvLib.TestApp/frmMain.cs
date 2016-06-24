@@ -105,6 +105,9 @@ namespace AdvLibTestApp
             config.GammaCallback = GetCurrentImageGamma;
             config.MassagesCallback = GetCurrentExampleMassages;
             config.CustomGainCallback = GetCurrentExampleCustomGain;
+            config.MainStreamMetadata.Add("Name1", "Христо");
+            config.MainStreamMetadata.Add("Name2", "Frédéric");
+            config.MainStreamMetadata.Add("Name3", "好的茶");
 
 		    if (cbxZeroTicks.Checked)
 		    {

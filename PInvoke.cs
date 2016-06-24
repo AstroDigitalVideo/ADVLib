@@ -24,6 +24,14 @@ namespace Adv
         List16OfUTF8String = 8,
     };
 
+    public enum TagPairType
+    {
+        MainStream = 0,
+        CalibrationStream = 1,
+        SystemMetadata = 2,
+        UserMetadata = 3
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     public struct AdvFileInfo
     {
@@ -41,7 +49,7 @@ namespace Adv
         public byte CalibrationStreamTagsCount;
         public byte SystemMetadataTagsCount;
         public byte UserMetadataTagsCount;
-        long UtcTimestampAccuracyInNanoseconds;
+        public long UtcTimestampAccuracyInNanoseconds;
         public bool IsColourImage;
     };
 
@@ -324,6 +332,14 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
         private static extern int AdvVer2_GetFramePixels32(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
+
+        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
+        //HRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
+        private static extern int AdvVer2_GetTagPairValues32(TagPairType tagPairType, int tagId, [In, Out] byte[] tagName, [In, Out] byte[] tagValue);
+
+        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairSizes")]
+        //HRESULT AdvVer2_GetTagPairSizes(TagPairType tagPairType, int tagId, int* tagNameSize, int* tagValueSize);
+        private static extern int AdvVer2_GetTagPairSizes32(TagPairType tagPairType, int tagId, ref int tagNameSize, ref int tagValueSize);
         #endregion 
 
         #region 64bit externals
@@ -528,6 +544,14 @@ namespace Adv
         //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
         private static extern int AdvVer2_GetFramePixels64(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
 
+        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
+        //HRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
+        private static extern int AdvVer2_GetTagPairValues64(TagPairType tagPairType, int tagId, [In, Out] byte[] tagName, [In, Out] byte[] tagValue);
+
+        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairSizes")]
+        //HRESULT AdvVer2_GetTagPairSizes(TagPairType tagPairType, int tagId, int* tagNameSize, int* tagValueSize);
+        private static extern int AdvVer2_GetTagPairSizes64(TagPairType tagPairType, int tagId, ref int tagNameSize, ref int tagValueSize);
+
         #endregion
 
         #region UNIX externals
@@ -731,6 +755,14 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
         private static extern int AdvVer2_GetFramePixelsUnix(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
+
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
+        //HRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
+        private static extern int AdvVer2_GetTagPairValuesUnix(TagPairType tagPairType, int tagId, [In, Out] byte[] tagName, [In, Out] byte[] tagValue);
+
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairSizes")]
+        //HRESULT AdvVer2_GetTagPairSizes(TagPairType tagPairType, int tagId, int* tagNameSize, int* tagValueSize);
+        private static extern int AdvVer2_GetTagPairSizesUnix(TagPairType tagPairType, int tagId, ref int tagNameSize, ref int tagValueSize);
 
         #endregion
 
@@ -1311,6 +1343,60 @@ namespace Adv
                 AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfo, systemError);
 
             return pixels;
+        }
+
+        public static bool GetMainStreamTag(int tagId, out string tagName, out string tagValue)
+        {
+            return GetAdvTagPair(TagPairType.MainStream, tagId, out tagName, out tagValue);
+        }
+
+        public static bool GetCalibrationStreamTag(int tagId, out string tagName, out string tagValue)
+        {
+            return GetAdvTagPair(TagPairType.CalibrationStream, tagId, out tagName, out tagValue);
+        }
+
+        private static bool GetAdvTagPair(TagPairType tagType, int tagId, out string tagName, out string tagValue)
+        {
+            tagName = null;
+            tagValue = null;
+
+            int rv = -1;
+            int nameSize = 0;
+            int valueSize = 0;
+            if (!CrossPlatform.IsWindows)
+                rv = AdvVer2_GetTagPairSizesUnix(tagType, tagId, ref nameSize, ref valueSize);
+            else if (Is64Bit())
+                rv = AdvVer2_GetTagPairSizes64(tagType, tagId, ref nameSize, ref valueSize);
+            else
+                rv = AdvVer2_GetTagPairSizes32(tagType, tagId, ref nameSize, ref valueSize);
+            
+            if (rv != 0)
+                return false;
+
+            var tagNameBT = new byte[2 * nameSize + 1];
+            var tagValueBT = new byte[2 * valueSize + 1];
+
+
+            if (!CrossPlatform.IsWindows)
+                rv = AdvVer2_GetTagPairValuesUnix(tagType, tagId, tagNameBT, tagValueBT);
+            else if (Is64Bit())
+                rv = AdvVer2_GetTagPairValues64(tagType, tagId, tagNameBT, tagValueBT);
+            else
+                rv = AdvVer2_GetTagPairValues32(tagType, tagId, tagNameBT, tagValueBT);
+
+            if (rv != 0)
+                return false;
+
+            tagName = GetStringFromBytes(tagNameBT);
+            tagValue = GetStringFromBytes(tagValueBT);
+
+            return true;
+        }
+
+        internal static string GetStringFromBytes(byte[] chars)
+        {
+            string str = Encoding.UTF8.GetString(chars);
+            return str.Substring(0, str.IndexOf('\0'));
         }
     }
 }
