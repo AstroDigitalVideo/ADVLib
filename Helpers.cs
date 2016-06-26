@@ -47,9 +47,17 @@ namespace Adv
         {
             return new AdvTimeStamp()
             {
-                NanosecondsAfterAdvZeroEpoch = (windowsTicks - ADV_EPOCH_ZERO_TICKS) * 10,
+                NanosecondsAfterAdvZeroEpoch = (windowsTicks - ADV_EPOCH_ZERO_TICKS) * 100,
                 MillisecondsAfterAdvZeroEpoch = (windowsTicks - ADV_EPOCH_ZERO_TICKS) / 10000
             };
+        }
+
+        public AdvTimeStamp AddNanoseconds(uint nanoseconds)
+        {
+            var rv = new AdvTimeStamp();
+            rv.NanosecondsAfterAdvZeroEpoch = NanosecondsAfterAdvZeroEpoch + nanoseconds;
+            rv.MillisecondsAfterAdvZeroEpoch = (ulong)(NanosecondsAfterAdvZeroEpoch + (nanoseconds / 1000000.0));
+            return rv;
         }
 
         public static AdvTimeStamp FromDateTime(DateTime dateTime)

@@ -97,6 +97,17 @@ namespace Adv
             }
         }
 
+        public uint[] GetMainFramePixels(uint frameNo, out AdvFrameInfo frameInfo)
+        {
+            if (frameNo < MainSteamInfo.FrameCount)
+            {
+                uint[] pixels = AdvLib.GetFramePixels(0, (int)frameNo, 640, 480, out frameInfo);
+                return pixels;
+            }
+            else
+                throw new AdvLibException(string.Format("Main frame number must be bwtween 0 and {0}", MainSteamInfo.FrameCount - 1));
+        }
+
         public uint[] GetMainFramePixels(uint frameNo)
         {
             if (frameNo < MainSteamInfo.FrameCount)

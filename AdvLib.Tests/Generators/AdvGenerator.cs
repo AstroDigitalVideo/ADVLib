@@ -84,14 +84,6 @@ namespace AdvLib.Tests.Generators
             recorder.FileMetaData.CameraModel = "Flea3 FL3-FW-03S3M";
             recorder.FileMetaData.CameraSensorInfo = "Sony ICX414AL (1/2\" 648x488 CCD)";
 
-            // Then define additional metadata, if required
-            recorder.FileMetaData.AddUserTag("TELESCOPE-NAME", "Large Telescope");
-            recorder.FileMetaData.AddUserTag("TELESCOPE-FL", "8300");
-            recorder.FileMetaData.AddUserTag("TELESCOPE-FD", "6.5");
-            recorder.FileMetaData.AddUserTag("CAMERA-DIGITAL-SAMPLIG", "xxx");
-            recorder.FileMetaData.AddUserTag("CAMERA-HDR-RESPONSE", "yyy");
-            recorder.FileMetaData.AddUserTag("CAMERA-OPTICAL-RESOLUTION", "zzz");
-
             if (config.SaveLocationData)
             {
                 recorder.LocationData.SetLocation(
@@ -137,12 +129,15 @@ namespace AdvLib.Tests.Generators
                 // NOTE: Get the test data
                 uint exposure = config.ExposureCallback != null ? config.ExposureCallback(i) : 0;
                 DateTime startTimestamp = config.TimeStampCallback != null ? config.TimeStampCallback(i) : DateTime.Now;
-                DateTime endTimestamp = startTimestamp.AddMilliseconds(exposure / 10.0);
+                var utcStart = AdvTimeStamp.FromDateTime(startTimestamp);
+                var utcEnd = utcStart.AddNanoseconds(exposure);
+
                 status.Gain = config.GainCallback != null ? config.GainCallback(i) : 0;
                 status.Gamma = config.GammaCallback != null ? config.GammaCallback(i) : 0;
                 status.AdditionalStatusTags[customTagIdMessages] = config.MassagesCallback != null ? config.MassagesCallback(i) : null;
                 status.AdditionalStatusTags[customTagIdCustomGain] = config.CustomGainCallback != null ? config.CustomGainCallback(i) : 0;
 
+                
                 if (config.SourceFormat == AdvSourceDataFormat.Format16BitUShort)
                 {
                     ushort[] imagePixels = imageGenerator.GetCurrentImageBytesInt16(i, config.DynaBits);
@@ -156,8 +151,8 @@ namespace AdvLib.Tests.Generators
 
                         config.Compression == CompressionType.Lagarith16 ? PreferredCompression.Lagarith16 : PreferredCompression.QuickLZ,
 
-                        AdvTimeStamp.FromDateTime(startTimestamp),
-                        AdvTimeStamp.FromDateTime(endTimestamp),
+                        utcStart,
+                        utcEnd,
                         status,
                         AdvImageData.PixelDepth16Bit);
                 }
@@ -174,8 +169,8 @@ namespace AdvLib.Tests.Generators
 
                         config.Compression == CompressionType.Lagarith16 ? PreferredCompression.Lagarith16 : PreferredCompression.QuickLZ,
 
-                        AdvTimeStamp.FromDateTime(startTimestamp),
-                        AdvTimeStamp.FromDateTime(endTimestamp),
+                        utcStart,
+                        utcEnd,
                         status,
 
                         AdvImageData.PixelDepth16Bit);
@@ -193,8 +188,8 @@ namespace AdvLib.Tests.Generators
 
                         config.Compression == CompressionType.Lagarith16 ? PreferredCompression.Lagarith16 : PreferredCompression.QuickLZ,
 
-                        AdvTimeStamp.FromDateTime(startTimestamp),
-                        AdvTimeStamp.FromDateTime(endTimestamp),
+                        utcStart,
+                        utcEnd,
                         status,
 
                         AdvImageData.PixelData12Bit);
@@ -212,8 +207,8 @@ namespace AdvLib.Tests.Generators
 
                         config.Compression == CompressionType.Lagarith16 ? PreferredCompression.Lagarith16 : PreferredCompression.QuickLZ,
 
-                        AdvTimeStamp.FromDateTime(startTimestamp),
-                        AdvTimeStamp.FromDateTime(endTimestamp),
+                        utcStart,
+                        utcEnd,
                         status,
 
                         AdvImageData.PixelDepth8Bit);

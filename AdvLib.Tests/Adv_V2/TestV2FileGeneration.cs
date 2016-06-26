@@ -167,14 +167,17 @@ namespace AdvLib.Tests.Adv_V2
                 // Verify
                 using (var loadedFile = new AdvFile2(fileName))
                 {
+                    Assert.AreEqual(2, loadedFile.MainSteamInfo.MetadataTags.Count);
                     Assert.IsTrue(loadedFile.MainSteamInfo.MetadataTags.ContainsKey("Name1"));
                     Assert.AreEqual("Христо", loadedFile.MainSteamInfo.MetadataTags["Name1"]);
                     Assert.IsTrue(loadedFile.MainSteamInfo.MetadataTags.ContainsKey("Name2"));
                     Assert.AreEqual("Frédéric", loadedFile.MainSteamInfo.MetadataTags["Name2"]);
 
+                    Assert.AreEqual(1, loadedFile.CalibrationSteamInfo.MetadataTags.Count);
                     Assert.IsTrue(loadedFile.CalibrationSteamInfo.MetadataTags.ContainsKey("Name3"));
                     Assert.AreEqual("好的茶", loadedFile.CalibrationSteamInfo.MetadataTags["Name3"]);
 
+                    Assert.AreEqual(18, loadedFile.UserMetadataTags.Count);
                     Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("User0"));
                     Assert.AreEqual("1234\rabcd\r\n", loadedFile.UserMetadataTags["User0"]);
                     Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserArb"));
@@ -211,6 +214,107 @@ namespace AdvLib.Tests.Adv_V2
                     Assert.AreEqual("قیمت 1", loadedFile.UserMetadataTags["UserUrd"]);
                     Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserViet"));
                     Assert.AreEqual("giá trị 1", loadedFile.UserMetadataTags["UserViet"]);
+                }
+            }
+            finally
+            {
+                try
+                {
+                    if (File.Exists(fileName))
+                        File.Delete(fileName);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    Trace.WriteLine(ex);
+                }
+            }
+        }
+
+        [Test]
+        public void TestTimestampsAreSavedAndReadCorrectly()
+        {
+            DateTime frameTimeStamp = new DateTime(2016, 6, 24, 20, 42, 15).AddMilliseconds(1234);
+            long tickStamp = frameTimeStamp.Ticks;
+            float exposureMS = 16.7f;
+            DateTime frameTimeStamp2 = frameTimeStamp.AddMilliseconds(17);
+            long tickStamp2 = frameTimeStamp2.Ticks;
+
+            var utcTimeStamps = new DateTime[] { frameTimeStamp, frameTimeStamp2 };
+            var tickStamps = new long[] { tickStamp, tickStamp2 };
+
+            AdvTimeStamp ts = AdvTimeStamp.FromDateTime(frameTimeStamp);
+            var tdBackFromMS = new DateTime((long) AdvTimeStamp.ADV_EPOCH_ZERO_TICKS).AddMilliseconds(ts.MillisecondsAfterAdvZeroEpoch);
+            Assert.AreEqual(frameTimeStamp.Ticks, tdBackFromMS.Ticks);
+
+            Assert.AreEqual(ts.MillisecondsAfterAdvZeroEpoch, ts.NanosecondsAfterAdvZeroEpoch / 1000000);
+
+            var tdBackFromNS = new DateTime((long)AdvTimeStamp.ADV_EPOCH_ZERO_TICKS).AddMilliseconds(ts.NanosecondsAfterAdvZeroEpoch / 1000000.0);
+            Assert.AreEqual(frameTimeStamp.Ticks, tdBackFromNS.Ticks);
+
+            var maxTimeStamp = new DateTime((long)AdvTimeStamp.ADV_EPOCH_ZERO_TICKS).AddMilliseconds(ulong.MaxValue / 1000000.0);
+            Console.WriteLine(string.Format("Max ADV UTC Timestamp: {0}", maxTimeStamp.ToString("yyyy-MMM-dd HH:mm:ss")));
+
+            Assert.AreEqual(frameTimeStamp.Ticks, new DateTime((long)AdvTimeStamp.ADV_EPOCH_ZERO_TICKS).AddMilliseconds(204496936234000000 / 1000000.0).Ticks);
+
+            var fileGen = new AdvGenerator();
+
+            int tickId = -1;
+            var cfg = new AdvGenerationConfig()
+            {
+                DynaBits = 16,
+                SourceFormat = AdvSourceDataFormat.Format16BitUShort,
+                NumberOfFrames = 2,
+                Compression = CompressionType.Uncompressed,
+                NormalPixelValue = null,
+                MainStreamCustomClock = new CustomClockConfig()
+                {
+                    ClockFrequency = 10000000,
+                    ClockTicksCallback = () => { tickId++; return tickStamps[tickId]; },
+                    TicksTimingAccuracy = 1
+                },
+                CalibrationStreamCustomClock = new CustomClockConfig()
+                {
+                    ClockFrequency = 10000000,
+                    ClockTicksCallback = () => 0,
+                    TicksTimingAccuracy = 1
+                },
+                TimeStampCallback = new GetCurrentImageTimeStampCallback((frameId) => utcTimeStamps[frameId]),
+                ExposureCallback = id => (uint)(exposureMS * 1000000.0)
+            };
+
+            string fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+
+            if (File.Exists(fileName)) File.Delete(fileName);
+
+            try
+            {
+                // Generate
+                fileGen.GenerateaAdv_V2(cfg, fileName);
+
+                // Verify
+                using (var loadedFile = new AdvFile2(fileName))
+                {
+                    AdvFrameInfo frameInfo;
+                    loadedFile.GetMainFramePixels(0, out frameInfo);
+
+                    Assert.IsNotNull(frameInfo);
+                    Assert.IsTrue(frameInfo.HasUtcTimeStamp);
+                    Assert.AreEqual(frameTimeStamp.Ticks, frameInfo.UtcStartExposureTimeStamp.Ticks);
+                    Assert.AreEqual(exposureMS, frameInfo.UtcExposureMilliseconds, 0.00001);
+
+                    Assert.AreEqual(0, frameInfo.TickStampStartTicks);
+                    Assert.AreEqual(tickStamp, frameInfo.TickStampEndTicks);
+
+                    loadedFile.GetMainFramePixels(1, out frameInfo);
+
+                    Assert.IsNotNull(frameInfo);
+                    Assert.IsTrue(frameInfo.HasUtcTimeStamp);
+                    Assert.AreEqual(frameTimeStamp2.Ticks, frameInfo.UtcStartExposureTimeStamp.Ticks);
+                    Assert.AreEqual(exposureMS, frameInfo.UtcExposureMilliseconds, 0.00001);
+
+                    Assert.AreEqual(tickStamp, frameInfo.TickStampStartTicks);
+                    Assert.AreEqual(tickStamp2, frameInfo.TickStampEndTicks);
                 }
             }
             finally

@@ -648,7 +648,7 @@ namespace Adv
             long? ticks = null;
             if (m_GetMainClockTicksCallback != null) ticks = m_GetMainClockTicksCallback();
 
-            AddFrame(AdvStream.MainStream, pixels, compressIfPossible, preferredCompression, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
+            AddFrame(AdvStream.MainStream, pixels, compressIfPossible, preferredCompression, m_PrevFrameEndTimestampAutoTicks, ticks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
         }
@@ -663,7 +663,7 @@ namespace Adv
             long? ticks = null;
             if (m_GetCalibrationClockTicksCallback != null) ticks = m_GetCalibrationClockTicksCallback();
 
-            AddFrame(AdvStream.CalibrationStream, pixels, compressIfPossible, preferredCompression, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
+            AddFrame(AdvStream.CalibrationStream, pixels, compressIfPossible, preferredCompression, m_PrevFrameEndTimestampAutoTicks, ticks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
         }
@@ -698,7 +698,7 @@ namespace Adv
             long? ticks = null;
             if (m_GetMainClockTicksCallback != null) ticks = m_GetMainClockTicksCallback();
 
-            AddFrame(AdvStream.MainStream, pixels, compressIfPossible, preferredCompression, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
+            AddFrame(AdvStream.MainStream, pixels, compressIfPossible, preferredCompression, m_PrevFrameEndTimestampAutoTicks, ticks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
         }
@@ -713,7 +713,7 @@ namespace Adv
             long? ticks = null;
             if (m_GetCalibrationClockTicksCallback != null) ticks = m_GetCalibrationClockTicksCallback();
 
-            AddFrame(AdvStream.CalibrationStream, pixels, compressIfPossible, preferredCompression, ticks, m_PrevFrameEndTimestampAutoTicks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
+            AddFrame(AdvStream.CalibrationStream, pixels, compressIfPossible, preferredCompression, m_PrevFrameEndTimestampAutoTicks, ticks, startUtcTimeStamp, endUtcTimeStamp, metadata, imageData);
 
             m_PrevFrameEndTimestampAutoTicks = ticks;
         }

@@ -53,10 +53,75 @@ namespace Adv
         public bool IsColourImage;
     };
 
+    public class AdvFrameInfo : AdvFrameInfoNative
+    {
+        internal AdvFrameInfo(AdvFrameInfoNative native)
+        {
+            StartTicksLo = native.StartTicksLo;
+            StartTicksHi = native.StartTicksHi;
+            EndTicksLo = native.EndTicksLo;
+            EndTicksHi = native.EndTicksHi;
+
+            UtcTimestampLo = native.UtcTimestampLo;
+            UtcTimestampHi = native.UtcTimestampHi;
+            Exposure = native.Exposure;
+
+            Gamma = native.Gamma;
+            Gain = native.Gain;
+            Shutter = native.Shutter;
+            Offset = native.Offset;
+
+            GPSTrackedSattelites = native.GPSTrackedSattelites;
+            GPSAlmanacStatus = native.GPSAlmanacStatus;
+            GPSFixStatus = native.GPSFixStatus;
+            GPSAlmanacOffset = native.GPSAlmanacOffset;
+
+            VideoCameraFrameIdLo = native.VideoCameraFrameIdLo;
+            VideoCameraFrameIdHi = native.VideoCameraFrameIdHi;
+            Temperature = native.Temperature;
+        }
+
+        public bool HasUtcTimeStamp
+        {
+            get { return UtcTimestampLo != 0 && UtcTimestampHi != 0; }
+        }
+
+        public DateTime UtcStartExposureTimeStamp
+        {
+            get
+            {
+                ulong nanosecondsElapsed = (((ulong)UtcTimestampHi) << 32) + (ulong)UtcTimestampLo;
+                try
+                {
+                    return REFERENCE_DATETIME.AddMilliseconds(nanosecondsElapsed / 1000000.0);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    return REFERENCE_DATETIME;
+                }
+            }
+        }
+
+        public float UtcExposureMilliseconds
+        {
+            get { return Exposure / 1000000.0f; }
+        }
+
+        public ulong TickStampStartTicks
+        {
+            get { return (((ulong)StartTicksHi) << 32) + (ulong)StartTicksLo; }
+        }
+
+        public ulong TickStampEndTicks
+        {
+            get { return (((ulong)EndTicksHi) << 32) + (ulong)EndTicksLo; }
+        }
+    }
+
     [StructLayout(LayoutKind.Explicit)]
     public class AdvFrameInfoNative
     {
-        private static DateTime REFERENCE_DATETIME = new DateTime(2010, 1, 1, 0, 0, 0, 0);
+        protected static DateTime REFERENCE_DATETIME = new DateTime(2010, 1, 1, 0, 0, 0, 0);
 
         public AdvFrameInfoNative()
         {
@@ -64,6 +129,10 @@ namespace Adv
             StartTicksHi = 0;
             EndTicksLo = 0;
             EndTicksHi = 0;
+
+            UtcTimestampLo = 0;
+            UtcTimestampHi = 0;
+            Exposure = 0;
 
             Gamma = 0f;
             Gain = 0f;
@@ -78,7 +147,6 @@ namespace Adv
             VideoCameraFrameIdLo = 0;
             VideoCameraFrameIdHi = 0;
             Temperature = 0;
-
         }
 
         [FieldOffset(0)]
@@ -90,26 +158,32 @@ namespace Adv
         [FieldOffset(12)]
         public uint EndTicksHi;
         [FieldOffset(16)]
-        public float Gamma;
+        public uint UtcTimestampLo;
         [FieldOffset(20)]
-        public float Gain;
+        public uint UtcTimestampHi;
         [FieldOffset(24)]
-        public float Shutter;
-        [FieldOffset(28)]
-        public float Offset;
+        public uint Exposure;
         [FieldOffset(32)]
-        public byte GPSTrackedSattelites;
-        [FieldOffset(33)]
-        public byte GPSAlmanacStatus;
-        [FieldOffset(34)]
-        public byte GPSFixStatus;
-        [FieldOffset(35)]
-        public byte GPSAlmanacOffset;
+        public float Gamma;
         [FieldOffset(36)]
-        public uint VideoCameraFrameIdLo;
+        public float Gain;
         [FieldOffset(40)]
-        public uint VideoCameraFrameIdHi;
+        public float Shutter;
         [FieldOffset(44)]
+        public float Offset;
+        [FieldOffset(48)]
+        public byte GPSTrackedSattelites;
+        [FieldOffset(49)]
+        public byte GPSAlmanacStatus;
+        [FieldOffset(50)]
+        public byte GPSFixStatus;
+        [FieldOffset(51)]
+        public byte GPSAlmanacOffset;
+        [FieldOffset(52)]
+        public uint VideoCameraFrameIdLo;
+        [FieldOffset(56)]
+        public uint VideoCameraFrameIdHi;
+        [FieldOffset(60)]
         public float Temperature;
     }
 
@@ -1353,17 +1427,25 @@ namespace Adv
 
         public static uint[] GetFramePixels(int streamId, int frameNo, int width, int height)
         {
+            AdvFrameInfo frameInfo;
+            return GetFramePixels(streamId, frameNo, width, height, out frameInfo);
+        }
+
+        public static uint[] GetFramePixels(int streamId, int frameNo, int width, int height, out AdvFrameInfo frameInfo)
+        {
 			uint[] pixels = new uint[width * height];
-			var frameInfo = new AdvFrameInfoNative();
+			var frameInfoNative = new AdvFrameInfoNative();
 			byte[] systemError = new byte[256 * 16];
 
             if (!CrossPlatform.IsWindows)
-                AdvVer2_GetFramePixelsUnix(streamId, frameNo, pixels, frameInfo, systemError);
+                AdvVer2_GetFramePixelsUnix(streamId, frameNo, pixels, frameInfoNative, systemError);
             else if (Is64Bit())
-                AdvVer2_GetFramePixels64(streamId, frameNo, pixels, frameInfo, systemError);
+                AdvVer2_GetFramePixels64(streamId, frameNo, pixels, frameInfoNative, systemError);
             else
-                AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfo, systemError);
+                AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfoNative, systemError);
 
+            frameInfo = new AdvFrameInfo(frameInfoNative);
+            
             return pixels;
         }
 
