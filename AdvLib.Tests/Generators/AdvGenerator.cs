@@ -65,6 +65,7 @@ namespace AdvLib.Tests.Generators
 
         public Dictionary<string, string> MainStreamMetadata = new Dictionary<string, string>();
         public Dictionary<string, string> CalibrationStreamMetadata = new Dictionary<string, string>();
+        public Dictionary<string, string> UserMetadata = new Dictionary<string, string>();
     }
 
     public class AdvGenerator
@@ -122,6 +123,9 @@ namespace AdvLib.Tests.Generators
 
             foreach (string key in config.CalibrationStreamMetadata.Keys)
                 recorder.FileMetaData.AddCalibrationStreamTag(key, config.CalibrationStreamMetadata[key]);
+
+            foreach (string key in config.UserMetadata.Keys)
+                recorder.FileMetaData.AddUserTag(key, config.UserMetadata[key]);
 
             recorder.StartRecordingNewFile(fileName, config.UtcTimestampAccuracyInNanoseconds);
 
@@ -237,6 +241,8 @@ namespace AdvLib.Tests.Generators
             Adv.AdvLib.DefineImageSection(640, 480, 16);
             Adv.AdvLib.DefineStatusSection(5000000 /* 5ms */);
             Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
+
+            Adv.AdvLib.AddUserTag("Example", "Value");
 
             Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
             Adv.AdvLib.EndFile();

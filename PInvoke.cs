@@ -279,19 +279,23 @@ namespace Adv
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSectionTag")]
         //unsigned int AdvVer2_DefineStatusSectionTag(const char* tagName, int tagType);
-        private static extern uint AdvVer2_DefineStatusSectionTag32([MarshalAs(UnmanagedType.LPStr)]string tagName, AdvTagType tagType);
+        private static extern uint AdvVer2_DefineStatusSectionTag32([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, AdvTagType tagType);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddFileTag")]
         //unsigned int AdvVer2_AddFileTag(const char* tagName, const char* tagValue);
-        private static extern uint AdvVer2_AddFileTag32([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+        private static extern uint AdvVer2_AddFileTag32([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
+
+        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddUserTag")]
+        //unsigned int AdvVer2_AddUserTag(const char* tagName, const char* tagValue);
+        private static extern uint AdvVer2_AddUserTag32([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddOrUpdateImageSectionTag")]
         //void AdvVer2_AddOrUpdateImageSectionTag(const char* tagName, const char* tagValue);
-        private static extern uint AdvVer2_AddOrUpdateImageSectionTag32([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+        private static extern uint AdvVer2_AddOrUpdateImageSectionTag32([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddStatusTagUTF8String")]
         //void AdvVer2_FrameAddStatusTagUTF8String(unsigned int tagIndex, const char* tagValue);
-        private static extern void AdvVer2_FrameAddStatusTagUTF8String32(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+        private static extern void AdvVer2_FrameAddStatusTagUTF8String32(uint tagIndex, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddStatusTagMessage")]
         //void AdvVer2_FrameAddStatusTagMessage(unsigned int tagIndex, const char* tagValue);
@@ -490,19 +494,23 @@ namespace Adv
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSectionTag")]
         //unsigned int AdvVer2_DefineStatusSectionTag(const char* tagName, int tagType);
-        private static extern uint AdvVer2_DefineStatusSectionTag64([MarshalAs(UnmanagedType.LPStr)]string tagName, AdvTagType tagType);
+        private static extern uint AdvVer2_DefineStatusSectionTag64([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, AdvTagType tagType);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddFileTag")]
         //unsigned int AdvVer2_AddFileTag(const char* tagName, const char* tagValue);
-        private static extern uint AdvVer2_AddFileTag64([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+        private static extern uint AdvVer2_AddFileTag64([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
+
+        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddUserTag")]
+        //unsigned int AdvVer2_AddUserTag(const char* tagName, const char* tagValue);
+        private static extern uint AdvVer2_AddUserTag64([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddOrUpdateImageSectionTag")]
         //void AdvVer2_AddOrUpdateImageSectionTag(const char* tagName, const char* tagValue);
-        private static extern uint AdvVer2_AddOrUpdateImageSectionTag64([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+        private static extern uint AdvVer2_AddOrUpdateImageSectionTag64([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddStatusTagUTF8String")]
         //void AdvVer2_FrameAddStatusTagUTF8String(unsigned int tagIndex, const char* tagValue);
-        private static extern void AdvVer2_FrameAddStatusTagUTF8String64(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+        private static extern void AdvVer2_FrameAddStatusTagUTF8String64(uint tagIndex, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddStatusTagMessage")]
         //void AdvVer2_FrameAddStatusTagMessage(unsigned int tagIndex, const char* tagValue);
@@ -702,19 +710,23 @@ namespace Adv
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSectionTag")]
         //unsigned int AdvVer2_DefineStatusSectionTag(const char* tagName, int tagType);
-        private static extern uint AdvVer2_DefineStatusSectionTagUnix([MarshalAs(UnmanagedType.LPStr)]string tagName, AdvTagType tagType);
+        private static extern uint AdvVer2_DefineStatusSectionTagUnix([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, AdvTagType tagType);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddFileTag")]
         //unsigned int AdvVer2_AddFileTag(const char* tagName, const char* tagValue);
-        private static extern uint AdvVer2_AddFileTagUnix([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+        private static extern uint AdvVer2_AddFileTagUnix([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
+
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddUserTag")]
+        //unsigned int AdvVer2_AddUserTag(const char* tagName, const char* tagValue);
+        private static extern uint AdvVer2_AddUserTagUnix([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_AddOrUpdateImageSectionTag")]
         //void AdvVer2_AddOrUpdateImageSectionTag(const char* tagName, const char* tagValue);
-        private static extern uint AdvVer2_AddOrUpdateImageSectionTagUnix([MarshalAs(UnmanagedType.LPStr)]string tagName, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+        private static extern uint AdvVer2_AddOrUpdateImageSectionTagUnix([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddStatusTagUTF8String")]
         //void AdvVer2_FrameAddStatusTagUTF8String(unsigned int tagIndex, const char* tagValue);
-        private static extern void AdvVer2_FrameAddStatusTagUTF8StringUnix(uint tagIndex, [MarshalAs(UnmanagedType.LPStr)]string tagValue);
+        private static extern void AdvVer2_FrameAddStatusTagUTF8StringUnix(uint tagIndex, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddStatusTagMessage")]
         //void AdvVer2_FrameAddStatusTagMessage(unsigned int tagIndex, const char* tagValue);
@@ -1196,41 +1208,51 @@ namespace Adv
         public static uint DefineStatusSectionTag(string tagName, AdvTagType tagType)
         {
             if (!CrossPlatform.IsWindows)
-                return AdvVer2_DefineStatusSectionTagUnix(tagName, tagType);
+                return AdvVer2_DefineStatusSectionTagUnix(StringToUTF8Bytes(tagName), tagType);
             else if (Is64Bit())
-                return AdvVer2_DefineStatusSectionTag64(tagName, tagType);
+                return AdvVer2_DefineStatusSectionTag64(StringToUTF8Bytes(tagName), tagType);
             else
-                return AdvVer2_DefineStatusSectionTag32(tagName, tagType);
+                return AdvVer2_DefineStatusSectionTag32(StringToUTF8Bytes(tagName), tagType);
         }
 
         public static uint AddFileTag(string tagName, string tagValue)
         {
             if (!CrossPlatform.IsWindows)
-                return AdvVer2_AddFileTagUnix(tagName, tagValue);
+                return AdvVer2_AddFileTagUnix(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
             else if (Is64Bit())
-                return AdvVer2_AddFileTag64(tagName, tagValue);
+                return AdvVer2_AddFileTag64(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
             else
-                return AdvVer2_AddFileTag32(tagName, tagValue);
+                return AdvVer2_AddFileTag32(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
+        }
+
+        public static uint AddUserTag(string tagName, string tagValue)
+        {
+            if (!CrossPlatform.IsWindows)
+                return AdvVer2_AddUserTagUnix(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
+            else if (Is64Bit())
+                return AdvVer2_AddUserTag64(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
+            else
+                return AdvVer2_AddUserTag32(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
         }
 
         public static uint AddOrUpdateImageSectionTag(string tagName, string tagValue)
         {
             if (!CrossPlatform.IsWindows)
-                return AdvVer2_AddOrUpdateImageSectionTagUnix(tagName, tagValue);
+                return AdvVer2_AddOrUpdateImageSectionTagUnix(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
             else if (Is64Bit())
-                return AdvVer2_AddOrUpdateImageSectionTag64(tagName, tagValue);
+                return AdvVer2_AddOrUpdateImageSectionTag64(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
             else
-                return AdvVer2_AddOrUpdateImageSectionTag32(tagName, tagValue);
+                return AdvVer2_AddOrUpdateImageSectionTag32(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
         }
 
         public static void FrameAddStatusTagUTF8String(uint tagIndex, string tagValue)
         {
             if (!CrossPlatform.IsWindows)
-                AdvVer2_FrameAddStatusTagUTF8StringUnix(tagIndex, tagValue);
+                AdvVer2_FrameAddStatusTagUTF8StringUnix(tagIndex, StringToUTF8Bytes(tagValue));
             else if (Is64Bit())
-                AdvVer2_FrameAddStatusTagUTF8String64(tagIndex, tagValue);
+                AdvVer2_FrameAddStatusTagUTF8String64(tagIndex, StringToUTF8Bytes(tagValue));
             else
-                AdvVer2_FrameAddStatusTagUTF8String32(tagIndex, tagValue);
+                AdvVer2_FrameAddStatusTagUTF8String32(tagIndex, StringToUTF8Bytes(tagValue));
         }
 
         public static void FrameAddStatusTagMessage(uint tagIndex, string tagValue)
@@ -1355,6 +1377,16 @@ namespace Adv
             return GetAdvTagPair(TagPairType.CalibrationStream, tagId, out tagName, out tagValue);
         }
 
+        public static bool GetSystemMetadataTag(int tagId, out string tagName, out string tagValue)
+        {
+            return GetAdvTagPair(TagPairType.SystemMetadata, tagId, out tagName, out tagValue);
+        }
+
+        public static bool GetUserMetadataTag(int tagId, out string tagName, out string tagValue)
+        {
+            return GetAdvTagPair(TagPairType.UserMetadata, tagId, out tagName, out tagValue);
+        }
+
         private static bool GetAdvTagPair(TagPairType tagType, int tagId, out string tagName, out string tagValue)
         {
             tagName = null;
@@ -1387,13 +1419,13 @@ namespace Adv
             if (rv != 0)
                 return false;
 
-            tagName = GetStringFromBytes(tagNameBT);
-            tagValue = GetStringFromBytes(tagValueBT);
+            tagName = GetStringFromUTF8Bytes(tagNameBT);
+            tagValue = GetStringFromUTF8Bytes(tagValueBT);
 
             return true;
         }
 
-        internal static string GetStringFromBytes(byte[] chars)
+        internal static string GetStringFromUTF8Bytes(byte[] chars)
         {
             string str = Encoding.UTF8.GetString(chars);
             return str.Substring(0, str.IndexOf('\0'));

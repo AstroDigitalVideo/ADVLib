@@ -531,7 +531,7 @@ namespace Adv
                 AdvLib.AddCalibrationStreamTag(key, FileMetaData.CalibrationStreamMetaData[key]);
 
             foreach (string key in FileMetaData.UserMetaData.Keys)
-                AdvLib.AddFileTag(key, FileMetaData.UserMetaData[key]);
+                AdvLib.AddUserTag(key, FileMetaData.UserMetaData[key]);
 
             AdvLib.DefineImageSection(ImageConfig.ImageWidth, ImageConfig.ImageHeight, ImageConfig.ImageBitsPerPixel);
             AdvLib.DefineStatusSection(utcTimestampAccuracyInNanoseconds);

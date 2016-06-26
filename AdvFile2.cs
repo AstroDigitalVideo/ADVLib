@@ -20,6 +20,9 @@ namespace Adv
         public DataStreamDefinition MainSteamInfo;
         public DataStreamDefinition CalibrationSteamInfo;
 
+        public Dictionary<string, string> SystemMetadataTags = new Dictionary<string, string>();
+        public Dictionary<string, string> UserMetadataTags = new Dictionary<string, string>();
+
         public int Width;
         public int Height;
         public int DataBpp;
@@ -77,9 +80,21 @@ namespace Adv
                     CalibrationSteamInfo.MetadataTags.Add(name, value);
             }
 
+            for (int i = 0; i < fileInfo.SystemMetadataTagsCount; i++)
+            {
+                string name;
+                string value;
+                if (AdvLib.GetSystemMetadataTag(i, out name, out value))
+                    SystemMetadataTags.Add(name, value);
+            }
 
-            //fileInfo.SystemMetadataTagsCount;
-            //fileInfo.UserMetadataTagsCount;
+            for (int i = 0; i < fileInfo.UserMetadataTagsCount; i++)
+            {
+                string name;
+                string value;
+                if (AdvLib.GetUserMetadataTag(i, out name, out value))
+                    UserMetadataTags.Add(name, value);
+            }
         }
 
         public uint[] GetMainFramePixels(uint frameNo)

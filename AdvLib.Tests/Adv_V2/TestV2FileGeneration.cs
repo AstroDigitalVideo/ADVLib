@@ -122,7 +122,110 @@ namespace AdvLib.Tests.Adv_V2
                     Console.WriteLine(ex);
                     Trace.WriteLine(ex);
                 }
-            }            
+            }
+        }
+
+        [Test]
+        public void TestMetadataTagsAreSavedAndReadCorrectly()
+        {
+            var fileGen = new AdvGenerator();
+            var cfg = BuildZeroTimestampConfig(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Uncompressed);
+
+            string fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+
+            if (File.Exists(fileName)) File.Delete(fileName);
+
+            try
+            {
+                // Generate
+                cfg.MainStreamMetadata.Add("Name1", "Христо");
+                cfg.MainStreamMetadata.Add("Name2", "Frédéric");
+                cfg.CalibrationStreamMetadata.Add("Name3", "好的茶");
+                cfg.UserMetadata.Add("User0", "1234\rabcd\r\n");
+                cfg.UserMetadata.Add("UserArb", "1 قيمة");
+                cfg.UserMetadata.Add("UserChi", "值1");
+                cfg.UserMetadata.Add("UserCyr", "Значение 1");
+                cfg.UserMetadata.Add("UserGal", "કિંમત 1");
+                cfg.UserMetadata.Add("UserGre", "αξία 1");
+                cfg.UserMetadata.Add("UserHeb", "1 ערך");
+                cfg.UserMetadata.Add("UserHin", "मान 1");
+                cfg.UserMetadata.Add("UserJpn", "値1");
+                cfg.UserMetadata.Add("UserKan", "ಮೌಲ್ಯ 1");
+                cfg.UserMetadata.Add("UserKaz", "мән 1");
+                cfg.UserMetadata.Add("UserKor", "값 1");
+                cfg.UserMetadata.Add("UserMal", "മൂല്യം 1");
+                cfg.UserMetadata.Add("UserMar", "मूल्य 1");
+                cfg.UserMetadata.Add("UserPer", "1 ارزش");
+                cfg.UserMetadata.Add("UserTel", "విలువ 1");
+                cfg.UserMetadata.Add("UserUrd", "قیمت 1");
+                cfg.UserMetadata.Add("UserViet", "giá trị 1");
+                
+                
+                fileGen.GenerateaAdv_V2(cfg, fileName);
+
+
+                // Verify
+                using (var loadedFile = new AdvFile2(fileName))
+                {
+                    Assert.IsTrue(loadedFile.MainSteamInfo.MetadataTags.ContainsKey("Name1"));
+                    Assert.AreEqual("Христо", loadedFile.MainSteamInfo.MetadataTags["Name1"]);
+                    Assert.IsTrue(loadedFile.MainSteamInfo.MetadataTags.ContainsKey("Name2"));
+                    Assert.AreEqual("Frédéric", loadedFile.MainSteamInfo.MetadataTags["Name2"]);
+
+                    Assert.IsTrue(loadedFile.CalibrationSteamInfo.MetadataTags.ContainsKey("Name3"));
+                    Assert.AreEqual("好的茶", loadedFile.CalibrationSteamInfo.MetadataTags["Name3"]);
+
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("User0"));
+                    Assert.AreEqual("1234\rabcd\r\n", loadedFile.UserMetadataTags["User0"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserArb"));
+                    Assert.AreEqual("1 قيمة", loadedFile.UserMetadataTags["UserArb"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserChi"));
+                    Assert.AreEqual("值1", loadedFile.UserMetadataTags["UserChi"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserCyr"));
+                    Assert.AreEqual("Значение 1", loadedFile.UserMetadataTags["UserCyr"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserGal"));
+                    Assert.AreEqual("કિંમત 1", loadedFile.UserMetadataTags["UserGal"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserGre"));
+                    Assert.AreEqual("αξία 1", loadedFile.UserMetadataTags["UserGre"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserHeb"));
+                    Assert.AreEqual("1 ערך", loadedFile.UserMetadataTags["UserHeb"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserHin"));
+                    Assert.AreEqual("मान 1", loadedFile.UserMetadataTags["UserHin"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserJpn"));
+                    Assert.AreEqual("値1", loadedFile.UserMetadataTags["UserJpn"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserKan"));
+                    Assert.AreEqual("ಮೌಲ್ಯ 1", loadedFile.UserMetadataTags["UserKan"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserKaz"));
+                    Assert.AreEqual("мән 1", loadedFile.UserMetadataTags["UserKaz"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserKor"));
+                    Assert.AreEqual("값 1", loadedFile.UserMetadataTags["UserKor"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserMal"));
+                    Assert.AreEqual("മൂല്യം 1", loadedFile.UserMetadataTags["UserMal"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserMar"));
+                    Assert.AreEqual("मूल्य 1", loadedFile.UserMetadataTags["UserMar"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserPer"));
+                    Assert.AreEqual("1 ارزش", loadedFile.UserMetadataTags["UserPer"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserTel"));
+                    Assert.AreEqual("విలువ 1", loadedFile.UserMetadataTags["UserTel"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserUrd"));
+                    Assert.AreEqual("قیمت 1", loadedFile.UserMetadataTags["UserUrd"]);
+                    Assert.IsTrue(loadedFile.UserMetadataTags.ContainsKey("UserViet"));
+                    Assert.AreEqual("giá trị 1", loadedFile.UserMetadataTags["UserViet"]);
+                }
+            }
+            finally
+            {
+                try
+                {
+                    if (File.Exists(fileName))
+                        File.Delete(fileName);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    Trace.WriteLine(ex);
+                }
+            }
         }
 
         private AdvGenerationConfig BuildZeroTimestampConfig(AdvSourceDataFormat dataFormat, byte dynaBits, CompressionType compression)
