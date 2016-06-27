@@ -98,8 +98,8 @@ namespace AdvLib.Tests.Generators
             // can also define additional status parameters to be recorded with each video frame
             recorder.StatusSectionConfig.RecordGain = true;
             recorder.StatusSectionConfig.RecordGamma = true;
-            int customTagIdCustomGain = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-GAIN", AdvTagType.UInt32);
-            int customTagIdMessages = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-MESSAGES", AdvTagType.List16OfAnsiString255);
+            int customTagIdCustomGain = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-GAIN", Adv2TagType.Int32);
+            int customTagIdMessages = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-MESSAGE", Adv2TagType.UTF8String);
 
             if (config.MainStreamCustomClock != null)
                 recorder.DefineCustomClock(AdvRecorder.AdvStream.MainStream, config.MainStreamCustomClock.ClockFrequency, config.MainStreamCustomClock.TicksTimingAccuracy, config.MainStreamCustomClock.ClockTicksCallback);

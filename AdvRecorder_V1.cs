@@ -88,9 +88,6 @@ namespace Obsolete
 			if (AdditionalStatusTags.ContainsKey(tagName))
 				throw new ArgumentException("This tag name as been already added.");
 
-			if (tagType == AdvTagType.UTF8String || tagType == AdvTagType.List16OfUTF8String)
-				throw new ArgumentException("UTF8 strings are not supported in the obsolete recorder which is using ADV version 1.");
-
 			AdditionalStatusTags.Add(tagName, tagType);
 
 			return AdditionalStatusTags.Count - 1;

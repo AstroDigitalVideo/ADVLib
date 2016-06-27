@@ -332,6 +332,88 @@ namespace AdvLib.Tests.Adv_V2
             }
         }
 
+        [Test]
+        public void TestStatusTagsAreSavedAndReadCorrectly()
+        {
+            var fileGen = new AdvGenerator();
+
+            var cfg = BuildZeroTimestampConfig(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Uncompressed);
+
+            string fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+
+            if (File.Exists(fileName)) File.Delete(fileName);
+
+            try
+            {
+                // Generate
+                var recorder = new AdvRecorder();
+                recorder.ImageConfig.SetImageParameters(640, 480, 16, 0);
+
+                recorder.StatusSectionConfig.RecordGain = true;
+                recorder.StatusSectionConfig.RecordGamma = true;
+                recorder.StatusSectionConfig.RecordShutter = true;
+                recorder.StatusSectionConfig.RecordCameraOffset = true;
+                recorder.StatusSectionConfig.RecordSystemTime = true;
+                recorder.StatusSectionConfig.RecordTrackedSatellites = true;
+                recorder.StatusSectionConfig.RecordAlmanacStatus = true;
+                recorder.StatusSectionConfig.RecordFixStatus = true;
+                recorder.StatusSectionConfig.RecordSystemErrors = true;
+                recorder.StatusSectionConfig.RecordVideoCameraFrameId = true;
+                recorder.StatusSectionConfig.RecordHardwareTimerFrameId = true;
+
+                //recorder.StatusSectionConfig.AddDefineTag("", AdvTagType.AnsiString255);
+
+                recorder.StartRecordingNewFile(fileName, 0);
+
+                var status = new AdvRecorder.AdvStatusEntry()
+                {
+                    AlmanacStatus = AlmanacStatus.Good,
+                    CameraOffset = 8.23f,
+                    FixStatus = FixStatus.PFix,
+                    Gain = 32.82f,
+                    Gamma = 0.35f,
+                    Shutter = 2.502f,
+                    SystemTime = AdvTimeStamp.FromDateTime(DateTime.Now.AddMilliseconds(123)),
+                    VideoCameraFrameId = 19289232,
+                    HardwareTimerFrameId = 9102
+                };
+
+                status.AdditionalStatusTags = new object[2];
+
+                var imageGenerator = new ImageGenerator();
+                ushort[] imagePixels = imageGenerator.GetCurrentImageBytesInt16(0, 16);
+
+                recorder.AddVideoFrame(
+                    imagePixels, false, null,
+                    AdvTimeStamp.FromDateTime(DateTime.Now), 
+                    AdvTimeStamp.FromDateTime(DateTime.Now.AddSeconds(2.56)),
+                    status, AdvImageData.PixelDepth16Bit);
+
+                recorder.FinishRecording();
+
+                // Verify
+                using (var loadedFile = new AdvFile2(fileName))
+                {
+                    AdvFrameInfo frameInfo;
+                    loadedFile.GetMainFramePixels(0, out frameInfo);
+
+                }
+            }
+            finally
+            {
+                try
+                {
+                    if (File.Exists(fileName))
+                        File.Delete(fileName);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    Trace.WriteLine(ex);
+                }
+            }
+        }
+
         private AdvGenerationConfig BuildZeroTimestampConfig(AdvSourceDataFormat dataFormat, byte dynaBits, CompressionType compression)
         {
             return new AdvGenerationConfig()

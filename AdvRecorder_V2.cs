@@ -82,7 +82,6 @@ namespace Adv
         private uint m_TAGID_SystemTime;
         private uint m_TAGID_TrackedSatellites;
         private uint m_TAGID_AlmanacStatus;
-        private uint m_TAGID_AlmanacOffset;
         private uint m_TAGID_FixStatus;
         private uint m_TAGID_Gain;
         private uint m_TAGID_Shutter;
@@ -90,12 +89,7 @@ namespace Adv
         private uint m_TAGID_VideoCameraFrameId;
         private uint m_TAGID_HardwareTimerFrameId;
         private uint m_TAGID_Gamma;
-        private uint m_TAGID_UserCommand;
         private uint m_TAGID_SystemError;
-        private uint m_TAGID_AoiTop;
-        private uint m_TAGID_AoiLeft;
-        private uint m_TAGID_AoiWidth;
-        private uint m_TAGID_AoiHeight;
 
         public class AdvImageConfig
         {
@@ -181,7 +175,6 @@ namespace Adv
             public bool RecordSystemTime { get; set; }
             public bool RecordTrackedSatellites { get; set; }
             public bool RecordAlmanacStatus { get; set; }
-            public bool RecordAlmanacOffset { get; set; }
             public bool RecordFixStatus { get; set; }
             public bool RecordGain { get; set; }
             public bool RecordShutter { get; set; }
@@ -189,13 +182,11 @@ namespace Adv
             public bool RecordGamma { get; set; }
             public bool RecordVideoCameraFrameId { get; set; }
             public bool RecordHardwareTimerFrameId { get; set; }
-            public bool RecordUserCommands { get; set; }
             public bool RecordSystemErrors { get; set; }
-            public bool RecordAOIPosition { get; set; }
 
-            internal Dictionary<string, AdvTagType> AdditionalStatusTags = new Dictionary<string, AdvTagType>();
+            internal Dictionary<string, Adv2TagType> AdditionalStatusTags = new Dictionary<string, Adv2TagType>();
 
-            public int AddDefineTag(string tagName, AdvTagType tagType)
+            public int AddDefineTag(string tagName, Adv2TagType tagType)
             {
                 if (AdditionalStatusTags.ContainsKey(tagName))
                     throw new ArgumentException("This tag name as been already added.");
@@ -222,11 +213,6 @@ namespace Adv
             /// The status of the almanac update when obtaining a UTC timestamp
             /// </summary>
             public AlmanacStatus AlmanacStatus { get; set; }
-
-            /// <summary>
-            /// The almanac offset in seconds that was added to the uncorrected time reported by the satellites in order to compute the UTC time
-            /// </summary>
-            public byte AlmanacOffset { get; set; }
 
             /// <summary>
             /// The status of the UTC time satellite fix
@@ -264,35 +250,9 @@ namespace Adv
             public ulong HardwareTimerFrameId { get; set; }
 
             /// <summary>
-            /// The user commands executed since the last recorded frame. Up to 16 lines, each line up to 255 characters.
+            /// System errors detected since the last recorded frame. 
             /// </summary>
-            public string[] UserCommands { get; set; }
-
-            /// <summary>
-            /// System errors detected since the last recorded frame. Up to 16 lines, each line up to 255 characters.
-            /// </summary>
-            public string[] SystemErrors { get; set; }
-
-
-            /// <summary>
-            /// The top position of the top-left corner of the Area of Interest (AOI), also called Region of Interest (ROI)
-            /// </summary>
-            public ushort AoiTop { get; set; }
-
-            /// <summary>
-            /// The left position of the top-left corner of the Area of Interest (AOI), also called Region of Interest (ROI)
-            /// </summary>
-            public ushort AoiLeft { get; set; }
-
-            /// <summary>
-            /// The width of the Area of Interest (AOI), also called Region of Interest (ROI)
-            /// </summary>
-            public ushort AoiWidth { get; set; }
-
-            /// <summary>
-            /// The height of the Area of Interest (AOI), also called Region of Interest (ROI)
-            /// </summary>
-            public ushort AoiHeight { get; set; }
+            public string SystemErrors { get; set; }
 
             /// <summary>
             /// The values of the additional tags. The value types must correspond to the defined tag type. Only the following
@@ -577,29 +537,19 @@ namespace Adv
             //UserCommand - A list of commands issued by the user during the generation of the current video frame. The commands are saved as free text (for example: Changed gain)
             //SystemError - A list of errors that were detected by the system during the generation of the current video frame. 
 
-            if (StatusSectionConfig.RecordSystemTime) m_TAGID_SystemTime = AdvLib.DefineStatusSectionTag("SystemTime", AdvTagType.ULong64);
+            if (StatusSectionConfig.RecordSystemTime) m_TAGID_SystemTime = AdvLib.DefineStatusSectionTag("SystemTime", Adv2TagType.Long64);
 
-            if (StatusSectionConfig.RecordTrackedSatellites) m_TAGID_TrackedSatellites = AdvLib.DefineStatusSectionTag("TrackedSatellites", AdvTagType.UInt8);
-            if (StatusSectionConfig.RecordAlmanacStatus) m_TAGID_AlmanacStatus = AdvLib.DefineStatusSectionTag("AlmanacStatus", AdvTagType.UInt8);
-            if (StatusSectionConfig.RecordAlmanacOffset) m_TAGID_AlmanacOffset = AdvLib.DefineStatusSectionTag("AlmanacOffset", AdvTagType.UInt8);
-            if (StatusSectionConfig.RecordFixStatus) m_TAGID_FixStatus = AdvLib.DefineStatusSectionTag("FixStatus", AdvTagType.UInt8);
-            if (StatusSectionConfig.RecordGamma) m_TAGID_Gamma = AdvLib.DefineStatusSectionTag("Gamma", AdvTagType.Real);
-            if (StatusSectionConfig.RecordGain) m_TAGID_Gain = AdvLib.DefineStatusSectionTag("Gain", AdvTagType.Real);
-            if (StatusSectionConfig.RecordShutter) m_TAGID_Shutter = AdvLib.DefineStatusSectionTag("Shutter", AdvTagType.Real);
-            if (StatusSectionConfig.RecordCameraOffset) m_TAGID_Offset = AdvLib.DefineStatusSectionTag("Offset", AdvTagType.Real);
+            if (StatusSectionConfig.RecordTrackedSatellites) m_TAGID_TrackedSatellites = AdvLib.DefineStatusSectionTag("TrackedSatellites", Adv2TagType.Int8);
+            if (StatusSectionConfig.RecordAlmanacStatus) m_TAGID_AlmanacStatus = AdvLib.DefineStatusSectionTag("AlmanacStatus", Adv2TagType.Int8);
+            if (StatusSectionConfig.RecordFixStatus) m_TAGID_FixStatus = AdvLib.DefineStatusSectionTag("SatelliteFixStatus", Adv2TagType.Int8);
+            if (StatusSectionConfig.RecordGamma) m_TAGID_Gamma = AdvLib.DefineStatusSectionTag("Gamma", Adv2TagType.Real);
+            if (StatusSectionConfig.RecordGain) m_TAGID_Gain = AdvLib.DefineStatusSectionTag("Gain", Adv2TagType.Real);
+            if (StatusSectionConfig.RecordShutter) m_TAGID_Shutter = AdvLib.DefineStatusSectionTag("Shutter", Adv2TagType.Real);
+            if (StatusSectionConfig.RecordCameraOffset) m_TAGID_Offset = AdvLib.DefineStatusSectionTag("Offset", Adv2TagType.Real);
 
-            if (StatusSectionConfig.RecordAOIPosition)
-            {
-                m_TAGID_AoiTop = AdvLib.DefineStatusSectionTag("AOI-TOP", AdvTagType.UInt16);
-                m_TAGID_AoiLeft = AdvLib.DefineStatusSectionTag("AOI-LEFT", AdvTagType.UInt16);
-                m_TAGID_AoiWidth = AdvLib.DefineStatusSectionTag("AOI-WIDTH", AdvTagType.UInt16);
-                m_TAGID_AoiHeight = AdvLib.DefineStatusSectionTag("AOI-HEIGHT", AdvTagType.UInt16);
-            }
-
-            if (StatusSectionConfig.RecordVideoCameraFrameId) m_TAGID_VideoCameraFrameId = AdvLib.DefineStatusSectionTag("VideoCameraFrameId", AdvTagType.ULong64);
-            if (StatusSectionConfig.RecordHardwareTimerFrameId) m_TAGID_HardwareTimerFrameId = AdvLib.DefineStatusSectionTag("HardwareTimerFrameId", AdvTagType.ULong64);
-            if (StatusSectionConfig.RecordUserCommands) m_TAGID_UserCommand = AdvLib.DefineStatusSectionTag("UserCommand", AdvTagType.List16OfAnsiString255);
-            if (StatusSectionConfig.RecordSystemErrors) m_TAGID_SystemError = AdvLib.DefineStatusSectionTag("SystemError", AdvTagType.List16OfAnsiString255);
+            if (StatusSectionConfig.RecordVideoCameraFrameId) m_TAGID_VideoCameraFrameId = AdvLib.DefineStatusSectionTag("VideoCameraFrameId", Adv2TagType.Long64);
+            if (StatusSectionConfig.RecordHardwareTimerFrameId) m_TAGID_HardwareTimerFrameId = AdvLib.DefineStatusSectionTag("HardwareTimerFrameId", Adv2TagType.Long64);
+            if (StatusSectionConfig.RecordSystemErrors) m_TAGID_SystemError = AdvLib.DefineStatusSectionTag("SystemError", Adv2TagType.UTF8String);
 
             m_AdditionalStatusSectionTagIds.Clear();
 
@@ -862,7 +812,6 @@ namespace Adv
 
             if (StatusSectionConfig.RecordTrackedSatellites) AdvLib.FrameAddStatusTagUInt8(m_TAGID_TrackedSatellites, metadata.TrackedSatellites);
             if (StatusSectionConfig.RecordAlmanacStatus) AdvLib.FrameAddStatusTagUInt8(m_TAGID_AlmanacStatus, (byte)metadata.AlmanacStatus);
-            if (StatusSectionConfig.RecordAlmanacOffset) AdvLib.FrameAddStatusTagUInt8(m_TAGID_AlmanacOffset, metadata.AlmanacOffset);
             if (StatusSectionConfig.RecordFixStatus) AdvLib.FrameAddStatusTagUInt8(m_TAGID_FixStatus, (byte)metadata.FixStatus);
             if (StatusSectionConfig.RecordGain) AdvLib.FrameAddStatusTagReal(m_TAGID_Gain, metadata.Gain);
             if (StatusSectionConfig.RecordGamma) AdvLib.FrameAddStatusTagReal(m_TAGID_Gamma, metadata.Gamma);
@@ -871,40 +820,10 @@ namespace Adv
             if (StatusSectionConfig.RecordVideoCameraFrameId) AdvLib.FrameAddStatusTag64(m_TAGID_VideoCameraFrameId, metadata.VideoCameraFrameId);
 
             if (StatusSectionConfig.RecordHardwareTimerFrameId) AdvLib.FrameAddStatusTag64(m_TAGID_HardwareTimerFrameId, metadata.HardwareTimerFrameId);
-            if (StatusSectionConfig.RecordAOIPosition)
-            {
-                AdvLib.FrameAddStatusTag16(m_TAGID_AoiTop, metadata.AoiTop);
-                AdvLib.FrameAddStatusTag16(m_TAGID_AoiLeft, metadata.AoiLeft);
-                AdvLib.FrameAddStatusTag16(m_TAGID_AoiWidth, metadata.AoiWidth);
-                AdvLib.FrameAddStatusTag16(m_TAGID_AoiHeight, metadata.AoiHeight);
-            }
-
-            if (StatusSectionConfig.RecordUserCommands && metadata.UserCommands != null)
-            {
-                for (int i = 0; i < Math.Min(16, metadata.UserCommands.Count()); i++)
-                {
-                    if (metadata.UserCommands[i] != null)
-                    {
-                        if (metadata.UserCommands[i].Length > 255)
-                            AdvLib.FrameAddStatusTagMessage(m_TAGID_UserCommand, metadata.UserCommands[i].Substring(0, 255));
-                        else
-                            AdvLib.FrameAddStatusTagMessage(m_TAGID_UserCommand, metadata.UserCommands[i]);
-                    }
-                }
-            }
 
             if (StatusSectionConfig.RecordSystemErrors && metadata.SystemErrors != null)
             {
-                for (int i = 0; i < Math.Min(16, metadata.SystemErrors.Count()); i++)
-                {
-                    if (metadata.SystemErrors[i] != null)
-                    {
-                        if (metadata.SystemErrors[i].Length > 255)
-                            AdvLib.FrameAddStatusTagMessage(m_TAGID_SystemError, metadata.SystemErrors[i].Substring(0, 255));
-                        else
-                            AdvLib.FrameAddStatusTagMessage(m_TAGID_SystemError, metadata.SystemErrors[i]);
-                    }
-                }
+                AdvLib.FrameAddStatusTagUTF8String(m_TAGID_SystemError, metadata.SystemErrors);
             }
 
             int additionalStatusTagId = -1;
@@ -916,47 +835,28 @@ namespace Adv
 
                 switch (StatusSectionConfig.AdditionalStatusTags[tagName])
                 {
-                    case AdvTagType.UInt8:
+                    case Adv2TagType.Int8:
                         AdvLib.FrameAddStatusTagUInt8(tagId, (byte)statusTagValue);
                         break;
 
-                    case AdvTagType.UInt16:
+                    case Adv2TagType.Int16:
                         AdvLib.FrameAddStatusTag16(tagId, (ushort)statusTagValue);
                         break;
 
-                    case AdvTagType.UInt32:
+                    case Adv2TagType.Int32:
                         AdvLib.FrameAddStatusTag32(tagId, (uint)statusTagValue);
                         break;
 
-                    case AdvTagType.ULong64:
+                    case Adv2TagType.Long64:
                         AdvLib.FrameAddStatusTag64(tagId, (ulong)statusTagValue);
                         break;
 
-                    case AdvTagType.Real:
+                    case Adv2TagType.Real:
                         AdvLib.FrameAddStatusTagReal(tagId, (float)statusTagValue);
                         break;
 
-                    case AdvTagType.AnsiString255:
-                    case AdvTagType.UTF8String:
+                    case Adv2TagType.UTF8String:
                         AdvLib.FrameAddStatusTagUTF8String(tagId, (string)statusTagValue);
-                        break;
-
-                    case AdvTagType.List16OfAnsiString255:
-                    case AdvTagType.List16OfUTF8String:
-                        string[] lines = (string[])statusTagValue;
-                        if (lines != null)
-                        {
-                            for (int i = 0; i < Math.Min(16, lines.Count()); i++)
-                            {
-                                if (lines[i] != null)
-                                {
-                                    if (lines[i].Length > 255)
-                                        AdvLib.FrameAddStatusTagMessage(tagId, lines[i].Substring(0, 255));
-                                    else
-                                        AdvLib.FrameAddStatusTagMessage(tagId, lines[i]);
-                                }
-                            }
-                        }
                         break;
                 }
             }
