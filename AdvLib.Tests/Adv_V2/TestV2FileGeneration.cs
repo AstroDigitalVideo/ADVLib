@@ -335,10 +335,6 @@ namespace AdvLib.Tests.Adv_V2
         [Test]
         public void TestStatusTagsAreSavedAndReadCorrectly()
         {
-            var fileGen = new AdvGenerator();
-
-            var cfg = BuildZeroTimestampConfig(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Uncompressed);
-
             string fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
 
             if (File.Exists(fileName)) File.Delete(fileName);
@@ -349,6 +345,13 @@ namespace AdvLib.Tests.Adv_V2
                 var recorder = new AdvRecorder();
                 recorder.ImageConfig.SetImageParameters(640, 480, 16, 0);
 
+                recorder.FileMetaData.RecorderSoftwareName = "AdvLibTestRecorder";
+                recorder.FileMetaData.RecorderSoftwareVersion = "x.y.z";
+                recorder.FileMetaData.RecorderHardwareName = "a.b.c";
+                recorder.FileMetaData.CameraModel = "TestCamera";
+                recorder.FileMetaData.CameraSensorInfo = "TestSensor";
+
+
                 recorder.StatusSectionConfig.RecordGain = true;
                 recorder.StatusSectionConfig.RecordGamma = true;
                 recorder.StatusSectionConfig.RecordShutter = true;
@@ -356,6 +359,7 @@ namespace AdvLib.Tests.Adv_V2
                 recorder.StatusSectionConfig.RecordSystemTime = true;
                 recorder.StatusSectionConfig.RecordTrackedSatellites = true;
                 recorder.StatusSectionConfig.RecordAlmanacStatus = true;
+                recorder.StatusSectionConfig.RecordAlmanacOffset = true;
                 recorder.StatusSectionConfig.RecordFixStatus = true;
                 recorder.StatusSectionConfig.RecordSystemErrors = true;
                 recorder.StatusSectionConfig.RecordVideoCameraFrameId = true;
@@ -365,20 +369,24 @@ namespace AdvLib.Tests.Adv_V2
 
                 recorder.StartRecordingNewFile(fileName, 0);
 
+                var systemTimeStamp = DateTime.Now.AddMilliseconds(123);
+
                 var status = new AdvRecorder.AdvStatusEntry()
                 {
                     AlmanacStatus = AlmanacStatus.Good,
+                    AlmanacOffset = 14,
+                    TrackedSatellites = 8,
                     CameraOffset = 8.23f,
                     FixStatus = FixStatus.PFix,
                     Gain = 32.82f,
                     Gamma = 0.35f,
                     Shutter = 2.502f,
-                    SystemTime = AdvTimeStamp.FromDateTime(DateTime.Now.AddMilliseconds(123)),
+                    SystemTime = AdvTimeStamp.FromDateTime(systemTimeStamp),
                     VideoCameraFrameId = 19289232,
                     HardwareTimerFrameId = 9102
                 };
 
-                status.AdditionalStatusTags = new object[2];
+                //status.AdditionalStatusTags = new object[2];
 
                 var imageGenerator = new ImageGenerator();
                 ushort[] imagePixels = imageGenerator.GetCurrentImageBytesInt16(0, 16);
@@ -397,6 +405,17 @@ namespace AdvLib.Tests.Adv_V2
                     AdvFrameInfo frameInfo;
                     loadedFile.GetMainFramePixels(0, out frameInfo);
 
+                    Assert.AreEqual(status.Gain, frameInfo.Gain, 0.000001);
+                    Assert.AreEqual(status.Gamma, frameInfo.Gamma, 0.000001);
+                    Assert.AreEqual(status.Shutter, frameInfo.Shutter, 0.000001);
+                    Assert.AreEqual(status.CameraOffset, frameInfo.Offset, 0.000001);
+                    Assert.AreEqual(status.FixStatus, (FixStatus)frameInfo.GPSFixStatus);
+                    Assert.AreEqual(status.AlmanacStatus, (AlmanacStatus)frameInfo.GPSAlmanacStatus);
+                    Assert.AreEqual(status.TrackedSatellites, frameInfo.GPSTrackedSattelites);
+                    Assert.AreEqual(status.AlmanacOffset, frameInfo.GPSAlmanacOffset);
+                    Assert.AreEqual(status.VideoCameraFrameId, frameInfo.VideoCameraFrameId);
+                    Assert.AreEqual(status.HardwareTimerFrameId, frameInfo.HardwareTimerFrameId);
+                    Assert.AreEqual(systemTimeStamp.Ticks / 10000, frameInfo.SystemTimestamp.Ticks / 10000); // Compare it to a millisecond level
                 }
             }
             finally

@@ -82,6 +82,7 @@ namespace Adv
         private uint m_TAGID_SystemTime;
         private uint m_TAGID_TrackedSatellites;
         private uint m_TAGID_AlmanacStatus;
+        private uint m_TAGID_AlmanacOffset;
         private uint m_TAGID_FixStatus;
         private uint m_TAGID_Gain;
         private uint m_TAGID_Shutter;
@@ -175,6 +176,7 @@ namespace Adv
             public bool RecordSystemTime { get; set; }
             public bool RecordTrackedSatellites { get; set; }
             public bool RecordAlmanacStatus { get; set; }
+            public bool RecordAlmanacOffset { get; set; }
             public bool RecordFixStatus { get; set; }
             public bool RecordGain { get; set; }
             public bool RecordShutter { get; set; }
@@ -218,6 +220,10 @@ namespace Adv
             /// The status of the UTC time satellite fix
             /// </summary>
             public FixStatus FixStatus { get; set; }
+
+
+            public int AlmanacOffset { get; set; }
+
 
             /// <summary>
             /// The gain of the camera in dB
@@ -541,6 +547,7 @@ namespace Adv
 
             if (StatusSectionConfig.RecordTrackedSatellites) m_TAGID_TrackedSatellites = AdvLib.DefineStatusSectionTag("TrackedSatellites", Adv2TagType.Int8);
             if (StatusSectionConfig.RecordAlmanacStatus) m_TAGID_AlmanacStatus = AdvLib.DefineStatusSectionTag("AlmanacStatus", Adv2TagType.Int8);
+            if (StatusSectionConfig.RecordAlmanacOffset) m_TAGID_AlmanacOffset = AdvLib.DefineStatusSectionTag("AlmanacOffset", Adv2TagType.Int8);
             if (StatusSectionConfig.RecordFixStatus) m_TAGID_FixStatus = AdvLib.DefineStatusSectionTag("SatelliteFixStatus", Adv2TagType.Int8);
             if (StatusSectionConfig.RecordGamma) m_TAGID_Gamma = AdvLib.DefineStatusSectionTag("Gamma", Adv2TagType.Real);
             if (StatusSectionConfig.RecordGain) m_TAGID_Gain = AdvLib.DefineStatusSectionTag("Gain", Adv2TagType.Real);
@@ -549,7 +556,7 @@ namespace Adv
 
             if (StatusSectionConfig.RecordVideoCameraFrameId) m_TAGID_VideoCameraFrameId = AdvLib.DefineStatusSectionTag("VideoCameraFrameId", Adv2TagType.Long64);
             if (StatusSectionConfig.RecordHardwareTimerFrameId) m_TAGID_HardwareTimerFrameId = AdvLib.DefineStatusSectionTag("HardwareTimerFrameId", Adv2TagType.Long64);
-            if (StatusSectionConfig.RecordSystemErrors) m_TAGID_SystemError = AdvLib.DefineStatusSectionTag("SystemError", Adv2TagType.UTF8String);
+            if (StatusSectionConfig.RecordSystemErrors) m_TAGID_SystemError = AdvLib.DefineStatusSectionTag("Error", Adv2TagType.UTF8String);
 
             m_AdditionalStatusSectionTagIds.Clear();
 
@@ -806,12 +813,13 @@ namespace Adv
 
             if (StatusSectionConfig.RecordSystemTime)
                 AdvLib.FrameAddStatusTag64(m_TAGID_SystemTime,
-                                                   metadata.SystemTime.MillisecondsAfterAdvZeroEpoch > 0
-                                                       ? (ulong)metadata.SystemTime.MillisecondsAfterAdvZeroEpoch
+                                                   metadata.SystemTime.NanosecondsAfterAdvZeroEpoch > 0
+                                                       ? (ulong)metadata.SystemTime.NanosecondsAfterAdvZeroEpoch
                                                        : 0);
 
             if (StatusSectionConfig.RecordTrackedSatellites) AdvLib.FrameAddStatusTagUInt8(m_TAGID_TrackedSatellites, metadata.TrackedSatellites);
             if (StatusSectionConfig.RecordAlmanacStatus) AdvLib.FrameAddStatusTagUInt8(m_TAGID_AlmanacStatus, (byte)metadata.AlmanacStatus);
+            if (StatusSectionConfig.RecordAlmanacOffset) AdvLib.FrameAddStatusTagUInt8(m_TAGID_AlmanacOffset, (byte)metadata.AlmanacOffset);
             if (StatusSectionConfig.RecordFixStatus) AdvLib.FrameAddStatusTagUInt8(m_TAGID_FixStatus, (byte)metadata.FixStatus);
             if (StatusSectionConfig.RecordGain) AdvLib.FrameAddStatusTagReal(m_TAGID_Gain, metadata.Gain);
             if (StatusSectionConfig.RecordGamma) AdvLib.FrameAddStatusTagReal(m_TAGID_Gamma, metadata.Gamma);

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Adv
@@ -28,7 +29,7 @@ namespace Adv
         Int16 = 1,
         Int32 = 2,
         Long64 = 3,
-        Real = 4, // IEEE/REAL*4
+        Real = 4,
         UTF8String = 5
     };
 
@@ -86,7 +87,21 @@ namespace Adv
 
             VideoCameraFrameIdLo = native.VideoCameraFrameIdLo;
             VideoCameraFrameIdHi = native.VideoCameraFrameIdHi;
-            Temperature = native.Temperature;
+            HardwareTimerFrameIdLo = native.HardwareTimerFrameIdLo;
+            HardwareTimerFrameIdHi = native.HardwareTimerFrameIdHi;
+            SystemTimestampLo = native.SystemTimestampLo;
+            SystemTimestampHi = native.SystemTimestampHi;
+        }
+
+        public ulong HardwareTimerFrameId
+        {
+            get { return (((ulong)HardwareTimerFrameIdHi) << 32) + (ulong)HardwareTimerFrameIdLo; }
+        }
+
+
+        public ulong VideoCameraFrameId
+        {
+            get { return (((ulong)VideoCameraFrameIdHi) << 32) + (ulong)VideoCameraFrameIdLo; }
         }
 
         public bool HasUtcTimeStamp
@@ -110,9 +125,41 @@ namespace Adv
             }
         }
 
+        public DateTime UtcMidExposureTime
+        {
+            get
+            {
+                ulong nanosecondsElapsed = (((ulong)UtcTimestampHi) << 32) + (ulong)UtcTimestampLo;
+                try
+                {
+                    return REFERENCE_DATETIME.AddMilliseconds(nanosecondsElapsed / 1000000.0).AddMilliseconds(UtcExposureMilliseconds / 2.0);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    return REFERENCE_DATETIME;
+                }
+            }
+        }
+
         public float UtcExposureMilliseconds
         {
             get { return Exposure / 1000000.0f; }
+        }
+
+        public DateTime SystemTimestamp
+        {
+            get
+            {
+                ulong nanosecondsElapsed = (((ulong)SystemTimestampHi) << 32) + (ulong)SystemTimestampLo;
+                try
+                {
+                    return REFERENCE_DATETIME.AddMilliseconds(nanosecondsElapsed / 1000000.0);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    return REFERENCE_DATETIME;
+                }
+            }
         }
 
         public ulong TickStampStartTicks
@@ -156,7 +203,6 @@ namespace Adv
             VideoCameraFrameIdHi = 0;
             HardwareTimerFrameIdLo = 0;
             HardwareTimerFrameIdHi = 0;
-            Temperature = 0;
 
             SystemTimestampLo = 0;
             SystemTimestampHi = 0;
@@ -176,35 +222,33 @@ namespace Adv
         public uint UtcTimestampHi;
         [FieldOffset(24)]
         public uint Exposure;
-        [FieldOffset(32)]
+        [FieldOffset(28)]
         public float Gamma;
-        [FieldOffset(36)]
+        [FieldOffset(32)]
         public float Gain;
-        [FieldOffset(40)]
+        [FieldOffset(36)]
         public float Shutter;
-        [FieldOffset(44)]
+        [FieldOffset(40)]
         public float Offset;
-        [FieldOffset(48)]
+        [FieldOffset(44)]
         public byte GPSTrackedSattelites;
-        [FieldOffset(49)]
+        [FieldOffset(45)]
         public byte GPSAlmanacStatus;
-        [FieldOffset(50)]
+        [FieldOffset(46)]
         public byte GPSFixStatus;
-        [FieldOffset(51)]
+        [FieldOffset(47)]
         public byte GPSAlmanacOffset;
-        [FieldOffset(52)]
+        [FieldOffset(48)]
         public uint VideoCameraFrameIdLo;
-        [FieldOffset(56)]
+        [FieldOffset(52)]
         public uint VideoCameraFrameIdHi;
-        [FieldOffset(60)]
+        [FieldOffset(56)]
         public uint HardwareTimerFrameIdLo;
-        [FieldOffset(64)]
+        [FieldOffset(60)]
         public uint HardwareTimerFrameIdHi;
-        [FieldOffset(68)]
-        public float Temperature;
-        [FieldOffset(72)]
+        [FieldOffset(64)]
         public uint SystemTimestampLo;
-        [FieldOffset(76)]
+        [FieldOffset(68)]
         public uint SystemTimestampHi;
     }
 
@@ -425,8 +469,8 @@ namespace Adv
         private static extern void AdvVer2_EndFrame32();
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
-        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
-        private static extern int AdvVer2_GetFramePixels32(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
+        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
+        private static extern int AdvVer2_GetFramePixels32(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] int systemErrorLen);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
         //HRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
@@ -636,8 +680,8 @@ namespace Adv
         private static extern void AdvVer2_EndFrame64();
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
-        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
-        private static extern int AdvVer2_GetFramePixels64(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
+        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
+        private static extern int AdvVer2_GetFramePixels64(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] int systemErrorLen);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
         //HRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
@@ -848,8 +892,8 @@ namespace Adv
         private static extern void AdvVer2_EndFrameUnix();
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
-        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, char* systemError);
-        private static extern int AdvVer2_GetFramePixelsUnix(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] byte[] systemError);
+        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
+        private static extern int AdvVer2_GetFramePixelsUnix(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] int systemErrorLen);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
         //HRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
@@ -1434,14 +1478,20 @@ namespace Adv
         {
 			uint[] pixels = new uint[width * height];
 			var frameInfoNative = new AdvFrameInfoNative();
-			byte[] systemError = new byte[256 * 16];
 
+			byte[] systemError = new byte[256 * 16];
+            int errorMessageLen = 0;
             if (!CrossPlatform.IsWindows)
-                AdvVer2_GetFramePixelsUnix(streamId, frameNo, pixels, frameInfoNative, systemError);
+                AdvVer2_GetFramePixelsUnix(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
             else if (Is64Bit())
-                AdvVer2_GetFramePixels64(streamId, frameNo, pixels, frameInfoNative, systemError);
+                AdvVer2_GetFramePixels64(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
             else
-                AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfoNative, systemError);
+                AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
+
+            if (errorMessageLen > 0)
+            {
+                // TODO: Read error message    
+            }
 
             frameInfo = new AdvFrameInfo(frameInfoNative);
             
