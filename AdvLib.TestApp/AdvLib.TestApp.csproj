@@ -120,6 +120,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTestProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="frmChooseGeneratedFileAction.cs">
       <SubType>Form</SubType>
     </Compile>

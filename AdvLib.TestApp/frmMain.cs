@@ -417,7 +417,7 @@ namespace AdvLibTestApp
             pbar.Value = Math.Min(pbar.Maximum, numberCompleted);
             pbar.Update();
 
-            UpdatePBarColor(numberFailed);
+            pbar.Error = numberFailed > 0;
 
             if (numberFailed > 0)
                 lblRanTests.Text = string.Format("{0}/{1}            {2} failed!", numberCompleted, m_TotalTestsToRun, numberFailed);
@@ -431,22 +431,13 @@ namespace AdvLibTestApp
 	    {
 	        pbar.Value = pbar.Maximum;
 
-	        UpdatePBarColor(numberFailed);
+            pbar.Error = numberFailed > 0;
 
             if (numberFailed > 0)
                 MessageBox.Show(string.Format("{0} tests failed", numberFailed));
 
             pbar.Update();
 	    }
-
-        private void UpdatePBarColor(int numberFailed)
-	    {
-            if (numberFailed > 0)
-                pbar.ForeColor = Color.Red;
-            else
-                pbar.ForeColor = Color.Lime;
-	    }
-
 
 	    private void btnRunTests_Click(object sender, EventArgs e)
 	    {

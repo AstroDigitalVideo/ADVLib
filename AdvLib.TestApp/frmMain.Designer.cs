@@ -50,7 +50,7 @@
             this.tcTabs = new System.Windows.Forms.TabControl();
             this.tabRecorder = new System.Windows.Forms.TabPage();
             this.lblRanTests = new System.Windows.Forms.Label();
-            this.pbar = new System.Windows.Forms.ProgressBar();
+            this.pbar = new AdvLib.TestApp.UnitTestProgressBar();
             this.btnRunTests = new System.Windows.Forms.Button();
             this.gbxCompression = new System.Windows.Forms.GroupBox();
             this.rbLagarith16 = new System.Windows.Forms.RadioButton();
@@ -469,7 +469,7 @@
         private System.Windows.Forms.RadioButton rbLagarith16;
         private System.Windows.Forms.RadioButton rbQuickLZ;
         private System.Windows.Forms.Button btnRunTests;
-        private System.Windows.Forms.ProgressBar pbar;
+        private AdvLib.TestApp.UnitTestProgressBar pbar;
         private System.Windows.Forms.Label lblRanTests;
         private System.Windows.Forms.Label lblLibVersion;
         private System.Windows.Forms.Button btnGenSpecExample;
