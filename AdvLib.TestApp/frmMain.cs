@@ -104,8 +104,6 @@ namespace AdvLibTestApp
             config.TimeStampCallback = GetCurrentImageTimeStamp;
             config.GainCallback = GetCurrentImageGain;
             config.GammaCallback = GetCurrentImageGamma;
-            config.MassagesCallback = GetCurrentExampleMassages;
-            config.CustomGainCallback = GetCurrentExampleCustomGain;
             config.MainStreamMetadata.Add("Name1", "Христо");
             config.MainStreamMetadata.Add("Name2", "Frédéric");
             config.MainStreamMetadata.Add("Name3", "好的茶");
@@ -207,8 +205,8 @@ namespace AdvLibTestApp
 				DateTime timestamp = GetCurrentImageTimeStamp(i);
 				status.Gain = GetCurrentImageGain(i);
 				status.Gamma = GetCurrentImageGamma(i);
-				status.AdditionalStatusTags[customTagIdMessages] = GetCurrentExampleMassages(i);
-				status.AdditionalStatusTags[customTagIdCustomGain] = GetCurrentExampleCustomGain(i);
+				status.AdditionalStatusTags[customTagIdMessages] = "Test Message";
+				status.AdditionalStatusTags[customTagIdCustomGain] = 36.0f;
 
 				if (rb16BitUShort.Checked)
 				{
@@ -320,18 +318,6 @@ namespace AdvLibTestApp
 		{
 			// TODO: Get the image gain in dB
 			return 36.0f;
-		}
-
-		private string[] GetCurrentExampleMassages(int frameId)
-		{
-			// TODO: Get the image custom defined "EXAMPLE-MESSAGES" value.
-			return new string[] { "Message 1", "Message 2", "Message 3" }; ;
-		}
-
-		private uint GetCurrentExampleCustomGain(int frameId)
-		{
-			// TODO: e.g. return an integer gain value reported by the camera which cannot be converted to dB
-			return 0x293;
 		}
 
         private void OnImageFormatChanged(object sender, EventArgs e)

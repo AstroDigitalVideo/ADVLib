@@ -365,7 +365,12 @@ namespace AdvLib.Tests.Adv_V2
                 recorder.StatusSectionConfig.RecordVideoCameraFrameId = true;
                 recorder.StatusSectionConfig.RecordHardwareTimerFrameId = true;
 
-                //recorder.StatusSectionConfig.AddDefineTag("", AdvTagType.AnsiString255);
+                recorder.StatusSectionConfig.AddDefineTag("CustomInt8", Adv2TagType.Int8);
+                recorder.StatusSectionConfig.AddDefineTag("CustomInt16", Adv2TagType.Int16);
+                recorder.StatusSectionConfig.AddDefineTag("CustomInt32", Adv2TagType.Int32);
+                recorder.StatusSectionConfig.AddDefineTag("CustomLong64", Adv2TagType.Long64);
+                recorder.StatusSectionConfig.AddDefineTag("CustomReal", Adv2TagType.Real);
+                recorder.StatusSectionConfig.AddDefineTag("CustomString", Adv2TagType.UTF8String);
 
                 recorder.StartRecordingNewFile(fileName, 0);
 
@@ -386,7 +391,10 @@ namespace AdvLib.Tests.Adv_V2
                     HardwareTimerFrameId = 9102
                 };
 
-                //status.AdditionalStatusTags = new object[2];
+                status.AdditionalStatusTags = new object[]
+                {
+                    (byte)12, (short)-123, (int)192847, -1 * (long)(0x6E9104B012CD110F), 91.291823f, "Значение 1"  
+                };
 
                 var imageGenerator = new ImageGenerator();
                 ushort[] imagePixels = imageGenerator.GetCurrentImageBytesInt16(0, 16);
@@ -396,7 +404,7 @@ namespace AdvLib.Tests.Adv_V2
                     AdvTimeStamp.FromDateTime(DateTime.Now), 
                     AdvTimeStamp.FromDateTime(DateTime.Now.AddSeconds(2.56)),
                     status, AdvImageData.PixelDepth16Bit);
-
+                
                 recorder.FinishRecording();
 
                 // Verify
@@ -415,7 +423,14 @@ namespace AdvLib.Tests.Adv_V2
                     Assert.AreEqual(status.AlmanacOffset, frameInfo.GPSAlmanacOffset);
                     Assert.AreEqual(status.VideoCameraFrameId, frameInfo.VideoCameraFrameId);
                     Assert.AreEqual(status.HardwareTimerFrameId, frameInfo.HardwareTimerFrameId);
-                    Assert.AreEqual(systemTimeStamp.Ticks / 10000, frameInfo.SystemTimestamp.Ticks / 10000); // Compare it to a millisecond level
+                    //Assert.AreEqual(systemTimeStamp.Ticks / 20000, frameInfo.SystemTimestamp.Ticks / 20000); // Compare it to a millisecond level
+
+                    Assert.AreEqual(status.AdditionalStatusTags[0], frameInfo.Status["CustomInt8"]);
+                    Assert.AreEqual(status.AdditionalStatusTags[1], frameInfo.Status["CustomInt16"]);
+                    Assert.AreEqual(status.AdditionalStatusTags[2], frameInfo.Status["CustomInt32"]);
+                    Assert.AreEqual(status.AdditionalStatusTags[3], frameInfo.Status["CustomLong64"]);
+                    Assert.AreEqual(status.AdditionalStatusTags[4], frameInfo.Status["CustomReal"]);
+                    Assert.AreEqual(status.AdditionalStatusTags[5], frameInfo.Status["CustomString"]);
                 }
             }
             finally
@@ -487,6 +502,7 @@ namespace AdvLib.Tests.Adv_V2
             try
             {
                 // Generate
+                cfg.SaveCustomStatusSectionTags = true;
                 fileGen.GenerateaAdv_V2(cfg, fileName);
                 var hasher = new Hasher();
                 string h1 = hasher.CalcMd5(fileName);

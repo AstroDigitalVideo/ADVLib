@@ -44,6 +44,7 @@ namespace AdvLib.Tests.Generators
     public class AdvGenerationConfig
     {
         public bool SaveLocationData;
+        public bool SaveCustomStatusSectionTags;
         public byte DynaBits;
         public int? NormalPixelValue;
         public AdvSourceDataFormat SourceFormat;
@@ -57,8 +58,6 @@ namespace AdvLib.Tests.Generators
         public GetCurrentImageTimeStampCallback TimeStampCallback;
         public GetCurrentImageGammaCallback GammaCallback;
         public GetCurrentImageGainCallback GainCallback;
-        public GetCurrentExampleMassagesCallback MassagesCallback;
-        public GetCurrentExampleCustomGainCallback CustomGainCallback;
 
         public CustomClockConfig MainStreamCustomClock;
         public CustomClockConfig CalibrationStreamCustomClock;
@@ -98,8 +97,6 @@ namespace AdvLib.Tests.Generators
             // can also define additional status parameters to be recorded with each video frame
             recorder.StatusSectionConfig.RecordGain = true;
             recorder.StatusSectionConfig.RecordGamma = true;
-            int customTagIdCustomGain = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-GAIN", Adv2TagType.Int32);
-            int customTagIdMessages = recorder.StatusSectionConfig.AddDefineTag("EXAMPLE-MESSAGE", Adv2TagType.UTF8String);
 
             if (config.MainStreamCustomClock != null)
                 recorder.DefineCustomClock(AdvRecorder.AdvStream.MainStream, config.MainStreamCustomClock.ClockFrequency, config.MainStreamCustomClock.TicksTimingAccuracy, config.MainStreamCustomClock.ClockTicksCallback);
@@ -119,6 +116,16 @@ namespace AdvLib.Tests.Generators
             foreach (string key in config.UserMetadata.Keys)
                 recorder.FileMetaData.AddUserTag(key, config.UserMetadata[key]);
 
+            if (config.SaveCustomStatusSectionTags)
+            {
+                recorder.StatusSectionConfig.AddDefineTag("CustomInt8", Adv2TagType.Int8);
+                recorder.StatusSectionConfig.AddDefineTag("CustomInt16", Adv2TagType.Int16);
+                recorder.StatusSectionConfig.AddDefineTag("CustomInt32", Adv2TagType.Int32);
+                recorder.StatusSectionConfig.AddDefineTag("CustomLong64", Adv2TagType.Long64);
+                recorder.StatusSectionConfig.AddDefineTag("CustomReal", Adv2TagType.Real);
+                recorder.StatusSectionConfig.AddDefineTag("CustomString", Adv2TagType.UTF8String);                
+            }
+
             recorder.StartRecordingNewFile(fileName, config.UtcTimestampAccuracyInNanoseconds);
 
             AdvRecorder.AdvStatusEntry status = new AdvRecorder.AdvStatusEntry();
@@ -134,8 +141,15 @@ namespace AdvLib.Tests.Generators
 
                 status.Gain = config.GainCallback != null ? config.GainCallback(i) : 0;
                 status.Gamma = config.GammaCallback != null ? config.GammaCallback(i) : 0;
-                status.AdditionalStatusTags[customTagIdMessages] = config.MassagesCallback != null ? config.MassagesCallback(i) : null;
-                status.AdditionalStatusTags[customTagIdCustomGain] = config.CustomGainCallback != null ? config.CustomGainCallback(i) : 0;
+                if (config.SaveCustomStatusSectionTags)
+                {
+                    status.AdditionalStatusTags = new object[]
+                    {
+                        (byte) 12, (short) -123, (int) 192847, -1*(long) (0x6E9104B012CD110F), 91.291823f, "Значение 1"
+                    };
+                }
+                else
+                    status.AdditionalStatusTags = null;
 
                 
                 if (config.SourceFormat == AdvSourceDataFormat.Format16BitUShort)

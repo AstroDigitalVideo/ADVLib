@@ -248,12 +248,12 @@ namespace Adv
             /// <summary>
             /// The id of the frame as labeled by the camera frame counter
             /// </summary>
-            public ulong VideoCameraFrameId { get; set; }
+            public long VideoCameraFrameId { get; set; }
 
             /// <summary>
             /// The id of the frame as labeled by the hardware timer (when used)
             /// </summary>
-            public ulong HardwareTimerFrameId { get; set; }
+            public long HardwareTimerFrameId { get; set; }
 
             /// <summary>
             /// System errors detected since the last recorded frame. 
@@ -814,7 +814,7 @@ namespace Adv
             if (StatusSectionConfig.RecordSystemTime)
                 AdvLib.FrameAddStatusTag64(m_TAGID_SystemTime,
                                                    metadata.SystemTime.NanosecondsAfterAdvZeroEpoch > 0
-                                                       ? (ulong)metadata.SystemTime.NanosecondsAfterAdvZeroEpoch
+                                                       ? (long)metadata.SystemTime.NanosecondsAfterAdvZeroEpoch
                                                        : 0);
 
             if (StatusSectionConfig.RecordTrackedSatellites) AdvLib.FrameAddStatusTagUInt8(m_TAGID_TrackedSatellites, metadata.TrackedSatellites);
@@ -848,15 +848,15 @@ namespace Adv
                         break;
 
                     case Adv2TagType.Int16:
-                        AdvLib.FrameAddStatusTag16(tagId, (ushort)statusTagValue);
+                        AdvLib.FrameAddStatusTag16(tagId, (short)statusTagValue);
                         break;
 
                     case Adv2TagType.Int32:
-                        AdvLib.FrameAddStatusTag32(tagId, (uint)statusTagValue);
+                        AdvLib.FrameAddStatusTag32(tagId, (int)statusTagValue);
                         break;
 
                     case Adv2TagType.Long64:
-                        AdvLib.FrameAddStatusTag64(tagId, (ulong)statusTagValue);
+                        AdvLib.FrameAddStatusTag64(tagId, (long)statusTagValue);
                         break;
 
                     case Adv2TagType.Real:
