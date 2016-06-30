@@ -423,7 +423,7 @@ namespace AdvLib.Tests.Adv_V2
                     Assert.AreEqual(status.AlmanacOffset, frameInfo.GPSAlmanacOffset);
                     Assert.AreEqual(status.VideoCameraFrameId, frameInfo.VideoCameraFrameId);
                     Assert.AreEqual(status.HardwareTimerFrameId, frameInfo.HardwareTimerFrameId);
-                    //Assert.AreEqual(systemTimeStamp.Ticks / 20000, frameInfo.SystemTimestamp.Ticks / 20000); // Compare it to a millisecond level
+                    Assert.AreEqual(systemTimeStamp.Ticks, frameInfo.SystemTimestamp.Ticks);
 
                     Assert.AreEqual(status.AdditionalStatusTags[0], frameInfo.Status["CustomInt8"]);
                     Assert.AreEqual(status.AdditionalStatusTags[1], frameInfo.Status["CustomInt16"]);
@@ -475,21 +475,21 @@ namespace AdvLib.Tests.Adv_V2
 
 
         [Test]
-        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Uncompressed, "4350FE877C63306F215A15410F360C97")]
-        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Lagarith16, "506F016FDF057731C89507A87637F97B")]
-        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.QuickLZ, "7567183065FADA1C1DA775CE781C99D6")]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Uncompressed, "4350FE877C63306F215A15410F360C97")]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Lagarith16, "506F016FDF057731C89507A87637F97B")]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.QuickLZ, "7567183065FADA1C1DA775CE781C99D6")]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.Uncompressed, "EDE5B23FA48B44D79DCCE6594C48EEBB")]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.Lagarith16, "82557CF3D0AD2CFDA2AA99C90124F6C7")]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.QuickLZ, "BF1AAEC448E4B12A208956D4D21ECC0A")]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Uncompressed, "BFBB03A7034501DC027FB6DD05ED8BBB")]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Lagarith16, "705030FC44EC86E2612FEF0C7F6BF918")]
-        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.QuickLZ, "787B13B5916DB799E2D3FEB40EC898FD")]
-        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Uncompressed, "B5A75F11E1B25B335E568B09197AD042")]
-        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Lagarith16, "D3F4B11619EE4B8CB6A87129EBB5DAFF")]
-        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.QuickLZ, "A6641407F7FFC7C05FFEF20B5309B5B3")]
+        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Uncompressed, "0D84C84AA463630603707CDA4523F4C6")]
+        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Lagarith16, "2B137AE29578EF9803FD941DDA5BCF90")]
+        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.QuickLZ, "0C4EC5D518D85CEBB2FF5C8A133F131E")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Uncompressed, "0D84C84AA463630603707CDA4523F4C6")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Lagarith16, "2B137AE29578EF9803FD941DDA5BCF90")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.QuickLZ, "0C4EC5D518D85CEBB2FF5C8A133F131E")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.Uncompressed, "881D22CD0C836D8AE04ECFBFC3BC904A")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.Lagarith16, "1D4D1A051EAC7C3544CD9230A208EC37")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.QuickLZ, "BA49B36DD5A49F22933FD8403D36FFB5")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Uncompressed, "564D184F2FE38268C0B044695F7A57FE")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Lagarith16, "9654F23B16D341B617E33E3A8C42BA6A")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.QuickLZ, "9442BFC815E41B9AC3D790BB323636E9")]
+        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Uncompressed, "864750F8D86DB745BAF791B0BE4B7478")]
+        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Lagarith16, "5DBDE91E67E87D64DA46885C028CCC1D")]
+        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.QuickLZ, "F329344DAFC35C37E9500C44C901301D")]
         public void TestFileHashesOfZeroTimestampFiles(AdvSourceDataFormat dataFormat, byte dynaBits, CompressionType compression, string expectedHash)
         {
             var fileGen = new AdvGenerator();

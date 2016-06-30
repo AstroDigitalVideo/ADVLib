@@ -120,7 +120,7 @@ namespace Adv
                 ulong nanosecondsElapsed = (((ulong)UtcTimestampHi) << 32) + (ulong)UtcTimestampLo;
                 try
                 {
-                    return REFERENCE_DATETIME.AddMilliseconds(nanosecondsElapsed / 1000000.0);
+                    return new DateTime(REFERENCE_DATETIME.Ticks + (long)(nanosecondsElapsed / 100));
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -136,7 +136,7 @@ namespace Adv
                 ulong nanosecondsElapsed = (((ulong)UtcTimestampHi) << 32) + (ulong)UtcTimestampLo;
                 try
                 {
-                    return REFERENCE_DATETIME.AddMilliseconds(nanosecondsElapsed / 1000000.0).AddMilliseconds(UtcExposureMilliseconds / 2.0);
+                    return new DateTime(REFERENCE_DATETIME.Ticks + (long)(nanosecondsElapsed / 100)).AddMilliseconds(UtcExposureMilliseconds / 2.0);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -157,7 +157,7 @@ namespace Adv
                 ulong nanosecondsElapsed = (((ulong)SystemTimestampHi) << 32) + (ulong)SystemTimestampLo;
                 try
                 {
-                    return REFERENCE_DATETIME.AddMilliseconds(nanosecondsElapsed / 1000000.0);
+                    return new DateTime(REFERENCE_DATETIME.Ticks + (long)(nanosecondsElapsed / 100));
                 }
                 catch (ArgumentOutOfRangeException)
                 {
