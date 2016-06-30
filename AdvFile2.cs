@@ -15,13 +15,24 @@ namespace Adv
         public Dictionary<string, string> MetadataTags = new Dictionary<string, string>();
     }
 
+    public class ImageLayoutDefinition
+    {
+        public int LayoutId;
+        public byte Bpp;
+
+        public Dictionary<string, string> ImageLayoutTags = new Dictionary<string, string>();
+    }
+
     public class AdvFile2 : IDisposable
     {
         public DataStreamDefinition MainSteamInfo;
         public DataStreamDefinition CalibrationSteamInfo;
 
+        public List<ImageLayoutDefinition> ImageLayouts = new List<ImageLayoutDefinition>();
+ 
         public Dictionary<string, string> SystemMetadataTags = new Dictionary<string, string>();
         public Dictionary<string, string> UserMetadataTags = new Dictionary<string, string>();
+        public Dictionary<string, string> ImageSectionTags = new Dictionary<string, string>();
 
         private List<Tuple<string, int, Adv2TagType>> m_StatusTagDefinitions = new List<Tuple<string, int, Adv2TagType>>(); 
 
@@ -61,8 +72,33 @@ namespace Adv
             IsColourImage = fileInfo.IsColourImage;
             UtcTimestampAccuracyInNanoseconds = fileInfo.UtcTimestampAccuracyInNanoseconds;
 
+            LoadImageLayoutInfo(fileInfo);
             LoadTags(fileInfo);
             EnsureStatusTagDefinitions(fileInfo);
+        }
+
+        private void LoadImageLayoutInfo(AdvFileInfo fileInfo)
+        {
+            for (int i = 0; i < fileInfo.ImageLayoutsCount; i++)
+            {
+                AdvImageLayoutInfo info = AdvLib.GetImageLayoutInfo(i);
+
+                var layout = new ImageLayoutDefinition()
+                {
+                    LayoutId = info.ImageLayoutId,
+                    Bpp = info.ImageLayoutBpp
+                };
+                
+                for (int j = 0; j < info.ImageLayoutTagsCount; j++)
+                {
+                    string name;
+                    string value;
+                    if (AdvLib.GetImageLayoutTag(info.ImageLayoutId, j, out name, out value))
+                        layout.ImageLayoutTags.Add(name, value);
+                }
+
+                ImageLayouts.Add(layout);
+            }
         }
 
         private void LoadTags(AdvFileInfo fileInfo)
@@ -98,6 +134,14 @@ namespace Adv
                 if (AdvLib.GetUserMetadataTag(i, out name, out value))
                     UserMetadataTags.Add(name, value);
             }
+
+            for (int i = 0; i < fileInfo.ImageSectionTagsCount; i++)
+            {
+                string name;
+                string value;
+                if (AdvLib.GetImageSectionTag(i, out name, out value))
+                    ImageSectionTags.Add(name, value);
+            }
         }
 
         private void EnsureStatusTagDefinitions(AdvFileInfo fileInfo)
@@ -116,7 +160,7 @@ namespace Adv
         {
             if (frameNo < MainSteamInfo.FrameCount)
             {
-                uint[] pixels = AdvLib.GetFramePixels(0, (int)frameNo, 640, 480, out frameInfo);
+                uint[] pixels = AdvLib.GetFramePixels(0, (int)frameNo, Width, Height, out frameInfo);
                 foreach (var entry in m_StatusTagDefinitions)
                 {
                     switch (entry.Item3)

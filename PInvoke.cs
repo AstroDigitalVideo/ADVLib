@@ -38,8 +38,23 @@ namespace Adv
         MainStream = 0,
         CalibrationStream = 1,
         SystemMetadata = 2,
-        UserMetadata = 3
+        UserMetadata = 3,
+        ImageSection = 4,
+        FirstImageLayout = 100
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct AdvImageLayoutInfo
+    {
+        public static AdvImageLayoutInfo Empty = new AdvImageLayoutInfo();
+
+        public int ImageLayoutId;
+        public int ImageLayoutTagsCount;
+        public byte ImageLayoutBpp;
+        public bool IsFullImageRaw;
+        public bool Is12BitImagePacked;
+        public bool Is8BitColourImage;
+    };
 
     [StructLayout(LayoutKind.Sequential)]
     public struct AdvFileInfo
@@ -62,12 +77,20 @@ namespace Adv
         public bool IsColourImage;
         public int ImageLayoutsCount;
         public int StatusTagsCount;
+        public int ImageSectionTagsCount;
+        public int ErrorStatusTagId;
     };
 
     public class AdvFrameInfo : AdvFrameInfoNative
     {
         public Dictionary<string, object> Status = new Dictionary<string, object>();
- 
+
+        public int ErrorMessageStrLen = 0;
+
+        public bool HasErrorMessage {
+            get { return ErrorMessageStrLen > 0; }
+        }
+
         internal AdvFrameInfo(AdvFrameInfoNative native)
         {
             StartTicksLo = native.StartTicksLo;
@@ -520,6 +543,10 @@ namespace Adv
         //DLL_PUBLIC HRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
         private static extern int AdvVer2_GetStatusTagInfo32(int tagId,[In, Out] byte[] tagName, ref Adv2TagType tagType);
 
+        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
+        //DLL_PUBLIC HRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
+        private static extern int AdvVer2_GetImageLayoutInfo32(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
+
         #endregion 
 
         #region 64bit externals
@@ -768,6 +795,9 @@ namespace Adv
         //DLL_PUBLIC HRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
         private static extern int AdvVer2_GetStatusTagInfo64(int tagId, [In, Out] byte[] tagName, ref Adv2TagType tagType);
 
+        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
+        //DLL_PUBLIC HRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
+        private static extern int AdvVer2_GetImageLayoutInfo64(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
         #endregion
 
         #region UNIX externals
@@ -1008,13 +1038,17 @@ namespace Adv
         //HRESULT AdvVer2_GetStatusTag64(unsigned int tagIndex, __int64* tagValue);
         private static extern int AdvVer2_GetStatusTag64_Unix(int tagId, ref long tagValue);
 
-        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagNameSize")]
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagNameSize")]
         //DLL_PUBLIC HRESULT AdvVer2_GetStatusTagNameSize(int tagId, int* tagNameSize);
         private static extern int AdvVer2_GetStatusTagNameSizeUnix(int tagId, ref int tagNameSize);
 
-        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagInfo")]
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagInfo")]
         //DLL_PUBLIC HRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
         private static extern int AdvVer2_GetStatusTagInfoUnix(int tagId, [In, Out] byte[] tagName, ref Adv2TagType tagType);
+
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
+        //DLL_PUBLIC HRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
+        private static extern int AdvVer2_GetImageLayoutInfoUnix(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
 
         #endregion
 
@@ -1601,13 +1635,11 @@ namespace Adv
             else
                 AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
 
-            if (errorMessageLen > 0)
-            {
-                // TODO: Read error message    
-            }
-
             frameInfo = new AdvFrameInfo(frameInfoNative);
-            
+
+            if (errorMessageLen > 0)
+                frameInfo.ErrorMessageStrLen = errorMessageLen;
+
             return pixels;
         }
 
@@ -1629,6 +1661,16 @@ namespace Adv
         public static bool GetUserMetadataTag(int tagId, out string tagName, out string tagValue)
         {
             return GetAdvTagPair(TagPairType.UserMetadata, tagId, out tagName, out tagValue);
+        }
+
+        public static bool GetImageSectionTag(int tagId, out string tagName, out string tagValue)
+        {
+            return GetAdvTagPair(TagPairType.ImageSection, tagId, out tagName, out tagValue);
+        }
+
+        public static bool GetImageLayoutTag(int imageLayoutId, int tagId, out string tagName, out string tagValue)
+        {
+            return GetAdvTagPair(TagPairType.FirstImageLayout + imageLayoutId, tagId, out tagName, out tagValue);
         }
 
         private static bool GetAdvTagPair(TagPairType tagType, int tagId, out string tagName, out string tagValue)
@@ -1826,6 +1868,23 @@ namespace Adv
         {
             string str = Encoding.UTF8.GetString(chars);
             return str.Substring(0, str.IndexOf('\0'));
+        }
+
+        public static AdvImageLayoutInfo GetImageLayoutInfo(int layoutIndex)
+        {
+            int errorCode = -1;
+            var rv = new AdvImageLayoutInfo();
+            if (!CrossPlatform.IsWindows)
+                errorCode = AdvVer2_GetImageLayoutInfoUnix(layoutIndex, ref rv);
+            else if (Is64Bit())
+                errorCode = AdvVer2_GetImageLayoutInfo64(layoutIndex, ref rv);
+            else
+                errorCode = AdvVer2_GetImageLayoutInfo32(layoutIndex, ref rv);
+
+            if (errorCode != 0)
+                return AdvImageLayoutInfo.Empty;
+
+            return rv;
         }
     }
 }
