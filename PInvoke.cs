@@ -484,11 +484,11 @@ namespace Adv
         private static extern void AdvVer2_FrameAddStatusTag64_32(uint tagIndex, long tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImage")]
-        //HRESULT AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
+        //ADVRESULT AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
         private static extern int AdvVer2_FrameAddImage_32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImageBytes")]
-        //HRESULT AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
+        //ADVRESULT AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
         private static extern int AdvVer2_FrameAddImageBytes_32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
@@ -496,55 +496,55 @@ namespace Adv
         private static extern void AdvVer2_EndFrame32();
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
-        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
+        //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
         private static extern int AdvVer2_GetFramePixels32(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] int systemErrorLen);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
-        //HRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
+        //ADVRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
         private static extern int AdvVer2_GetTagPairValues32(TagPairType tagPairType, int tagId, [In, Out] byte[] tagName, [In, Out] byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairSizes")]
-        //HRESULT AdvVer2_GetTagPairSizes(TagPairType tagPairType, int tagId, int* tagNameSize, int* tagValueSize);
+        //ADVRESULT AdvVer2_GetTagPairSizes(TagPairType tagPairType, int tagId, int* tagNameSize, int* tagValueSize);
         private static extern int AdvVer2_GetTagPairSizes32(TagPairType tagPairType, int tagId, ref int tagNameSize, ref int tagValueSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagSizeUTF8String")]
-        //HRESULT AdvVer2_GetStatusTagSizeUTF8String(unsigned int tagIndex, int* tagValueSize);
+        //ADVRESULT AdvVer2_GetStatusTagSizeUTF8String(unsigned int tagIndex, int* tagValueSize);
         private static extern int AdvVer2_GetStatusTagSizeUTF8String32(int tagId, ref int tagValueSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUTF8String")]
-        //HRESULT AdvVer2_GetStatusTagUTF8String(unsigned int tagIndex, char* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTagUTF8String(unsigned int tagIndex, char* tagValue);
         private static extern int AdvVer2_GetStatusTagUTF8String32(int tagId, [In, Out] byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUInt8")]
-        //HRESULT AdvVer2_GetStatusTagUInt8(unsigned int tagIndex, unsigned char* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTagUInt8(unsigned int tagIndex, unsigned char* tagValue);
         private static extern int AdvVer2_GetStatusTagUInt8_32(int tagId, ref byte tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag16")]
-        //HRESULT AdvVer2_GetStatusTag16(unsigned int tagIndex, unsigned short* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTag16(unsigned int tagIndex, unsigned short* tagValue);
         private static extern int AdvVer2_GetStatusTag16_32(int tagId, ref short tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagReal")]
-        //HRESULT AdvVer2_GetStatusTagReal(unsigned int tagIndex, float* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTagReal(unsigned int tagIndex, float* tagValue);
         private static extern int AdvVer2_GetStatusTagReal_32(int tagId, ref float tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag32")]
-        //HRESULT AdvVer2_GetStatusTag32(unsigned int tagIndex, unsigned int* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTag32(unsigned int tagIndex, unsigned int* tagValue);
         private static extern int AdvVer2_GetStatusTag32_32(int tagId, ref int tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag64")]
-        //HRESULT AdvVer2_GetStatusTag64(unsigned int tagIndex, __int64* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTag64(unsigned int tagIndex, __int64* tagValue);
         private static extern int AdvVer2_GetStatusTag64_32(int tagId, ref long tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagNameSize")]
-        //DLL_PUBLIC HRESULT AdvVer2_GetStatusTagNameSize(int tagId, int* tagNameSize);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagNameSize(int tagId, int* tagNameSize);
         private static extern int AdvVer2_GetStatusTagNameSize32(int tagId, ref int tagNameSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagInfo")]
-        //DLL_PUBLIC HRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
         private static extern int AdvVer2_GetStatusTagInfo32(int tagId,[In, Out] byte[] tagName, ref Adv2TagType tagType);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
-        //DLL_PUBLIC HRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
         private static extern int AdvVer2_GetImageLayoutInfo32(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
 
         #endregion 
@@ -736,11 +736,11 @@ namespace Adv
         private static extern void AdvVer2_FrameAddStatusTag64_64(uint tagIndex, long tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImage")]
-        //HRESULT AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
+        //ADVRESULT AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
         private static extern int AdvVer2_FrameAddImage_64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImageBytes")]
-        //HRESULT AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
+        //ADVRESULT AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
         private static extern int AdvVer2_FrameAddImageBytes_64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
@@ -748,55 +748,55 @@ namespace Adv
         private static extern void AdvVer2_EndFrame64();
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
-        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
+        //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
         private static extern int AdvVer2_GetFramePixels64(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] int systemErrorLen);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
-        //HRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
+        //ADVRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
         private static extern int AdvVer2_GetTagPairValues64(TagPairType tagPairType, int tagId, [In, Out] byte[] tagName, [In, Out] byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairSizes")]
-        //HRESULT AdvVer2_GetTagPairSizes(TagPairType tagPairType, int tagId, int* tagNameSize, int* tagValueSize);
+        //ADVRESULT AdvVer2_GetTagPairSizes(TagPairType tagPairType, int tagId, int* tagNameSize, int* tagValueSize);
         private static extern int AdvVer2_GetTagPairSizes64(TagPairType tagPairType, int tagId, ref int tagNameSize, ref int tagValueSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagSizeUTF8String")]
-        //HRESULT AdvVer2_GetStatusTagSizeUTF8String(unsigned int tagIndex, int* tagValueSize);
+        //ADVRESULT AdvVer2_GetStatusTagSizeUTF8String(unsigned int tagIndex, int* tagValueSize);
         private static extern int AdvVer2_GetStatusTagSizeUTF8String64(int tagId, ref int tagValueSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUTF8String")]
-        //HRESULT AdvVer2_GetStatusTagUTF8String(unsigned int tagIndex, char* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTagUTF8String(unsigned int tagIndex, char* tagValue);
         private static extern int AdvVer2_GetStatusTagUTF8String64(int tagId, [In, Out] byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUInt8")]
-        //HRESULT AdvVer2_GetStatusTagUInt8(unsigned int tagIndex, unsigned char* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTagUInt8(unsigned int tagIndex, unsigned char* tagValue);
         private static extern int AdvVer2_GetStatusTagUInt8_64(int tagId, ref byte tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag16")]
-        //HRESULT AdvVer2_GetStatusTag16(unsigned int tagIndex, unsigned short* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTag16(unsigned int tagIndex, unsigned short* tagValue);
         private static extern int AdvVer2_GetStatusTag16_64(int tagId, ref short tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagReal")]
-        //HRESULT AdvVer2_GetStatusTagReal(unsigned int tagIndex, float* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTagReal(unsigned int tagIndex, float* tagValue);
         private static extern int AdvVer2_GetStatusTagReal_64(int tagId, ref float tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag32")]
-        //HRESULT AdvVer2_GetStatusTag32(unsigned int tagIndex, unsigned int* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTag32(unsigned int tagIndex, unsigned int* tagValue);
         private static extern int AdvVer2_GetStatusTag32_64(int tagId, ref int tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag64")]
-        //HRESULT AdvVer2_GetStatusTag64(unsigned int tagIndex, __int64* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTag64(unsigned int tagIndex, __int64* tagValue);
         private static extern int AdvVer2_GetStatusTag64_64(int tagId, ref long tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagNameSize")]
-        //DLL_PUBLIC HRESULT AdvVer2_GetStatusTagNameSize(int tagId, int* tagNameSize);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagNameSize(int tagId, int* tagNameSize);
         private static extern int AdvVer2_GetStatusTagNameSize64(int tagId, ref int tagNameSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagInfo")]
-        //DLL_PUBLIC HRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
         private static extern int AdvVer2_GetStatusTagInfo64(int tagId, [In, Out] byte[] tagName, ref Adv2TagType tagType);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
-        //DLL_PUBLIC HRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
         private static extern int AdvVer2_GetImageLayoutInfo64(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
         #endregion
 
@@ -987,11 +987,11 @@ namespace Adv
         private static extern void AdvVer2_FrameAddStatusTag64_Unix(uint tagIndex, long tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImage")]
-        //HRESULT AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
+        //ADVRESULT AdvVer2_FrameAddImage(unsigned char layoutId, unsigned short* pixels, unsigned char pixelsBpp);
         private static extern int AdvVer2_FrameAddImage_Unix(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] ushort[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_FrameAddImageBytes")]
-        //HRESULT AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
+        //ADVRESULT AdvVer2_FrameAddImageBytes(unsigned char layoutId, unsigned char* pixels, unsigned char pixelsBpp);
         private static extern int AdvVer2_FrameAddImageBytes_Unix(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
@@ -999,55 +999,55 @@ namespace Adv
         private static extern void AdvVer2_EndFrameUnix();
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
-        //HRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
+        //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
         private static extern int AdvVer2_GetFramePixelsUnix(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] int systemErrorLen);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
-        //HRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
+        //ADVRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
         private static extern int AdvVer2_GetTagPairValuesUnix(TagPairType tagPairType, int tagId, [In, Out] byte[] tagName, [In, Out] byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairSizes")]
-        //HRESULT AdvVer2_GetTagPairSizes(TagPairType tagPairType, int tagId, int* tagNameSize, int* tagValueSize);
+        //ADVRESULT AdvVer2_GetTagPairSizes(TagPairType tagPairType, int tagId, int* tagNameSize, int* tagValueSize);
         private static extern int AdvVer2_GetTagPairSizesUnix(TagPairType tagPairType, int tagId, ref int tagNameSize, ref int tagValueSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagSizeUTF8String")]
-        //HRESULT AdvVer2_GetStatusTagSizeUTF8String(unsigned int tagIndex, int* tagValueSize);
+        //ADVRESULT AdvVer2_GetStatusTagSizeUTF8String(unsigned int tagIndex, int* tagValueSize);
         private static extern int AdvVer2_GetStatusTagSizeUTF8StringUnix(int tagId, ref int tagValueSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUTF8String")]
-        //HRESULT AdvVer2_GetStatusTagUTF8String(unsigned int tagIndex, char* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTagUTF8String(unsigned int tagIndex, char* tagValue);
         private static extern int AdvVer2_GetStatusTagUTF8StringUnix(int tagId, [In, Out] byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUInt8")]
-        //HRESULT AdvVer2_GetStatusTagUInt8(unsigned int tagIndex, unsigned char* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTagUInt8(unsigned int tagIndex, unsigned char* tagValue);
         private static extern int AdvVer2_GetStatusTagUInt8_Unix(int tagId, ref byte tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag16")]
-        //HRESULT AdvVer2_GetStatusTag16(unsigned int tagIndex, unsigned short* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTag16(unsigned int tagIndex, unsigned short* tagValue);
         private static extern int AdvVer2_GetStatusTag16_Unix(int tagId, ref short tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagReal")]
-        //HRESULT AdvVer2_GetStatusTagReal(unsigned int tagIndex, float* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTagReal(unsigned int tagIndex, float* tagValue);
         private static extern int AdvVer2_GetStatusTagReal_Unix(int tagId, ref float tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag32")]
-        //HRESULT AdvVer2_GetStatusTag32(unsigned int tagIndex, unsigned int* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTag32(unsigned int tagIndex, unsigned int* tagValue);
         private static extern int AdvVer2_GetStatusTag32_Unix(int tagId, ref int tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag64")]
-        //HRESULT AdvVer2_GetStatusTag64(unsigned int tagIndex, __int64* tagValue);
+        //ADVRESULT AdvVer2_GetStatusTag64(unsigned int tagIndex, __int64* tagValue);
         private static extern int AdvVer2_GetStatusTag64_Unix(int tagId, ref long tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagNameSize")]
-        //DLL_PUBLIC HRESULT AdvVer2_GetStatusTagNameSize(int tagId, int* tagNameSize);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagNameSize(int tagId, int* tagNameSize);
         private static extern int AdvVer2_GetStatusTagNameSizeUnix(int tagId, ref int tagNameSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagInfo")]
-        //DLL_PUBLIC HRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
         private static extern int AdvVer2_GetStatusTagInfoUnix(int tagId, [In, Out] byte[] tagName, ref Adv2TagType tagType);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
-        //DLL_PUBLIC HRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
         private static extern int AdvVer2_GetImageLayoutInfoUnix(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
 
         #endregion
