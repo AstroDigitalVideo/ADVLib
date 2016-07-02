@@ -1358,7 +1358,7 @@ namespace Adv
             if (String.IsNullOrEmpty(str))
                 return new byte[0];
             else
-                return Encoding.UTF8.GetBytes(str);
+                return Encoding.UTF8.GetBytes(str + "\0");
         }
 
         public static void SetTimingPrecision(int mainAccuracy, int calibrationAccuracy)

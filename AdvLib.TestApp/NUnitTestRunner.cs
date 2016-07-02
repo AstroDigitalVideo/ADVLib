@@ -18,6 +18,7 @@ namespace AdvLib.TestApp
         private int m_TotalTests = 0;
         private int m_ExecutedTests = 0;
         private StringBuilder m_UnitTestResult = new StringBuilder();
+        private StringBuilder m_UnitTestErrors = new StringBuilder();
 
         public void RunTests(bool copyResultsToClipboard, Action<int> startTestsCallback, Action<int, int> updateProgressCallback, Action<int> finishedTestsCallback)
         {
@@ -60,9 +61,9 @@ namespace AdvLib.TestApp
             finishedTestsCallback(m_FailedTests);
 
             if (copyResultsToClipboard)
-                Clipboard.SetText(m_UnitTestResult.ToString());
+                Clipboard.SetText(m_UnitTestResult.ToString() + "\r\n" + m_UnitTestErrors.ToString());
             else
-                Console.WriteLine(m_UnitTestResult.ToString());
+                Console.WriteLine(m_UnitTestResult.ToString() + "\r\n" + m_UnitTestErrors.ToString());
         }
 
         private void RunTests(Type testType, Action<int, int> updateProgressCallback)
@@ -141,7 +142,8 @@ namespace AdvLib.TestApp
                         Trace.WriteLine(ex);
                         m_FailedTests++;
                         failed = true;
-                        testResult += "SetupFailed\r\n"+ex.GetFullStackTrace();
+                        if (ex is TargetInvocationException) ex = ex.InnerException;
+                        m_UnitTestErrors.AppendLine(testResult + ": " + ex.GetFullStackTrace());
                         setupFailed = true;
                     }
                 }
@@ -157,7 +159,8 @@ namespace AdvLib.TestApp
                         Trace.WriteLine(ex);
                         m_FailedTests++;
                         failed = true;
-                        testResult += "Failed\r\n" + ex.GetFullStackTrace();
+                        if (ex is TargetInvocationException) ex = ex.InnerException;
+                        m_UnitTestErrors.AppendLine(testResult + ": " + ex.GetFullStackTrace());
                     }
                 }
             }
@@ -173,11 +176,12 @@ namespace AdvLib.TestApp
                     {
                         Trace.WriteLine(ex);
                         failed = true;
-                        testResult += "Failed\r\n" + ex.GetFullStackTrace();
+                        if (ex is TargetInvocationException) ex = ex.InnerException;
+                        m_UnitTestErrors.AppendLine(testResult + ": " + ex.GetFullStackTrace());
                     }
                 }
 
-                if (!failed) testResult += "Passed";
+                testResult += failed ? "Failed" : "Passed";
                 m_UnitTestResult.AppendLine(testResult);
             }
         }
