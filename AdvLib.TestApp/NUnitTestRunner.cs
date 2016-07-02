@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using AdvLib.Tests.Adv_V2;
 using NUnit.Framework;
 
@@ -16,8 +17,9 @@ namespace AdvLib.TestApp
         private int m_FailedTests = 0;
         private int m_TotalTests = 0;
         private int m_ExecutedTests = 0;
+        private StringBuilder m_UnitTestResult = new StringBuilder();
 
-        public void RunTests(Action<int> startTestsCallback, Action<int, int> updateProgressCallback, Action<int> finishedTestsCallback)
+        public void RunTests(bool copyResultsToClipboard, Action<int> startTestsCallback, Action<int, int> updateProgressCallback, Action<int> finishedTestsCallback)
         {
             m_TestTypes.Clear();
             m_TotalTests = 0;
@@ -56,6 +58,11 @@ namespace AdvLib.TestApp
             }
 
             finishedTestsCallback(m_FailedTests);
+
+            if (copyResultsToClipboard)
+                Clipboard.SetText(m_UnitTestResult.ToString());
+            else
+                Console.WriteLine(m_UnitTestResult.ToString());
         }
 
         private void RunTests(Type testType, Action<int, int> updateProgressCallback)
@@ -114,6 +121,9 @@ namespace AdvLib.TestApp
 
         private void RunTestInternal(MethodInfo test, object[] arguments, object instance, MethodInfo setupMethod, MethodInfo tearDownMethod)
         {
+            string testResult = string.Format("{0}.{1}({2}): ", instance.GetType().Name, test.Name, arguments == null ? "" : string.Join(",", arguments));
+
+            bool failed = false;
             m_ExecutedTests++;
 
             try
@@ -130,6 +140,8 @@ namespace AdvLib.TestApp
                     {
                         Trace.WriteLine(ex);
                         m_FailedTests++;
+                        failed = true;
+                        testResult += "SetupFailed\r\n"+ex.GetFullStackTrace();
                         setupFailed = true;
                     }
                 }
@@ -144,6 +156,8 @@ namespace AdvLib.TestApp
                     {
                         Trace.WriteLine(ex);
                         m_FailedTests++;
+                        failed = true;
+                        testResult += "Failed\r\n" + ex.GetFullStackTrace();
                     }
                 }
             }
@@ -158,8 +172,13 @@ namespace AdvLib.TestApp
                     catch (Exception ex)
                     {
                         Trace.WriteLine(ex);
+                        failed = true;
+                        testResult += "Failed\r\n" + ex.GetFullStackTrace();
                     }
                 }
+
+                if (!failed) testResult += "Passed";
+                m_UnitTestResult.AppendLine(testResult);
             }
         }
     }

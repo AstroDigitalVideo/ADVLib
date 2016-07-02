@@ -459,6 +459,7 @@ namespace AdvLibTestApp
 	        
             var runner = new NUnitTestRunner();
             runner.RunTests(
+                cbxCopyToClipboard.Checked,
                 (i) => this.Invoke(new Action<int>(StartRunningTests), i),
                 (i, j) => this.Invoke(new Action<int, int>(ProgressRunningTests), i, j),
                 (i) => this.Invoke(new Action<int>(StopRunningTests), i));

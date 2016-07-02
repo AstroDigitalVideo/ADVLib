@@ -49,8 +49,9 @@
             this.cbxADV1 = new System.Windows.Forms.CheckBox();
             this.tcTabs = new System.Windows.Forms.TabControl();
             this.tabRecorder = new System.Windows.Forms.TabPage();
+            this.btnGenSpecExample = new System.Windows.Forms.Button();
+            this.lblLibVersion = new System.Windows.Forms.Label();
             this.lblRanTests = new System.Windows.Forms.Label();
-            this.pbar = new AdvLib.TestApp.UnitTestProgressBar();
             this.btnRunTests = new System.Windows.Forms.Button();
             this.gbxCompression = new System.Windows.Forms.GroupBox();
             this.rbLagarith16 = new System.Windows.Forms.RadioButton();
@@ -58,8 +59,8 @@
             this.cbxZeroTicks = new System.Windows.Forms.CheckBox();
             this.tabStructureViewer = new System.Windows.Forms.TabPage();
             this.tabPlayer = new System.Windows.Forms.TabPage();
-            this.lblLibVersion = new System.Windows.Forms.Label();
-            this.btnGenSpecExample = new System.Windows.Forms.Button();
+            this.pbar = new AdvLib.TestApp.UnitTestProgressBar();
+            this.cbxCopyToClipboard = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxPixelValue)).BeginInit();
@@ -289,6 +290,7 @@
             // 
             // tabRecorder
             // 
+            this.tabRecorder.Controls.Add(this.cbxCopyToClipboard);
             this.tabRecorder.Controls.Add(this.btnGenSpecExample);
             this.tabRecorder.Controls.Add(this.lblLibVersion);
             this.tabRecorder.Controls.Add(this.lblRanTests);
@@ -311,6 +313,24 @@
             this.tabRecorder.Text = "Recorder";
             this.tabRecorder.UseVisualStyleBackColor = true;
             // 
+            // btnGenSpecExample
+            // 
+            this.btnGenSpecExample.Location = new System.Drawing.Point(387, 244);
+            this.btnGenSpecExample.Name = "btnGenSpecExample";
+            this.btnGenSpecExample.Size = new System.Drawing.Size(152, 23);
+            this.btnGenSpecExample.TabIndex = 19;
+            this.btnGenSpecExample.Text = "Generate Spec Example File";
+            this.btnGenSpecExample.UseVisualStyleBackColor = true;
+            this.btnGenSpecExample.Click += new System.EventHandler(this.btnGenSpecExample_Click);
+            // 
+            // lblLibVersion
+            // 
+            this.lblLibVersion.AutoSize = true;
+            this.lblLibVersion.Location = new System.Drawing.Point(167, 295);
+            this.lblLibVersion.Name = "lblLibVersion";
+            this.lblLibVersion.Size = new System.Drawing.Size(0, 13);
+            this.lblLibVersion.TabIndex = 18;
+            // 
             // lblRanTests
             // 
             this.lblRanTests.AutoSize = true;
@@ -318,14 +338,6 @@
             this.lblRanTests.Name = "lblRanTests";
             this.lblRanTests.Size = new System.Drawing.Size(0, 13);
             this.lblRanTests.TabIndex = 17;
-            // 
-            // pbar
-            // 
-            this.pbar.Location = new System.Drawing.Point(167, 313);
-            this.pbar.Name = "pbar";
-            this.pbar.Size = new System.Drawing.Size(372, 23);
-            this.pbar.TabIndex = 16;
-            this.pbar.Visible = false;
             // 
             // btnRunTests
             // 
@@ -399,23 +411,26 @@
             this.tabPlayer.Text = "Player";
             this.tabPlayer.UseVisualStyleBackColor = true;
             // 
-            // lblLibVersion
+            // pbar
             // 
-            this.lblLibVersion.AutoSize = true;
-            this.lblLibVersion.Location = new System.Drawing.Point(167, 295);
-            this.lblLibVersion.Name = "lblLibVersion";
-            this.lblLibVersion.Size = new System.Drawing.Size(0, 13);
-            this.lblLibVersion.TabIndex = 18;
+            this.pbar.Error = false;
+            this.pbar.Location = new System.Drawing.Point(167, 313);
+            this.pbar.Name = "pbar";
+            this.pbar.Size = new System.Drawing.Size(372, 23);
+            this.pbar.TabIndex = 16;
+            this.pbar.Visible = false;
             // 
-            // btnGenSpecExample
+            // cbxCopyToClipboard
             // 
-            this.btnGenSpecExample.Location = new System.Drawing.Point(387, 244);
-            this.btnGenSpecExample.Name = "btnGenSpecExample";
-            this.btnGenSpecExample.Size = new System.Drawing.Size(152, 23);
-            this.btnGenSpecExample.TabIndex = 19;
-            this.btnGenSpecExample.Text = "Generate Spec Example File";
-            this.btnGenSpecExample.UseVisualStyleBackColor = true;
-            this.btnGenSpecExample.Click += new System.EventHandler(this.btnGenSpecExample_Click);
+            this.cbxCopyToClipboard.AutoSize = true;
+            this.cbxCopyToClipboard.Checked = true;
+            this.cbxCopyToClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxCopyToClipboard.Location = new System.Drawing.Point(16, 340);
+            this.cbxCopyToClipboard.Name = "cbxCopyToClipboard";
+            this.cbxCopyToClipboard.Size = new System.Drawing.Size(147, 17);
+            this.cbxCopyToClipboard.TabIndex = 20;
+            this.cbxCopyToClipboard.Text = "Copy Results to Clipboard";
+            this.cbxCopyToClipboard.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
@@ -473,6 +488,7 @@
         private System.Windows.Forms.Label lblRanTests;
         private System.Windows.Forms.Label lblLibVersion;
         private System.Windows.Forms.Button btnGenSpecExample;
+        private System.Windows.Forms.CheckBox cbxCopyToClipboard;
 	}
 }
 
