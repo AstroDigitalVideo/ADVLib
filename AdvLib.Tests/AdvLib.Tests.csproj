@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adv_V2\TestAPIErrorMessages.cs" />
     <Compile Include="Adv_V2\TestV2FileGeneration.cs" />
     <Compile Include="Generators\AdvGenerator.cs" />
     <Compile Include="Generators\ImageGenerator.cs" />

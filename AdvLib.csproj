@@ -121,6 +121,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvErrorCodes.cs" />
     <Compile Include="AdvFile.cs" />
     <Compile Include="AdvFile2.cs" />
     <Compile Include="AdvLibException.cs" />
