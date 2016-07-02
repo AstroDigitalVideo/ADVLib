@@ -66,6 +66,9 @@ namespace AdvLib.TestApp
 
                 MethodInfo[] methods = testType.GetMethods(BindingFlags.Instance | BindingFlags.Public);
 
+                MethodInfo setupMethod = methods.SingleOrDefault(x => x.GetCustomAttributes(typeof(SetUpAttribute), true).Any());
+                MethodInfo tearDownMethod = methods.SingleOrDefault(x => x.GetCustomAttributes(typeof(TearDownAttribute), true).Any());
+
                 foreach (MethodInfo method in methods)
                 {
                     if (method.GetCustomAttributes(typeof(TestAttribute), true).Any())
@@ -87,32 +90,14 @@ namespace AdvLib.TestApp
                                         arguments[i] = val;
                                 }
 
-                                try
-                                {
-                                    m_ExecutedTests++;
-                                    method.Invoke(instance, arguments);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Trace.WriteLine(ex);
-                                    m_FailedTests++;
-                                }
+                                RunTestInternal(method, arguments, instance, setupMethod, tearDownMethod);
 
                                 updateProgressCallback(m_ExecutedTests, m_FailedTests);
                             }
                         }
                         else
                         {
-                            try
-                            {
-                                m_ExecutedTests++;
-                                method.Invoke(instance, null);
-                            }
-                            catch (Exception ex)
-                            {
-                                Trace.WriteLine(ex);
-                                m_FailedTests++;
-                            }
+                            RunTestInternal(method, null, instance, setupMethod, tearDownMethod);
 
                             updateProgressCallback(m_ExecutedTests, m_FailedTests);
                         }
@@ -125,6 +110,57 @@ namespace AdvLib.TestApp
                 m_FailedTests++;
             }
             
+        }
+
+        private void RunTestInternal(MethodInfo test, object[] arguments, object instance, MethodInfo setupMethod, MethodInfo tearDownMethod)
+        {
+            m_ExecutedTests++;
+
+            try
+            {
+                bool setupFailed = false;
+
+                if (setupMethod != null)
+                {
+                    try
+                    {
+                        setupMethod.Invoke(instance, arguments);
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine(ex);
+                        m_FailedTests++;
+                        setupFailed = true;
+                    }
+                }
+
+                if (!setupFailed)
+                {
+                    try
+                    {
+                        test.Invoke(instance, arguments);
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine(ex);
+                        m_FailedTests++;
+                    }
+                }
+            }
+            finally
+            {
+                if (tearDownMethod != null)
+                {
+                    try
+                    {
+                        tearDownMethod.Invoke(instance, arguments);
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine(ex);
+                    }
+                }
+            }
         }
     }
 }
