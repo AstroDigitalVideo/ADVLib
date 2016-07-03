@@ -10,6 +10,8 @@ namespace Adv
         public static int E_ADV_NOFILE                                     = unchecked((int)0x81000001);
 
         public static int E_ADV_STATUS_ENTRY_ALREADY_ADDED                 = unchecked((int)0x81001001);
+        public static int E_ADV_INVALID_STATUS_TAG_ID                      = unchecked((int)0x81001002);
+        public static int E_ADV_INVALID_STATUS_TAG_TYPE                    = unchecked((int)0x81001003);
 
         public static int S_OK                                             = 0;
         public static int E_FAIL                                           = unchecked((int)0x80004005);
