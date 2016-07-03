@@ -509,39 +509,39 @@ namespace Adv
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagSizeUTF8String")]
         //ADVRESULT AdvVer2_GetStatusTagSizeUTF8String(unsigned int tagIndex, int* tagValueSize);
-        private static extern int AdvVer2_GetStatusTagSizeUTF8String32(int tagId, ref int tagValueSize);
+        private static extern int AdvVer2_GetStatusTagSizeUTF8String32(uint tagId, ref int tagValueSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUTF8String")]
         //ADVRESULT AdvVer2_GetStatusTagUTF8String(unsigned int tagIndex, char* tagValue);
-        private static extern int AdvVer2_GetStatusTagUTF8String32(int tagId, [In, Out] byte[] tagValue);
+        private static extern int AdvVer2_GetStatusTagUTF8String32(uint tagId, [In, Out] byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUInt8")]
         //ADVRESULT AdvVer2_GetStatusTagUInt8(unsigned int tagIndex, unsigned char* tagValue);
-        private static extern int AdvVer2_GetStatusTagUInt8_32(int tagId, ref byte tagValue);
+        private static extern int AdvVer2_GetStatusTagUInt8_32(uint tagId, ref byte tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag16")]
         //ADVRESULT AdvVer2_GetStatusTag16(unsigned int tagIndex, unsigned short* tagValue);
-        private static extern int AdvVer2_GetStatusTag16_32(int tagId, ref short tagValue);
+        private static extern int AdvVer2_GetStatusTag16_32(uint tagId, ref short tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagReal")]
         //ADVRESULT AdvVer2_GetStatusTagReal(unsigned int tagIndex, float* tagValue);
-        private static extern int AdvVer2_GetStatusTagReal_32(int tagId, ref float tagValue);
+        private static extern int AdvVer2_GetStatusTagReal_32(uint tagId, ref float tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag32")]
         //ADVRESULT AdvVer2_GetStatusTag32(unsigned int tagIndex, unsigned int* tagValue);
-        private static extern int AdvVer2_GetStatusTag32_32(int tagId, ref int tagValue);
+        private static extern int AdvVer2_GetStatusTag32_32(uint tagId, ref int tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag64")]
         //ADVRESULT AdvVer2_GetStatusTag64(unsigned int tagIndex, __int64* tagValue);
-        private static extern int AdvVer2_GetStatusTag64_32(int tagId, ref long tagValue);
+        private static extern int AdvVer2_GetStatusTag64_32(uint tagId, ref long tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagNameSize")]
-        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagNameSize(int tagId, int* tagNameSize);
-        private static extern int AdvVer2_GetStatusTagNameSize32(int tagId, ref int tagNameSize);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagNameSize(unsigned int tagId, int* tagNameSize);
+        private static extern int AdvVer2_GetStatusTagNameSize32(uint tagId, ref int tagNameSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagInfo")]
-        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
-        private static extern int AdvVer2_GetStatusTagInfo32(int tagId,[In, Out] byte[] tagName, ref Adv2TagType tagType);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagInfo(unsigned int tagId, int* tagNameSize);
+        private static extern int AdvVer2_GetStatusTagInfo32(uint tagId,[In, Out] byte[] tagName, ref Adv2TagType tagType);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
         //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
@@ -761,39 +761,39 @@ namespace Adv
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagSizeUTF8String")]
         //ADVRESULT AdvVer2_GetStatusTagSizeUTF8String(unsigned int tagIndex, int* tagValueSize);
-        private static extern int AdvVer2_GetStatusTagSizeUTF8String64(int tagId, ref int tagValueSize);
+        private static extern int AdvVer2_GetStatusTagSizeUTF8String64(uint tagId, ref int tagValueSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUTF8String")]
         //ADVRESULT AdvVer2_GetStatusTagUTF8String(unsigned int tagIndex, char* tagValue);
-        private static extern int AdvVer2_GetStatusTagUTF8String64(int tagId, [In, Out] byte[] tagValue);
+        private static extern int AdvVer2_GetStatusTagUTF8String64(uint tagId, [In, Out] byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUInt8")]
         //ADVRESULT AdvVer2_GetStatusTagUInt8(unsigned int tagIndex, unsigned char* tagValue);
-        private static extern int AdvVer2_GetStatusTagUInt8_64(int tagId, ref byte tagValue);
+        private static extern int AdvVer2_GetStatusTagUInt8_64(uint tagId, ref byte tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag16")]
         //ADVRESULT AdvVer2_GetStatusTag16(unsigned int tagIndex, unsigned short* tagValue);
-        private static extern int AdvVer2_GetStatusTag16_64(int tagId, ref short tagValue);
+        private static extern int AdvVer2_GetStatusTag16_64(uint tagId, ref short tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagReal")]
         //ADVRESULT AdvVer2_GetStatusTagReal(unsigned int tagIndex, float* tagValue);
-        private static extern int AdvVer2_GetStatusTagReal_64(int tagId, ref float tagValue);
+        private static extern int AdvVer2_GetStatusTagReal_64(uint tagId, ref float tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag32")]
         //ADVRESULT AdvVer2_GetStatusTag32(unsigned int tagIndex, unsigned int* tagValue);
-        private static extern int AdvVer2_GetStatusTag32_64(int tagId, ref int tagValue);
+        private static extern int AdvVer2_GetStatusTag32_64(uint tagId, ref int tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag64")]
         //ADVRESULT AdvVer2_GetStatusTag64(unsigned int tagIndex, __int64* tagValue);
-        private static extern int AdvVer2_GetStatusTag64_64(int tagId, ref long tagValue);
+        private static extern int AdvVer2_GetStatusTag64_64(uint tagId, ref long tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagNameSize")]
-        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagNameSize(int tagId, int* tagNameSize);
-        private static extern int AdvVer2_GetStatusTagNameSize64(int tagId, ref int tagNameSize);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagNameSize(unsigned int tagId, int* tagNameSize);
+        private static extern int AdvVer2_GetStatusTagNameSize64(uint tagId, ref int tagNameSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagInfo")]
-        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
-        private static extern int AdvVer2_GetStatusTagInfo64(int tagId, [In, Out] byte[] tagName, ref Adv2TagType tagType);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagInfo(unsigned int tagId, int* tagNameSize);
+        private static extern int AdvVer2_GetStatusTagInfo64(uint tagId, [In, Out] byte[] tagName, ref Adv2TagType tagType);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
         //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
@@ -1012,39 +1012,39 @@ namespace Adv
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagSizeUTF8String")]
         //ADVRESULT AdvVer2_GetStatusTagSizeUTF8String(unsigned int tagIndex, int* tagValueSize);
-        private static extern int AdvVer2_GetStatusTagSizeUTF8StringUnix(int tagId, ref int tagValueSize);
+        private static extern int AdvVer2_GetStatusTagSizeUTF8StringUnix(uint tagId, ref int tagValueSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUTF8String")]
         //ADVRESULT AdvVer2_GetStatusTagUTF8String(unsigned int tagIndex, char* tagValue);
-        private static extern int AdvVer2_GetStatusTagUTF8StringUnix(int tagId, [In, Out] byte[] tagValue);
+        private static extern int AdvVer2_GetStatusTagUTF8StringUnix(uint tagId, [In, Out] byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagUInt8")]
         //ADVRESULT AdvVer2_GetStatusTagUInt8(unsigned int tagIndex, unsigned char* tagValue);
-        private static extern int AdvVer2_GetStatusTagUInt8_Unix(int tagId, ref byte tagValue);
+        private static extern int AdvVer2_GetStatusTagUInt8_Unix(uint tagId, ref byte tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag16")]
         //ADVRESULT AdvVer2_GetStatusTag16(unsigned int tagIndex, unsigned short* tagValue);
-        private static extern int AdvVer2_GetStatusTag16_Unix(int tagId, ref short tagValue);
+        private static extern int AdvVer2_GetStatusTag16_Unix(uint tagId, ref short tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagReal")]
         //ADVRESULT AdvVer2_GetStatusTagReal(unsigned int tagIndex, float* tagValue);
-        private static extern int AdvVer2_GetStatusTagReal_Unix(int tagId, ref float tagValue);
+        private static extern int AdvVer2_GetStatusTagReal_Unix(uint tagId, ref float tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag32")]
         //ADVRESULT AdvVer2_GetStatusTag32(unsigned int tagIndex, unsigned int* tagValue);
-        private static extern int AdvVer2_GetStatusTag32_Unix(int tagId, ref int tagValue);
+        private static extern int AdvVer2_GetStatusTag32_Unix(uint tagId, ref int tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTag64")]
         //ADVRESULT AdvVer2_GetStatusTag64(unsigned int tagIndex, __int64* tagValue);
-        private static extern int AdvVer2_GetStatusTag64_Unix(int tagId, ref long tagValue);
+        private static extern int AdvVer2_GetStatusTag64_Unix(uint tagId, ref long tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagNameSize")]
-        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagNameSize(int tagId, int* tagNameSize);
-        private static extern int AdvVer2_GetStatusTagNameSizeUnix(int tagId, ref int tagNameSize);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagNameSize(unsigned int tagId, int* tagNameSize);
+        private static extern int AdvVer2_GetStatusTagNameSizeUnix(uint tagId, ref int tagNameSize);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStatusTagInfo")]
-        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagInfo(int tagId, int* tagNameSize);
-        private static extern int AdvVer2_GetStatusTagInfoUnix(int tagId, [In, Out] byte[] tagName, ref Adv2TagType tagType);
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetStatusTagInfo(unsigned int tagId, int* tagNameSize);
+        private static extern int AdvVer2_GetStatusTagInfoUnix(uint tagId, [In, Out] byte[] tagName, ref Adv2TagType tagType);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
         //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
@@ -1711,11 +1711,12 @@ namespace Adv
             return true;
         }
 
-        public static string GetStatusTagInfo(int tagId, out Adv2TagType? tagType)
+        public static int GetStatusTagInfo(uint tagId, out Adv2TagType? tagType, out string tagName)
         {
             int nameSize = 0;
             int errorCode = -1;
             tagType = null;
+            tagName = null;
 
             if (!CrossPlatform.IsWindows)
                 errorCode = AdvVer2_GetStatusTagNameSizeUnix(tagId, ref nameSize);
@@ -1724,8 +1725,8 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagNameSize32(tagId, ref nameSize);
 
-            if (errorCode != 0)
-                return null;
+            if (errorCode != AdvErrorCodes.S_OK)
+                return errorCode;
 
             var tagNameBT = new byte[2 * nameSize + 1];
 
@@ -1737,18 +1738,20 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagInfo32(tagId, tagNameBT, ref tt);
 
-            if (errorCode != 0)
-                return null;
+            if (errorCode != AdvErrorCodes.S_OK)
+                return errorCode;
 
-            string tagName = GetStringFromUTF8Bytes(tagNameBT);
+            tagName = GetStringFromUTF8Bytes(tagNameBT);
             tagType = tt;
-            return tagName;
+
+            return AdvErrorCodes.S_OK;
         }
 
-        public static string GetStatusTagUTF8String(int tagId)
+        public static int GetStatusTagUTF8String(uint tagId, out string tagValue)
         {
             int valueSize = 0;
             int errorCode = -1;
+            tagValue = null;
             if (!CrossPlatform.IsWindows)
                 errorCode = AdvVer2_GetStatusTagSizeUTF8StringUnix(tagId, ref valueSize);
             else if (Is64Bit())
@@ -1756,8 +1759,8 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagSizeUTF8String32(tagId, ref valueSize);
 
-            if (errorCode != 0)
-                return null;
+            if (errorCode != AdvErrorCodes.S_OK)
+                return errorCode;
 
             var tagValueBT = new byte[2 * valueSize + 1];
 
@@ -1769,20 +1772,19 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagUTF8String32(tagId, tagValueBT);
 
-            if (errorCode != 0)
-                return null;
+            if (errorCode != AdvErrorCodes.S_OK)
+                return errorCode;
 
-            string tagValue = GetStringFromUTF8Bytes(tagValueBT);
-
-            return tagValue;
-
+            tagValue = GetStringFromUTF8Bytes(tagValueBT);
+            return AdvErrorCodes.S_OK;
         }
 
 
-        public static byte? GetStatusTagUInt8(int tagId)
+        public static int GetStatusTagUInt8(uint tagId, out byte? tagValue)
         {
             int errorCode = -1;
             byte rv = 0;
+            tagValue = 0;
             if (!CrossPlatform.IsWindows)
                 errorCode = AdvVer2_GetStatusTagUInt8_Unix(tagId, ref rv);
             else if (Is64Bit())
@@ -1790,16 +1792,18 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagUInt8_32(tagId, ref rv);
 
-            if (errorCode != 0)
-                return null;
+            if (errorCode != AdvErrorCodes.S_OK)
+                return errorCode;
 
-            return rv;
+            tagValue = rv;
+            return AdvErrorCodes.S_OK;
         }
 
-        public static short? GetStatusTagInt16(int tagId)
+        public static int GetStatusTagInt16(uint tagId, out short? tagValue)
         {
             int errorCode = -1;
             short rv = 0;
+            tagValue = null;
             if (!CrossPlatform.IsWindows)
                 errorCode = AdvVer2_GetStatusTag16_Unix(tagId, ref rv);
             else if (Is64Bit())
@@ -1807,16 +1811,18 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTag16_32(tagId, ref rv);
 
-            if (errorCode != 0)
-                return null;
+            if (errorCode != AdvErrorCodes.S_OK)
+                return errorCode;
 
-            return rv;
+            tagValue = rv;
+            return AdvErrorCodes.S_OK;
         }
 
-        public static float? GetStatusTagFloat(int tagId)
+        public static int GetStatusTagFloat(uint tagId, out float? tagValue)
         {
             int errorCode = -1;
             float rv = 0;
+            tagValue = null;
             if (!CrossPlatform.IsWindows)
                 errorCode = AdvVer2_GetStatusTagReal_Unix(tagId, ref rv);
             else if (Is64Bit())
@@ -1824,16 +1830,18 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagReal_32(tagId, ref rv);
 
-            if (errorCode != 0)
-                return null;
+            if (errorCode != AdvErrorCodes.S_OK)
+                return errorCode;
 
-            return rv;
+            tagValue = rv;
+            return AdvErrorCodes.S_OK;
         }
 
-        public static int? GetStatusTagInt32(int tagId)
+        public static int GetStatusTagInt32(uint tagId, out int? tagValue)
         {
             int errorCode = -1;
             int rv = 0;
+            tagValue = null;
             if (!CrossPlatform.IsWindows)
                 errorCode = AdvVer2_GetStatusTag32_Unix(tagId, ref rv);
             else if (Is64Bit())
@@ -1841,16 +1849,18 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTag32_32(tagId, ref rv);
 
-            if (errorCode != 0)
-                return null;
+            if (errorCode != AdvErrorCodes.S_OK)
+                return errorCode;
 
-            return rv;
+            tagValue = rv;
+            return AdvErrorCodes.S_OK;
         }
 
-        public static long? GetStatusTagInt64(int tagId)
+        public static int GetStatusTagInt64(uint tagId, out long? tagValue)
         {
             int errorCode = -1;
             long rv = 0;
+            tagValue = null;
             if (!CrossPlatform.IsWindows)
                 errorCode = AdvVer2_GetStatusTag64_Unix(tagId, ref rv);
             else if (Is64Bit())
@@ -1858,10 +1868,11 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTag64_32(tagId, ref rv);
 
-            if (errorCode != 0)
-                return null;
+            if (errorCode != AdvErrorCodes.S_OK)
+                return errorCode;
 
-            return rv;
+            tagValue = rv;
+            return AdvErrorCodes.S_OK;
         }
 
         internal static string GetStringFromUTF8Bytes(byte[] chars)

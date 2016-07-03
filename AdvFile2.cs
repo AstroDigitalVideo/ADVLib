@@ -34,7 +34,7 @@ namespace Adv
         public Dictionary<string, string> UserMetadataTags = new Dictionary<string, string>();
         public Dictionary<string, string> ImageSectionTags = new Dictionary<string, string>();
 
-        private List<Tuple<string, int, Adv2TagType>> m_StatusTagDefinitions = new List<Tuple<string, int, Adv2TagType>>(); 
+        private List<Tuple<string, uint, Adv2TagType>> m_StatusTagDefinitions = new List<Tuple<string, uint, Adv2TagType>>(); 
 
         public int Width;
         public int Height;
@@ -146,14 +146,17 @@ namespace Adv
 
         private void EnsureStatusTagDefinitions(AdvFileInfo fileInfo)
         {
-            for (int i = 0; i < fileInfo.StatusTagsCount; i++)
+            for (uint i = 0; i < fileInfo.StatusTagsCount; i++)
             {
                 Adv2TagType? tagType;
-                string tagName = AdvLib.GetStatusTagInfo(i, out tagType);
-                if (!string.IsNullOrEmpty(tagName) && tagType != null)
-                    m_StatusTagDefinitions.Add(new Tuple<string, int, Adv2TagType>(tagName, i, tagType.Value));
-            }
-            
+                string tagName;
+                if (AdvLib.GetStatusTagInfo(i, out tagType, out tagName) == AdvErrorCodes.S_OK &&
+                    !string.IsNullOrEmpty(tagName) &&
+                    tagType != null)
+                {
+                    m_StatusTagDefinitions.Add(new Tuple<string, uint, Adv2TagType>(tagName, i, tagType.Value));
+                }                    
+            }            
         }
 
         public uint[] GetMainFramePixels(uint frameNo, out AdvFrameInfo frameInfo)
@@ -163,31 +166,38 @@ namespace Adv
                 uint[] pixels = AdvLib.GetFramePixels(0, (int)frameNo, Width, Height, out frameInfo);
                 foreach (var entry in m_StatusTagDefinitions)
                 {
+                    byte? val8;
+                    short? val16;
+                    int? val32;
+                    long? val64;
+                    float? valf;
+                    string vals;
+
                     switch (entry.Item3)
                     {
                         case Adv2TagType.Int8:
-                            byte? val8 = AdvLib.GetStatusTagUInt8(entry.Item2);
-                            if (val8 != null) frameInfo.Status.Add(entry.Item1, val8.Value);
+                            if (AdvLib.GetStatusTagUInt8(entry.Item2, out val8) == AdvErrorCodes.S_OK && val8.HasValue)
+                                frameInfo.Status.Add(entry.Item1, val8.Value);
                             break;
                         case Adv2TagType.Int16:
-                            short? val16 = AdvLib.GetStatusTagInt16(entry.Item2);
-                            if (val16 != null) frameInfo.Status.Add(entry.Item1, val16.Value);
+                            if (AdvLib.GetStatusTagInt16(entry.Item2, out val16) == AdvErrorCodes.S_OK && val16.HasValue)
+                                frameInfo.Status.Add(entry.Item1, val16.Value);
                             break;
                         case Adv2TagType.Int32:
-                            int? val32 = AdvLib.GetStatusTagInt32(entry.Item2);
-                            if (val32 != null) frameInfo.Status.Add(entry.Item1, val32.Value);
+                            if (AdvLib.GetStatusTagInt32(entry.Item2, out val32) == AdvErrorCodes.S_OK && val32.HasValue)
+                                frameInfo.Status.Add(entry.Item1, val32.Value);
                             break;
                         case Adv2TagType.Long64:
-                            long? val64 = AdvLib.GetStatusTagInt64(entry.Item2);
-                            if (val64 != null) frameInfo.Status.Add(entry.Item1, val64.Value);
+                            if (AdvLib.GetStatusTagInt64(entry.Item2, out val64) == AdvErrorCodes.S_OK && val64.HasValue)
+                                frameInfo.Status.Add(entry.Item1, val64.Value);
                             break;
                         case Adv2TagType.Real:
-                            float? valf = AdvLib.GetStatusTagFloat(entry.Item2);
-                            if (valf != null) frameInfo.Status.Add(entry.Item1, valf.Value);
+                            if (AdvLib.GetStatusTagFloat(entry.Item2, out valf) == AdvErrorCodes.S_OK && valf.HasValue)
+                                frameInfo.Status.Add(entry.Item1, valf.Value);
                             break;
                         case Adv2TagType.UTF8String:
-                            string vals = AdvLib.GetStatusTagUTF8String(entry.Item2);
-                            if (vals != null) frameInfo.Status.Add(entry.Item1, vals);
+                            if (AdvLib.GetStatusTagUTF8String(entry.Item2, out vals) == AdvErrorCodes.S_OK)
+                                frameInfo.Status.Add(entry.Item1, vals);
                             break;
                     }                    
                 }
