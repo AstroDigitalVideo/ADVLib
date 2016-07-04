@@ -120,7 +120,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions.cs" />
     <Compile Include="UnitTestProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>

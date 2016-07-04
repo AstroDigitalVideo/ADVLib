@@ -1539,7 +1539,7 @@ namespace Adv
                 return AdvVer2_FrameAddStatusTagUInt8_32(tagIndex, tagValue);
         }
 
-        public static int FrameAddStatusTag16(uint tagIndex, short tagValue)
+        public static int FrameAddStatusTagInt16(uint tagIndex, short tagValue)
         {
             if (!CrossPlatform.IsWindows)
                 return AdvVer2_FrameAddStatusTag16_Unix(tagIndex, tagValue);
@@ -1549,7 +1549,7 @@ namespace Adv
                 return AdvVer2_FrameAddStatusTag16_32(tagIndex, tagValue);
         }
 
-        public static int FrameAddStatusTagReal(uint tagIndex, float tagValue)
+        public static int FrameAddStatusTagFloat(uint tagIndex, float tagValue)
         {
             if (!CrossPlatform.IsWindows)
                 return AdvVer2_FrameAddStatusTagReal_Unix(tagIndex, tagValue);
@@ -1559,7 +1559,7 @@ namespace Adv
                 return AdvVer2_FrameAddStatusTagReal_32(tagIndex, tagValue);
         }
 
-        public static int FrameAddStatusTag32(uint tagIndex, int tagValue)
+        public static int FrameAddStatusTagInt32(uint tagIndex, int tagValue)
         {
             if (!CrossPlatform.IsWindows)
                 return AdvVer2_FrameAddStatusTag32_Unix(tagIndex, tagValue);
@@ -1569,7 +1569,7 @@ namespace Adv
                 return AdvVer2_FrameAddStatusTag32_32(tagIndex, tagValue);
         }
 
-        public static int FrameAddStatusTag64(uint tagIndex, long tagValue)
+        public static int FrameAddStatusTagInt64(uint tagIndex, long tagValue)
         {
             if (!CrossPlatform.IsWindows)
                 return AdvVer2_FrameAddStatusTag64_Unix(tagIndex, tagValue);
@@ -1579,7 +1579,7 @@ namespace Adv
                 return AdvVer2_FrameAddStatusTag64_32(tagIndex, tagValue);
         }
 
-        public static void FrameAddImage(byte layoutId, ushort[] pixels, byte pixelsBpp)
+        public static int FrameAddImage(byte layoutId, ushort[] pixels, byte pixelsBpp)
         {
             var rv = 0;
             if (!CrossPlatform.IsWindows)
@@ -1589,10 +1589,10 @@ namespace Adv
             else
                 rv = AdvVer2_FrameAddImage_32(layoutId, pixels, pixelsBpp);
 
-            if (rv != 0) throw new AdvLibException("AdvVer2_FrameAddImage failed!");
+            return rv;
         }
 
-        public static void FrameAddImageBytes(byte layoutId, byte[] pixels, byte pixelsBpp)
+        public static int FrameAddImageBytes(byte layoutId, byte[] pixels, byte pixelsBpp)
         {
             var rv = 0;
             if (!CrossPlatform.IsWindows)
@@ -1602,7 +1602,7 @@ namespace Adv
             else
                 rv = AdvVer2_FrameAddImageBytes_32(layoutId, pixels, pixelsBpp);
 
-            if (rv != 0) throw new AdvLibException("AdvVer2_FrameAddImageBytes failed!");
+            return rv;
         }
 
         public static void EndFrame()
@@ -1618,62 +1618,74 @@ namespace Adv
         public static uint[] GetFramePixels(int streamId, int frameNo, int width, int height)
         {
             AdvFrameInfo frameInfo;
-            return GetFramePixels(streamId, frameNo, width, height, out frameInfo);
+            uint[] pixels;
+            int errorCode = GetFramePixels(streamId, frameNo, width, height, out frameInfo, out pixels);
+            if (errorCode == AdvError.S_OK)
+                return pixels;
+            else
+                return null;
         }
 
-        public static uint[] GetFramePixels(int streamId, int frameNo, int width, int height, out AdvFrameInfo frameInfo)
+        public static int GetFramePixels(int streamId, int frameNo, int width, int height, out AdvFrameInfo frameInfo, out uint[] pixels)
         {
-			uint[] pixels = new uint[width * height];
+			pixels = new uint[width * height];
 			var frameInfoNative = new AdvFrameInfoNative();
 
 			byte[] systemError = new byte[256 * 16];
             int errorMessageLen = 0;
+            int errorCode = -1;
             if (!CrossPlatform.IsWindows)
-                AdvVer2_GetFramePixelsUnix(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
+                errorCode = AdvVer2_GetFramePixelsUnix(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
             else if (Is64Bit())
-                AdvVer2_GetFramePixels64(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
+                errorCode = AdvVer2_GetFramePixels64(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
             else
-                AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
+                errorCode = AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
+
+            if (errorCode != AdvError.S_OK)
+            {
+                frameInfo = null;
+                return errorCode;
+            }
 
             frameInfo = new AdvFrameInfo(frameInfoNative);
 
             if (errorMessageLen > 0)
                 frameInfo.ErrorMessageStrLen = errorMessageLen;
 
-            return pixels;
+            return AdvError.S_OK;
         }
 
-        public static bool GetMainStreamTag(int tagId, out string tagName, out string tagValue)
+        public static int GetMainStreamTag(int tagId, out string tagName, out string tagValue)
         {
             return GetAdvTagPair(TagPairType.MainStream, tagId, out tagName, out tagValue);
         }
 
-        public static bool GetCalibrationStreamTag(int tagId, out string tagName, out string tagValue)
+        public static int GetCalibrationStreamTag(int tagId, out string tagName, out string tagValue)
         {
             return GetAdvTagPair(TagPairType.CalibrationStream, tagId, out tagName, out tagValue);
         }
 
-        public static bool GetSystemMetadataTag(int tagId, out string tagName, out string tagValue)
+        public static int GetSystemMetadataTag(int tagId, out string tagName, out string tagValue)
         {
             return GetAdvTagPair(TagPairType.SystemMetadata, tagId, out tagName, out tagValue);
         }
 
-        public static bool GetUserMetadataTag(int tagId, out string tagName, out string tagValue)
+        public static int GetUserMetadataTag(int tagId, out string tagName, out string tagValue)
         {
             return GetAdvTagPair(TagPairType.UserMetadata, tagId, out tagName, out tagValue);
         }
 
-        public static bool GetImageSectionTag(int tagId, out string tagName, out string tagValue)
+        public static int GetImageSectionTag(int tagId, out string tagName, out string tagValue)
         {
             return GetAdvTagPair(TagPairType.ImageSection, tagId, out tagName, out tagValue);
         }
 
-        public static bool GetImageLayoutTag(int imageLayoutId, int tagId, out string tagName, out string tagValue)
+        public static int GetImageLayoutTag(int imageLayoutId, int tagId, out string tagName, out string tagValue)
         {
             return GetAdvTagPair(TagPairType.FirstImageLayout + imageLayoutId, tagId, out tagName, out tagValue);
         }
 
-        private static bool GetAdvTagPair(TagPairType tagType, int tagId, out string tagName, out string tagValue)
+        private static int GetAdvTagPair(TagPairType tagType, int tagId, out string tagName, out string tagValue)
         {
             tagName = null;
             tagValue = null;
@@ -1688,8 +1700,8 @@ namespace Adv
             else
                 rv = AdvVer2_GetTagPairSizes32(tagType, tagId, ref nameSize, ref valueSize);
             
-            if (rv != 0)
-                return false;
+            if (rv != AdvError.S_OK)
+                return rv;
 
             var tagNameBT = new byte[2 * nameSize + 1];
             var tagValueBT = new byte[2 * valueSize + 1];
@@ -1702,13 +1714,13 @@ namespace Adv
             else
                 rv = AdvVer2_GetTagPairValues32(tagType, tagId, tagNameBT, tagValueBT);
 
-            if (rv != 0)
-                return false;
+            if (rv != AdvError.S_OK)
+                return rv;
 
             tagName = GetStringFromUTF8Bytes(tagNameBT);
             tagValue = GetStringFromUTF8Bytes(tagValueBT);
 
-            return true;
+            return AdvError.S_OK;
         }
 
         public static int GetStatusTagInfo(uint tagId, out Adv2TagType? tagType, out string tagName)
@@ -1725,7 +1737,7 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagNameSize32(tagId, ref nameSize);
 
-            if (errorCode != AdvErrorCodes.S_OK)
+            if (errorCode != AdvError.S_OK)
                 return errorCode;
 
             var tagNameBT = new byte[2 * nameSize + 1];
@@ -1738,13 +1750,13 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagInfo32(tagId, tagNameBT, ref tt);
 
-            if (errorCode != AdvErrorCodes.S_OK)
+            if (errorCode != AdvError.S_OK)
                 return errorCode;
 
             tagName = GetStringFromUTF8Bytes(tagNameBT);
             tagType = tt;
 
-            return AdvErrorCodes.S_OK;
+            return AdvError.S_OK;
         }
 
         public static int GetStatusTagUTF8String(uint tagId, out string tagValue)
@@ -1759,7 +1771,7 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagSizeUTF8String32(tagId, ref valueSize);
 
-            if (errorCode != AdvErrorCodes.S_OK)
+            if (errorCode != AdvError.S_OK)
                 return errorCode;
 
             var tagValueBT = new byte[2 * valueSize + 1];
@@ -1772,11 +1784,11 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagUTF8String32(tagId, tagValueBT);
 
-            if (errorCode != AdvErrorCodes.S_OK)
+            if (errorCode != AdvError.S_OK)
                 return errorCode;
 
             tagValue = GetStringFromUTF8Bytes(tagValueBT);
-            return AdvErrorCodes.S_OK;
+            return AdvError.S_OK;
         }
 
 
@@ -1792,11 +1804,11 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagUInt8_32(tagId, ref rv);
 
-            if (errorCode != AdvErrorCodes.S_OK)
+            if (errorCode != AdvError.S_OK)
                 return errorCode;
 
             tagValue = rv;
-            return AdvErrorCodes.S_OK;
+            return AdvError.S_OK;
         }
 
         public static int GetStatusTagInt16(uint tagId, out short? tagValue)
@@ -1811,11 +1823,11 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTag16_32(tagId, ref rv);
 
-            if (errorCode != AdvErrorCodes.S_OK)
+            if (errorCode != AdvError.S_OK)
                 return errorCode;
 
             tagValue = rv;
-            return AdvErrorCodes.S_OK;
+            return AdvError.S_OK;
         }
 
         public static int GetStatusTagFloat(uint tagId, out float? tagValue)
@@ -1830,11 +1842,11 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTagReal_32(tagId, ref rv);
 
-            if (errorCode != AdvErrorCodes.S_OK)
+            if (errorCode != AdvError.S_OK)
                 return errorCode;
 
             tagValue = rv;
-            return AdvErrorCodes.S_OK;
+            return AdvError.S_OK;
         }
 
         public static int GetStatusTagInt32(uint tagId, out int? tagValue)
@@ -1849,11 +1861,11 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTag32_32(tagId, ref rv);
 
-            if (errorCode != AdvErrorCodes.S_OK)
+            if (errorCode != AdvError.S_OK)
                 return errorCode;
 
             tagValue = rv;
-            return AdvErrorCodes.S_OK;
+            return AdvError.S_OK;
         }
 
         public static int GetStatusTagInt64(uint tagId, out long? tagValue)
@@ -1868,11 +1880,11 @@ namespace Adv
             else
                 errorCode = AdvVer2_GetStatusTag64_32(tagId, ref rv);
 
-            if (errorCode != AdvErrorCodes.S_OK)
+            if (errorCode != AdvError.S_OK)
                 return errorCode;
 
             tagValue = rv;
-            return AdvErrorCodes.S_OK;
+            return AdvError.S_OK;
         }
 
         internal static string GetStringFromUTF8Bytes(byte[] chars)
@@ -1881,21 +1893,24 @@ namespace Adv
             return str.Substring(0, str.IndexOf('\0'));
         }
 
-        public static AdvImageLayoutInfo GetImageLayoutInfo(int layoutIndex)
+        public static int GetImageLayoutInfo(int layoutIndex, out AdvImageLayoutInfo imageLayoutInfo)
         {
             int errorCode = -1;
-            var rv = new AdvImageLayoutInfo();
+            imageLayoutInfo = new AdvImageLayoutInfo();
             if (!CrossPlatform.IsWindows)
-                errorCode = AdvVer2_GetImageLayoutInfoUnix(layoutIndex, ref rv);
+                errorCode = AdvVer2_GetImageLayoutInfoUnix(layoutIndex, ref imageLayoutInfo);
             else if (Is64Bit())
-                errorCode = AdvVer2_GetImageLayoutInfo64(layoutIndex, ref rv);
+                errorCode = AdvVer2_GetImageLayoutInfo64(layoutIndex, ref imageLayoutInfo);
             else
-                errorCode = AdvVer2_GetImageLayoutInfo32(layoutIndex, ref rv);
+                errorCode = AdvVer2_GetImageLayoutInfo32(layoutIndex, ref imageLayoutInfo);
 
-            if (errorCode != 0)
-                return AdvImageLayoutInfo.Empty;
+            if (errorCode != AdvError.S_OK)
+            {
+                imageLayoutInfo = AdvImageLayoutInfo.Empty;
+                return errorCode;
+            }
 
-            return rv;
+            return AdvError.S_OK;
         }
     }
 }

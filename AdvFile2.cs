@@ -81,7 +81,9 @@ namespace Adv
         {
             for (int i = 0; i < fileInfo.ImageLayoutsCount; i++)
             {
-                AdvImageLayoutInfo info = AdvLib.GetImageLayoutInfo(i);
+                AdvImageLayoutInfo info;
+                int errorCode = AdvLib.GetImageLayoutInfo(i, out info);
+                AdvError.Check(errorCode);
 
                 var layout = new ImageLayoutDefinition()
                 {
@@ -93,7 +95,7 @@ namespace Adv
                 {
                     string name;
                     string value;
-                    if (AdvLib.GetImageLayoutTag(info.ImageLayoutId, j, out name, out value))
+                    if (AdvLib.GetImageLayoutTag(info.ImageLayoutId, j, out name, out value) == AdvError.S_OK)
                         layout.ImageLayoutTags.Add(name, value);
                 }
 
@@ -107,7 +109,7 @@ namespace Adv
             {
                 string name;
                 string value;
-                if (AdvLib.GetMainStreamTag(i, out name, out value))
+                if (AdvLib.GetMainStreamTag(i, out name, out value) == AdvError.S_OK)
                     MainSteamInfo.MetadataTags.Add(name, value);
             }
 
@@ -115,7 +117,7 @@ namespace Adv
             {
                 string name;
                 string value;
-                if (AdvLib.GetCalibrationStreamTag(i, out name, out value))
+                if (AdvLib.GetCalibrationStreamTag(i, out name, out value) == AdvError.S_OK)
                     CalibrationSteamInfo.MetadataTags.Add(name, value);
             }
 
@@ -123,7 +125,7 @@ namespace Adv
             {
                 string name;
                 string value;
-                if (AdvLib.GetSystemMetadataTag(i, out name, out value))
+                if (AdvLib.GetSystemMetadataTag(i, out name, out value) == AdvError.S_OK)
                     SystemMetadataTags.Add(name, value);
             }
 
@@ -131,7 +133,7 @@ namespace Adv
             {
                 string name;
                 string value;
-                if (AdvLib.GetUserMetadataTag(i, out name, out value))
+                if (AdvLib.GetUserMetadataTag(i, out name, out value) == AdvError.S_OK)
                     UserMetadataTags.Add(name, value);
             }
 
@@ -139,7 +141,7 @@ namespace Adv
             {
                 string name;
                 string value;
-                if (AdvLib.GetImageSectionTag(i, out name, out value))
+                if (AdvLib.GetImageSectionTag(i, out name, out value) == AdvError.S_OK)
                     ImageSectionTags.Add(name, value);
             }
         }
@@ -150,7 +152,7 @@ namespace Adv
             {
                 Adv2TagType? tagType;
                 string tagName;
-                if (AdvLib.GetStatusTagInfo(i, out tagType, out tagName) == AdvErrorCodes.S_OK &&
+                if (AdvLib.GetStatusTagInfo(i, out tagType, out tagName) == AdvError.S_OK &&
                     !string.IsNullOrEmpty(tagName) &&
                     tagType != null)
                 {
@@ -163,7 +165,9 @@ namespace Adv
         {
             if (frameNo < MainSteamInfo.FrameCount)
             {
-                uint[] pixels = AdvLib.GetFramePixels(0, (int)frameNo, Width, Height, out frameInfo);
+                uint[] pixels;
+                int errorCode = AdvLib.GetFramePixels(0, (int)frameNo, Width, Height, out frameInfo, out pixels);
+                AdvError.Check(errorCode); 
                 foreach (var entry in m_StatusTagDefinitions)
                 {
                     byte? val8;
@@ -176,27 +180,27 @@ namespace Adv
                     switch (entry.Item3)
                     {
                         case Adv2TagType.Int8:
-                            if (AdvLib.GetStatusTagUInt8(entry.Item2, out val8) == AdvErrorCodes.S_OK && val8.HasValue)
+                            if (AdvLib.GetStatusTagUInt8(entry.Item2, out val8) == AdvError.S_OK && val8.HasValue)
                                 frameInfo.Status.Add(entry.Item1, val8.Value);
                             break;
                         case Adv2TagType.Int16:
-                            if (AdvLib.GetStatusTagInt16(entry.Item2, out val16) == AdvErrorCodes.S_OK && val16.HasValue)
+                            if (AdvLib.GetStatusTagInt16(entry.Item2, out val16) == AdvError.S_OK && val16.HasValue)
                                 frameInfo.Status.Add(entry.Item1, val16.Value);
                             break;
                         case Adv2TagType.Int32:
-                            if (AdvLib.GetStatusTagInt32(entry.Item2, out val32) == AdvErrorCodes.S_OK && val32.HasValue)
+                            if (AdvLib.GetStatusTagInt32(entry.Item2, out val32) == AdvError.S_OK && val32.HasValue)
                                 frameInfo.Status.Add(entry.Item1, val32.Value);
                             break;
                         case Adv2TagType.Long64:
-                            if (AdvLib.GetStatusTagInt64(entry.Item2, out val64) == AdvErrorCodes.S_OK && val64.HasValue)
+                            if (AdvLib.GetStatusTagInt64(entry.Item2, out val64) == AdvError.S_OK && val64.HasValue)
                                 frameInfo.Status.Add(entry.Item1, val64.Value);
                             break;
                         case Adv2TagType.Real:
-                            if (AdvLib.GetStatusTagFloat(entry.Item2, out valf) == AdvErrorCodes.S_OK && valf.HasValue)
+                            if (AdvLib.GetStatusTagFloat(entry.Item2, out valf) == AdvError.S_OK && valf.HasValue)
                                 frameInfo.Status.Add(entry.Item1, valf.Value);
                             break;
                         case Adv2TagType.UTF8String:
-                            if (AdvLib.GetStatusTagUTF8String(entry.Item2, out vals) == AdvErrorCodes.S_OK)
+                            if (AdvLib.GetStatusTagUTF8String(entry.Item2, out vals) == AdvError.S_OK)
                                 frameInfo.Status.Add(entry.Item1, vals);
                             break;
                     }                    

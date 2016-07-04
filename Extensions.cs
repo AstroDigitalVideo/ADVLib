@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AdvLib.TestApp
+namespace Adv
 {
     public static class Extensions
     {

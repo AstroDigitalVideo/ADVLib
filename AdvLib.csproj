@@ -115,19 +115,21 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdvErrorCodes.cs" />
+    <Compile Include="AdvError.cs" />
     <Compile Include="AdvFile.cs" />
     <Compile Include="AdvFile2.cs" />
     <Compile Include="AdvLibException.cs" />
     <Compile Include="AdvRecorder_V1.cs" />
     <Compile Include="AdvRecorder_V2.cs" />
     <Compile Include="CrossPlatform.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="PInvoke.cs" />

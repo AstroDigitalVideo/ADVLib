@@ -56,40 +56,40 @@ namespace AdvLib.Tests.Adv_V2
             Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
 
             int rv = Adv.AdvLib.FrameAddStatusTagUInt8(idx1, 42);
-            Assert.AreEqual(AdvErrorCodes.S_OK, rv);
+            Assert.AreEqual(AdvError.S_OK, rv);
 
             rv = Adv.AdvLib.FrameAddStatusTagUInt8(idx1, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTag16(idx2, 12891);
-            Assert.AreEqual(AdvErrorCodes.S_OK, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt16(idx2, 12891);
+            Assert.AreEqual(AdvError.S_OK, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTag16(idx2, 12891);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt16(idx2, 12891);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTag32(idx3, -12312);
-            Assert.AreEqual(AdvErrorCodes.S_OK, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt32(idx3, -12312);
+            Assert.AreEqual(AdvError.S_OK, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTag32(idx3, 12);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt32(idx3, 12);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTag64(idx4, -12312);
-            Assert.AreEqual(AdvErrorCodes.S_OK, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt64(idx4, -12312);
+            Assert.AreEqual(AdvError.S_OK, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTag64(idx4, 12);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt64(idx4, 12);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTagReal(idx5, 12.12f);
-            Assert.AreEqual(AdvErrorCodes.S_OK, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagFloat(idx5, 12.12f);
+            Assert.AreEqual(AdvError.S_OK, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTagReal(idx5, 13.13f);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagFloat(idx5, 13.13f);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
 
             rv = Adv.AdvLib.FrameAddStatusTagUTF8String(idx6, "Val1");
-            Assert.AreEqual(AdvErrorCodes.S_OK, rv);
+            Assert.AreEqual(AdvError.S_OK, rv);
 
             rv = Adv.AdvLib.FrameAddStatusTagUTF8String(idx6, "Val2");
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_ENTRY_ALREADY_ADDED, rv);
 
             Adv.AdvLib.EndFile();
         }
@@ -113,80 +113,80 @@ namespace AdvLib.Tests.Adv_V2
             Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
 
             int rv = Adv.AdvLib.FrameAddStatusTagUInt8(unchecked((uint)-1), 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_ID, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, rv);
 
             rv = Adv.AdvLib.FrameAddStatusTagUInt8(idx1 - 1, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_ID, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, rv);
 
             rv = Adv.AdvLib.FrameAddStatusTagUInt8(idx6 + 1, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_ID, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, rv);
 
 
             rv = Adv.AdvLib.FrameAddStatusTagUInt8(idx2, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
             rv = Adv.AdvLib.FrameAddStatusTagUInt8(idx3, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
             rv = Adv.AdvLib.FrameAddStatusTagUInt8(idx4, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
             rv = Adv.AdvLib.FrameAddStatusTagUInt8(idx5, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
             rv = Adv.AdvLib.FrameAddStatusTagUInt8(idx6, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTag16(idx1, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag16(idx3, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag16(idx4, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag16(idx5, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag16(idx6, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt16(idx1, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt16(idx3, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt16(idx4, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt16(idx5, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt16(idx6, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTag32(idx1, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag32(idx2, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag32(idx4, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag32(idx5, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag32(idx6, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt32(idx1, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt32(idx2, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt32(idx4, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt32(idx5, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt32(idx6, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTag64(idx1, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag64(idx2, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag64(idx3, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag64(idx5, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTag64(idx6, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt64(idx1, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt64(idx2, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt64(idx3, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt64(idx5, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagInt64(idx6, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
 
-            rv = Adv.AdvLib.FrameAddStatusTagReal(idx1, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTagReal(idx2, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTagReal(idx3, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTagReal(idx4, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
-            rv = Adv.AdvLib.FrameAddStatusTagReal(idx6, 42);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagFloat(idx1, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagFloat(idx2, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagFloat(idx3, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagFloat(idx4, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            rv = Adv.AdvLib.FrameAddStatusTagFloat(idx6, 42);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
 
             rv = Adv.AdvLib.FrameAddStatusTagUTF8String(idx1, "42");
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
             rv = Adv.AdvLib.FrameAddStatusTagUTF8String(idx2, "42");
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
             rv = Adv.AdvLib.FrameAddStatusTagUTF8String(idx3, "42");
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
             rv = Adv.AdvLib.FrameAddStatusTagUTF8String(idx4, "42");
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
             rv = Adv.AdvLib.FrameAddStatusTagUTF8String(idx5, "42");
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, rv);
 
             Adv.AdvLib.EndFile();
         }
@@ -215,10 +215,10 @@ namespace AdvLib.Tests.Adv_V2
 
             Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
             Adv.AdvLib.FrameAddStatusTagUInt8(idx1, 42);
-            Adv.AdvLib.FrameAddStatusTag16(idx2, 42);
-            Adv.AdvLib.FrameAddStatusTag32(idx3, 42);
-            Adv.AdvLib.FrameAddStatusTag64(idx4, 42);
-            Adv.AdvLib.FrameAddStatusTagReal(idx5, 42);
+            Adv.AdvLib.FrameAddStatusTagInt16(idx2, 42);
+            Adv.AdvLib.FrameAddStatusTagInt32(idx3, 42);
+            Adv.AdvLib.FrameAddStatusTagInt64(idx4, 42);
+            Adv.AdvLib.FrameAddStatusTagFloat(idx5, 42);
             Adv.AdvLib.FrameAddStatusTagUTF8String(idx6, "42");
             var imgGen = new ImageGenerator();
             ushort[] pixels = imgGen.GetImagePattern1BytesInt16(16);
@@ -238,127 +238,198 @@ namespace AdvLib.Tests.Adv_V2
             int errorCode;
 
             errorCode = Adv.AdvLib.GetStatusTagUInt8(idx1, out val8);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt16(idx2, out val16);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt32(idx3, out val32);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt64(idx4, out val64);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagFloat(idx5, out valf);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagUTF8String(idx6, out vals);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
 
             Adv2TagType? tagType;
             string tagName;
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx1 - 1, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx1, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.Int8, tagType);
             Assert.AreEqual("Int8", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx1a, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.Int8, tagType);
             Assert.AreEqual("Int8-2", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx2, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.Int16, tagType);
             Assert.AreEqual("Int16", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx2a, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.Int16, tagType);
             Assert.AreEqual("Int16-2", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx3, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.Int32, tagType);
             Assert.AreEqual("Int32", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx3a, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.Int32, tagType);
             Assert.AreEqual("Int32-2", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx4, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.Long64, tagType);
             Assert.AreEqual("Long64", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx4a, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.Long64, tagType);
             Assert.AreEqual("Long64-2", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx5, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.Real, tagType);
             Assert.AreEqual("Real", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx5a, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.Real, tagType);
             Assert.AreEqual("Real-2", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx6, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.UTF8String, tagType);
             Assert.AreEqual("UTF8String", tagName);
             errorCode = Adv.AdvLib.GetStatusTagInfo(idx6a, out tagType, out tagName);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             Assert.AreEqual(Adv2TagType.UTF8String, tagType);
             Assert.AreEqual("UTF8String-2", tagName);
 
-            AdvFrameInfo frameInfo;
-            Adv.AdvLib.GetFramePixels(0, 0, 640, 480, out frameInfo);
+            Adv.AdvLib.GetFramePixels(0, 0, 640, 480);
 
             errorCode = Adv.AdvLib.GetStatusTagUInt8(idx1, out val8);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagUInt8(idx1 - 1, out val8);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagUInt8(idx2, out val8);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagUInt8(idx1a, out val8);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
 
             errorCode = Adv.AdvLib.GetStatusTagInt16(idx2, out val16);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt16(idx1 - 1, out val16);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt16(idx1, out val16);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt16(idx2a, out val16);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
 
             errorCode = Adv.AdvLib.GetStatusTagInt32(idx3, out val32);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt32(idx1 - 1, out val32);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt32(idx1, out val32);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt32(idx3a, out val32);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
 
             errorCode = Adv.AdvLib.GetStatusTagInt64(idx4, out val64);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt64(idx1 - 1, out val64);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt64(idx1, out val64);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt64(idx4a, out val64);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
 
             errorCode = Adv.AdvLib.GetStatusTagFloat(idx5, out valf);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagFloat(idx1 - 1, out valf);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagFloat(idx1, out valf);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagFloat(idx5a, out valf);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
 
             errorCode = Adv.AdvLib.GetStatusTagUTF8String(idx6, out vals);
-            Assert.AreEqual(AdvErrorCodes.S_OK, errorCode);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagUTF8String(idx6 + 10, out vals);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagUTF8String(idx1, out vals);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_TYPE, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagUTF8String(idx6a, out vals);
-            Assert.AreEqual(AdvErrorCodes.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME, errorCode);
+        }
+
+        [Test]
+        public void TestNoFileErrorCode()
+        {
+            Adv.AdvLib.AdvCloseFile();
+
+            int errorCode = Adv.AdvLib.FrameAddImage(0, new ushort[100], 0);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.FrameAddImageBytes(0, new byte[100], 0);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+
+            errorCode = Adv.AdvLib.FrameAddStatusTagUInt8(0, 42);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.FrameAddStatusTagInt16(0, 42);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.FrameAddStatusTagInt32(0, 42);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.FrameAddStatusTagInt64(0, 42);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.FrameAddStatusTagFloat(0, 42);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.FrameAddStatusTagUTF8String(0, "42");
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+
+            AdvImageLayoutInfo imageLayoutInfo;
+            errorCode = Adv.AdvLib.GetImageLayoutInfo(0, out imageLayoutInfo);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+
+
+            string tagName;
+            string tagValue;
+            errorCode = Adv.AdvLib.GetMainStreamTag(0, out tagName, out tagValue);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.GetCalibrationStreamTag(0, out tagName, out tagValue);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.GetUserMetadataTag(0, out tagName, out tagValue);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.GetImageSectionTag(0, out tagName, out tagValue);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.GetImageLayoutTag(0, 0, out tagName, out tagValue);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+
+
+            AdvFrameInfo frameInfo;
+            uint[] pixels;
+            errorCode = Adv.AdvLib.GetFramePixels(0, 0, 640, 480, out frameInfo, out pixels);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+
+            Adv2TagType? tagType;           
+            byte? val8;
+            short? val16;
+            int? val32;
+            long? val64;
+            float? valf;
+            string vals;
+
+            errorCode = Adv.AdvLib.GetStatusTagInfo(0, out tagType, out tagName);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.GetStatusTagUInt8(0, out val8);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.GetStatusTagInt16(0, out val16);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.GetStatusTagInt32(0, out val32);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.GetStatusTagInt64(0, out val64);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.GetStatusTagFloat(0, out valf);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.GetStatusTagUTF8String(0, out vals);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+
         }
     }
 }

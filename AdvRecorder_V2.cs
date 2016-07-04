@@ -812,7 +812,7 @@ namespace Adv
             }
 
             if (StatusSectionConfig.RecordSystemTime)
-                AdvLib.FrameAddStatusTag64(m_TAGID_SystemTime,
+                AdvLib.FrameAddStatusTagInt64(m_TAGID_SystemTime,
                                                    metadata.SystemTime.NanosecondsAfterAdvZeroEpoch > 0
                                                        ? (long)metadata.SystemTime.NanosecondsAfterAdvZeroEpoch
                                                        : 0);
@@ -821,13 +821,13 @@ namespace Adv
             if (StatusSectionConfig.RecordAlmanacStatus) AdvLib.FrameAddStatusTagUInt8(m_TAGID_AlmanacStatus, (byte)metadata.AlmanacStatus);
             if (StatusSectionConfig.RecordAlmanacOffset) AdvLib.FrameAddStatusTagUInt8(m_TAGID_AlmanacOffset, (byte)metadata.AlmanacOffset);
             if (StatusSectionConfig.RecordFixStatus) AdvLib.FrameAddStatusTagUInt8(m_TAGID_FixStatus, (byte)metadata.FixStatus);
-            if (StatusSectionConfig.RecordGain) AdvLib.FrameAddStatusTagReal(m_TAGID_Gain, metadata.Gain);
-            if (StatusSectionConfig.RecordGamma) AdvLib.FrameAddStatusTagReal(m_TAGID_Gamma, metadata.Gamma);
-            if (StatusSectionConfig.RecordShutter) AdvLib.FrameAddStatusTagReal(m_TAGID_Shutter, metadata.Shutter);
-            if (StatusSectionConfig.RecordCameraOffset) AdvLib.FrameAddStatusTagReal(m_TAGID_Offset, metadata.CameraOffset);
-            if (StatusSectionConfig.RecordVideoCameraFrameId) AdvLib.FrameAddStatusTag64(m_TAGID_VideoCameraFrameId, metadata.VideoCameraFrameId);
+            if (StatusSectionConfig.RecordGain) AdvLib.FrameAddStatusTagFloat(m_TAGID_Gain, metadata.Gain);
+            if (StatusSectionConfig.RecordGamma) AdvLib.FrameAddStatusTagFloat(m_TAGID_Gamma, metadata.Gamma);
+            if (StatusSectionConfig.RecordShutter) AdvLib.FrameAddStatusTagFloat(m_TAGID_Shutter, metadata.Shutter);
+            if (StatusSectionConfig.RecordCameraOffset) AdvLib.FrameAddStatusTagFloat(m_TAGID_Offset, metadata.CameraOffset);
+            if (StatusSectionConfig.RecordVideoCameraFrameId) AdvLib.FrameAddStatusTagInt64(m_TAGID_VideoCameraFrameId, metadata.VideoCameraFrameId);
 
-            if (StatusSectionConfig.RecordHardwareTimerFrameId) AdvLib.FrameAddStatusTag64(m_TAGID_HardwareTimerFrameId, metadata.HardwareTimerFrameId);
+            if (StatusSectionConfig.RecordHardwareTimerFrameId) AdvLib.FrameAddStatusTagInt64(m_TAGID_HardwareTimerFrameId, metadata.HardwareTimerFrameId);
 
             if (StatusSectionConfig.RecordSystemErrors && metadata.SystemErrors != null)
             {
@@ -848,19 +848,19 @@ namespace Adv
                         break;
 
                     case Adv2TagType.Int16:
-                        AdvLib.FrameAddStatusTag16(tagId, (short)statusTagValue);
+                        AdvLib.FrameAddStatusTagInt16(tagId, (short)statusTagValue);
                         break;
 
                     case Adv2TagType.Int32:
-                        AdvLib.FrameAddStatusTag32(tagId, (int)statusTagValue);
+                        AdvLib.FrameAddStatusTagInt32(tagId, (int)statusTagValue);
                         break;
 
                     case Adv2TagType.Long64:
-                        AdvLib.FrameAddStatusTag64(tagId, (long)statusTagValue);
+                        AdvLib.FrameAddStatusTagInt64(tagId, (long)statusTagValue);
                         break;
 
                     case Adv2TagType.Real:
-                        AdvLib.FrameAddStatusTagReal(tagId, (float)statusTagValue);
+                        AdvLib.FrameAddStatusTagFloat(tagId, (float)statusTagValue);
                         break;
 
                     case Adv2TagType.UTF8String:
