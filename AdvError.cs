@@ -28,6 +28,7 @@ namespace Adv
         public static bool ThrowError = true;
 
         public const int E_ADV_NOFILE                                     = unchecked((int)0x81000001);
+        public const int E_ADV_IO_ERROR                                   = unchecked((int)0x81000002);
 
         public const int E_ADV_STATUS_ENTRY_ALREADY_ADDED                 = unchecked((int)0x81001001);
         public const int E_ADV_INVALID_STATUS_TAG_ID                      = unchecked((int)0x81001002);
@@ -39,7 +40,8 @@ namespace Adv
         public const int E_ADV_INVALID_STREAM_ID                          = unchecked((int)0x81001008);
         public const int E_ADV_IMAGE_SECTION_UNDEFINED                    = unchecked((int)0x81001009);
         public const int E_ADV_STATUS_SECTION_UNDEFINED                   = unchecked((int)0x8100100A);
-        public const int E_ADV_IO_ERROR                                   = unchecked((int)0x8100100B);
+        public const int E_ADV_IMAGE_LAYOUTS_UNDEFINED                    = unchecked((int)0x8100100B);
+        public const int E_ADV_INVALID_IMAGE_LAYOUT_ID                    = unchecked((int)0x8100100C);
 
         public const int S_OK                                             = 0;
         public const int E_FAIL                                           = unchecked((int)0x80004005);
@@ -149,7 +151,8 @@ namespace Adv
                     return "No Status Section Has Been Defined.";
                case E_ADV_IO_ERROR:
                     return "An I/O Error Has Occured.";
-   
+               case E_ADV_INVALID_IMAGE_LAYOUT_ID:
+                    return "Invalid Image LayoutId.";
                case S_OK:
                     return "Success.";                          
                case E_FAIL:

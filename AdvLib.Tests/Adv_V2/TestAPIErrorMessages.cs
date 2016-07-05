@@ -450,17 +450,37 @@ namespace AdvLib.Tests.Adv_V2
             errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
             Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
 
+            errorCode = Adv.AdvLib.FrameAddImage(0, new ushort[100], 0);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+            errorCode = Adv.AdvLib.FrameAddImageBytes(0, new byte[100], 0);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+
             Adv.AdvLib.DefineImageSection(640, 480, 16);
 
             errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
             Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
 
             Adv.AdvLib.DefineStatusSection(5000000 /* 5ms */);
-            
-            //Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
 
-            //errorCode = Adv.AdvLib.EndFrame();
-            //Assert.AreEqual(AdvError.E_ADV_IMAGE_NOT_ADDED_TO_FRAME, errorCode);
+            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_LAYOUTS_UNDEFINED, errorCode);
+            
+            Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
+
+            errorCode = Adv.AdvLib.FrameAddImage(0, new ushort[100], 0);
+            Assert.AreEqual(AdvError.E_ADV_FRAME_NOT_STARTED, errorCode);
+            errorCode = Adv.AdvLib.FrameAddImageBytes(0, new byte[100], 0);
+            Assert.AreEqual(AdvError.E_ADV_FRAME_NOT_STARTED, errorCode);
+
+            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
+            Assert.AreEqual(AdvError.S_OK, errorCode);
+
+            errorCode = Adv.AdvLib.FrameAddImage(1, new ushort[100], 0);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_ID, errorCode);
+            errorCode = Adv.AdvLib.FrameAddImageBytes(1, new byte[100], 0);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_ID, errorCode);
+
+            Adv.AdvLib.AdvCloseFile();
         }
     }
 }
