@@ -580,7 +580,8 @@ namespace Adv
         /// </summary>
         public void FinishRecording()
         {
-            AdvLib.EndFile();
+            int errorCode = AdvLib.EndFile();
+            AdvError.Check(errorCode);
         }
 
         private void AddFrame(AdvStream advStream, ushort[] pixels, bool compressIfPossible, PreferredCompression? preferredCompression, long? startClockTicks, long? endClockTicks, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
@@ -595,9 +596,11 @@ namespace Adv
             if (layoutIdForCurrentFramerate == CFG_ADV_LAYOUT_11_COLOUR24_UNCOMPRESSED || layoutIdForCurrentFramerate == CFG_ADV_LAYOUT_12_PACKED24_COMPRESSED_QLZ)
                 throw new InvalidOperationException(String.Format("This image layout ({0}) cannot be used when pixels are passed as ushort[]", layoutIdForCurrentFramerate));
 
-            AdvLib.FrameAddImage(layoutIdForCurrentFramerate, pixels, 16);
+            int errorCode = AdvLib.FrameAddImage(layoutIdForCurrentFramerate, pixels, 16);
+            AdvError.Check(errorCode);
 
-            AdvLib.EndFrame();
+            errorCode = AdvLib.EndFrame();
+            AdvError.Check(errorCode);
         }
 
         public void AddVideoFrame(ushort[] pixels, bool compressIfPossible, PreferredCompression? preferredCompression, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
@@ -645,9 +648,11 @@ namespace Adv
             if (m_BayerPatternIsRGBorGBR && layoutIdForCurrentFramerate != CFG_ADV_LAYOUT_11_COLOUR24_UNCOMPRESSED && layoutIdForCurrentFramerate != CFG_ADV_LAYOUT_12_PACKED24_COMPRESSED_QLZ)
                 throw new InvalidOperationException("When an RGB or BGR ImageBayerPattern is in use an 8BIT-COLOR-IMAGE image layout must be selected.");
 
-            AdvLib.FrameAddImageBytes(layoutIdForCurrentFramerate, pixels, ImageConfig.ImageBitsPerPixel);
+            int errorCode = AdvLib.FrameAddImageBytes(layoutIdForCurrentFramerate, pixels, ImageConfig.ImageBitsPerPixel);
+            AdvError.Check(errorCode);
 
-            AdvLib.EndFrame();
+            errorCode = AdvLib.EndFrame();
+            AdvError.Check(errorCode);
         }
 
         public void AddVideoFrame(byte[] pixels, bool compressIfPossible, PreferredCompression? preferredCompression, AdvTimeStamp startUtcTimeStamp, AdvTimeStamp endUtcTimeStamp, AdvStatusEntry metadata, AdvImageData imageData)
@@ -780,7 +785,9 @@ namespace Adv
                     m_FirstRecordedFrameTimestamp = startClockTicks.Value;
                 }
 
-                frameStartedOk = AdvLib.BeginFrame(streamId, startClockTicks.Value, endClockTicks.Value, elapsedTicks > 0L ? elapsedTicks : 0L, startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch, (uint)(endUtcTimeStamp.NanosecondsAfterAdvZeroEpoch - startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch));
+                int errorCode = AdvLib.BeginFrame(streamId, startClockTicks.Value, endClockTicks.Value, elapsedTicks > 0L ? elapsedTicks : 0L, startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch, (uint)(endUtcTimeStamp.NanosecondsAfterAdvZeroEpoch - startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch));
+                if (AdvError.Check(errorCode))
+                    frameStartedOk = true;
             }
             else
             {
@@ -800,7 +807,9 @@ namespace Adv
                         throw new IndexOutOfRangeException();
                 }
 
-                frameStartedOk = AdvLib.BeginFrame(streamId, startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch, (uint)(endUtcTimeStamp.NanosecondsAfterAdvZeroEpoch - startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch));
+                int errorCode = AdvLib.BeginFrame(streamId, startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch, (uint)(endUtcTimeStamp.NanosecondsAfterAdvZeroEpoch - startUtcTimeStamp.NanosecondsAfterAdvZeroEpoch));
+                if (AdvError.Check(errorCode))
+                    frameStartedOk = true;
             }
 
             if (!frameStartedOk)

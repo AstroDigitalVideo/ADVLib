@@ -400,8 +400,8 @@ namespace Adv
         private static extern void AdvVer2_NewFile32(string fileName);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFile")]
-        //DLL_PUBLIC void AdvVer2_EndFile();
-        private static extern void AdvVer2_EndFile32();
+        //DLL_PUBLIC ADVRESULT AdvVer2_EndFile();
+        private static extern int AdvVer2_EndFile32();
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_SetTicksTimingPrecision")]
         //DLL_PUBLIC void AdvVer2_SetTicksTimingPrecision(int mainStreamAccuracy, int calibrationStreamAccuracy);
@@ -424,12 +424,12 @@ namespace Adv
         private static extern int AdvVer2_AddCalibrationStreamTag32([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrameWithTicks")]
-        //bool AdvBeginFrame(unsigned char streamId, __int64 startFrameTicks, __int64 endFrameTicks, __int64 elapsedTicksSinceFirstFrame, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds));
-        private static extern bool AdvVer2_BeginFrame32(uint streamId, long startTicks, long endTicks, long elapsedTicksFromStart, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
+        //ADVRESULT AdvBeginFrame(unsigned char streamId, __int64 startFrameTicks, __int64 endFrameTicks, __int64 elapsedTicksSinceFirstFrame, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds));
+        private static extern int AdvVer2_BeginFrame32(uint streamId, long startTicks, long endTicks, long elapsedTicksFromStart, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrame")]
-        //bool AdvBeginFrame(unsigned char streamId, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds));
-        private static extern bool AdvVer2_BeginFrame32(uint streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
+        //ADVRESULT AdvBeginFrame(unsigned char streamId, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds));
+        private static extern int AdvVer2_BeginFrame32(uint streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageSection")]
         //void AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
@@ -492,8 +492,8 @@ namespace Adv
         private static extern int AdvVer2_FrameAddImageBytes_32(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
-        //void AdvVer2_EndFrame();
-        private static extern void AdvVer2_EndFrame32();
+        //ADVRESULT AdvVer2_EndFrame();
+        private static extern int AdvVer2_EndFrame32();
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
@@ -546,6 +546,10 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
         //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
         private static extern int AdvVer2_GetImageLayoutInfo32(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
+
+        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetLastSystemSpecificFileError")]       
+        //DLL_PUBLIC int AdvVer2_GetLastSystemSpecificFileError();
+        private static extern int AdvVer2_GetLastSystemSpecificFileError32();
 
         #endregion 
 
@@ -652,8 +656,8 @@ namespace Adv
         private static extern void AdvVer2_NewFile64(string fileName);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFile")]
-        //DLL_PUBLIC void AdvVer2_EndFile();
-        private static extern void AdvVer2_EndFile64();
+        //DLL_PUBLIC ADVRESULT AdvVer2_EndFile();
+        private static extern int AdvVer2_EndFile64();
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_SetTicksTimingPrecision")]
         //DLL_PUBLIC void AdvVer2_SetTicksTimingPrecision(int mainStreamAccuracy, int calibrationStreamAccuracy);
@@ -676,12 +680,12 @@ namespace Adv
         private static extern int AdvVer2_AddCalibrationStreamTag64([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrameWithTicks")]
-        //bool AdvBeginFrame(unsigned char streamId, __int64 startFrameTicks, __int64 endFrameTicks, __int64 elapsedTicksSinceFirstFrame, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds);
-        private static extern bool AdvVer2_BeginFrame64(uint streamId, long startTicks, long endTicks, long elapsedTicksFromStart, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
+        //ADVRESULT AdvBeginFrame(unsigned char streamId, __int64 startFrameTicks, __int64 endFrameTicks, __int64 elapsedTicksSinceFirstFrame, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds);
+        private static extern int AdvVer2_BeginFrame64(uint streamId, long startTicks, long endTicks, long elapsedTicksFromStart, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrame")]
-        //bool AdvBeginFrame(unsigned char streamId, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds));
-        private static extern bool AdvVer2_BeginFrame64(uint streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
+        //ADVRESULT AdvBeginFrame(unsigned char streamId, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds));
+        private static extern int AdvVer2_BeginFrame64(uint streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageSection")]
         //void AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
@@ -744,8 +748,8 @@ namespace Adv
         private static extern int AdvVer2_FrameAddImageBytes_64(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
-        //void AdvVer2_EndFrame();
-        private static extern void AdvVer2_EndFrame64();
+        //ADVRESULT AdvVer2_EndFrame();
+        private static extern int AdvVer2_EndFrame64();
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
@@ -798,6 +802,11 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
         //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
         private static extern int AdvVer2_GetImageLayoutInfo64(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
+
+        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetLastSystemSpecificFileError")]
+        //DLL_PUBLIC int AdvVer2_GetLastSystemSpecificFileError();
+        private static extern int AdvVer2_GetLastSystemSpecificFileError64();
+
         #endregion
 
         #region UNIX externals
@@ -895,16 +904,16 @@ namespace Adv
         private static extern void AdvVer1_FrameAddStatusTag64Unix(uint tagIndex, ulong tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer1_EndFrame")]
-        //void AdvEndFrame();
-        private static extern void AdvVer1_EndFrameUnix();
+        //ADVRESULT AdvEndFrame();
+        private static extern int AdvVer1_EndFrameUnix();
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_NewFile")]
         //DLL_PUBLIC void AdvVer2_NewFile(const char* fileName);
         private static extern void AdvVer2_NewFileUnix(string fileName);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFile")]
-        //DLL_PUBLIC void AdvVer2_EndFile();
-        private static extern void AdvVer2_EndFileUnix();
+        //DLL_PUBLIC ADVRESULT AdvVer2_EndFile();
+        private static extern int AdvVer2_EndFileUnix();
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_SetTicksTimingPrecision")]
         //DLL_PUBLIC void AdvVer2_SetTicksTimingPrecision(int mainStreamAccuracy, int calibrationStreamAccuracy);
@@ -927,12 +936,12 @@ namespace Adv
         private static extern int AdvVer2_AddCalibrationStreamTagUnix([MarshalAs(UnmanagedType.LPArray)]byte[] tagName, [MarshalAs(UnmanagedType.LPArray)]byte[] tagValue);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrameWithTicks")]
-        //bool AdvBeginFrame(unsigned char streamId, __int64 startFrameTicks, __int64 endFrameTicks, __int64 elapsedTicksSinceFirstFrame, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds);
-        private static extern bool AdvVer2_BeginFrameUnix(uint streamId, long startTicks, long endTicks, long elapsedTicksFromStart, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
+        //ADVRESULT AdvBeginFrame(unsigned char streamId, __int64 startFrameTicks, __int64 endFrameTicks, __int64 elapsedTicksSinceFirstFrame, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds);
+        private static extern int AdvVer2_BeginFrameUnix(uint streamId, long startTicks, long endTicks, long elapsedTicksFromStart, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_BeginFrame")]
-        //bool AdvBeginFrame(unsigned char streamId, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds));
-        private static extern bool AdvVer2_BeginFrameUnix(uint streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
+        //ADVRESULT AdvBeginFrame(unsigned char streamId, __int64 utcStartTimeNanosecondsSinceAdvZeroEpoch, unsigned int utcExposureNanoseconds));
+        private static extern int AdvVer2_BeginFrameUnix(uint streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageSection")]
         //void AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
@@ -995,8 +1004,8 @@ namespace Adv
         private static extern int AdvVer2_FrameAddImageBytes_Unix(byte layoutId, [In, MarshalAs(UnmanagedType.LPArray)] byte[] pixels, byte pixelsBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFrame")]
-        //void AdvVer2_EndFrame();
-        private static extern void AdvVer2_EndFrameUnix();
+        //ADVRESULT AdvVer2_EndFrame();
+        private static extern int AdvVer2_EndFrameUnix();
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
@@ -1049,6 +1058,10 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
         //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
         private static extern int AdvVer2_GetImageLayoutInfoUnix(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
+
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetLastSystemSpecificFileError")]
+        //DLL_PUBLIC int AdvVer2_GetLastSystemSpecificFileError();
+        private static extern int AdvVer2_GetLastSystemSpecificFileErrorUnix();
 
         #endregion
 
@@ -1343,14 +1356,14 @@ namespace Adv
                 AdvVer2_NewFile32(fileName);
         }
 
-        public static void EndFile()
+        public static int EndFile()
         {
             if (!CrossPlatform.IsWindows)
-                AdvVer2_EndFileUnix();
+                return AdvVer2_EndFileUnix();
             else if (Is64Bit())
-                AdvVer2_EndFile64();
+                return AdvVer2_EndFile64();
             else
-                AdvVer2_EndFile32();
+                return AdvVer2_EndFile32();
         }
 
         private static byte[] StringToUTF8Bytes(string str)
@@ -1391,7 +1404,7 @@ namespace Adv
                 AdvVer2_AddCalibrationStreamTag32(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
         }
 
-        public static bool BeginFrame(byte streamId, long startTicks, long endTicks, long elapsedTicksFromStart, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds)
+        public static int BeginFrame(byte streamId, long startTicks, long endTicks, long elapsedTicksFromStart, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds)
         {
             try
             {
@@ -1404,13 +1417,13 @@ namespace Adv
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(ex);
+                AdvError.HandleException(ex);
 
-                return false;
+                return AdvError.E_FAIL;
             }
         }
 
-        public static bool BeginFrame(byte streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds)
+        public static int BeginFrame(byte streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds)
         {
             try
             {
@@ -1423,9 +1436,9 @@ namespace Adv
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(ex);
+                AdvError.HandleException(ex);
 
-                return false;
+                return AdvError.E_FAIL;
             }
         }
 
@@ -1605,14 +1618,14 @@ namespace Adv
             return rv;
         }
 
-        public static void EndFrame()
+        public static int EndFrame()
         {
             if (!CrossPlatform.IsWindows)
-                AdvVer2_EndFrameUnix();
+                return AdvVer2_EndFrameUnix();
             else if (Is64Bit())
-                AdvVer2_EndFrame64();
+                return AdvVer2_EndFrame64();
             else
-                AdvVer2_EndFrame32();
+                return AdvVer2_EndFrame32();
         }
 
         public static uint[] GetFramePixels(int streamId, int frameNo, int width, int height)
@@ -1911,6 +1924,16 @@ namespace Adv
             }
 
             return AdvError.S_OK;
+        }
+
+        public static int GetLastSystemSpecificFileError()
+        {
+            if (!CrossPlatform.IsWindows)
+                return AdvVer2_GetLastSystemSpecificFileErrorUnix();
+            else if (Is64Bit())
+                return AdvVer2_GetLastSystemSpecificFileError64();
+            else
+                return AdvVer2_GetLastSystemSpecificFileError32();
         }
     }
 }

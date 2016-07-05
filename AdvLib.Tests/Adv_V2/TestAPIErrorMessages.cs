@@ -53,7 +53,8 @@ namespace AdvLib.Tests.Adv_V2
             uint idx5 = Adv.AdvLib.DefineStatusSectionTag("Real", Adv2TagType.Real);
             uint idx6 = Adv.AdvLib.DefineStatusSectionTag("UTF8String", Adv2TagType.UTF8String);
 
-            Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
+            int errorCode = Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
+            AdvError.Check(errorCode);
 
             int rv = Adv.AdvLib.FrameAddStatusTagUInt8(idx1, 42);
             Assert.AreEqual(AdvError.S_OK, rv);
@@ -110,7 +111,8 @@ namespace AdvLib.Tests.Adv_V2
             uint idx5 = Adv.AdvLib.DefineStatusSectionTag("Real", Adv2TagType.Real);
             uint idx6 = Adv.AdvLib.DefineStatusSectionTag("UTF8String", Adv2TagType.UTF8String);
 
-            Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
+            int errorCode = Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
+            AdvError.Check(errorCode);
 
             int rv = Adv.AdvLib.FrameAddStatusTagUInt8(unchecked((uint)-1), 42);
             Assert.AreEqual(AdvError.E_ADV_INVALID_STATUS_TAG_ID, rv);
@@ -213,7 +215,9 @@ namespace AdvLib.Tests.Adv_V2
             uint idx6 = Adv.AdvLib.DefineStatusSectionTag("UTF8String", Adv2TagType.UTF8String);
             uint idx6a = Adv.AdvLib.DefineStatusSectionTag("UTF8String-2", Adv2TagType.UTF8String);
 
-            Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
+            int errorCode = Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
+            AdvError.Check(errorCode);
+
             Adv.AdvLib.FrameAddStatusTagUInt8(idx1, 42);
             Adv.AdvLib.FrameAddStatusTagInt16(idx2, 42);
             Adv.AdvLib.FrameAddStatusTagInt32(idx3, 42);
@@ -235,8 +239,7 @@ namespace AdvLib.Tests.Adv_V2
             long? val64;
             float? valf;
             string vals;
-            int errorCode;
-
+            
             errorCode = Adv.AdvLib.GetStatusTagUInt8(idx1, out val8);
             Assert.AreEqual(AdvError.E_ADV_FRAME_STATUS_NOT_LOADED, errorCode);
             errorCode = Adv.AdvLib.GetStatusTagInt16(idx2, out val16);
@@ -430,6 +433,34 @@ namespace AdvLib.Tests.Adv_V2
             errorCode = Adv.AdvLib.GetStatusTagUTF8String(0, out vals);
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
 
+            errorCode = Adv.AdvLib.EndFrame();
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.EndFile();
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+        }
+
+        [Test]
+        public void TestFileGenerationErrors()
+        {
+            Adv.AdvLib.NewFile(m_FileName);
+
+            int errorCode = Adv.AdvLib.EndFrame();
+            Assert.AreEqual(AdvError.E_ADV_FRAME_NOT_STARTED, errorCode);
+
+            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+
+            Adv.AdvLib.DefineImageSection(640, 480, 16);
+
+            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
+
+            Adv.AdvLib.DefineStatusSection(5000000 /* 5ms */);
+            
+            //Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
+
+            //errorCode = Adv.AdvLib.EndFrame();
+            //Assert.AreEqual(AdvError.E_ADV_IMAGE_NOT_ADDED_TO_FRAME, errorCode);
         }
     }
 }

@@ -46,6 +46,8 @@ namespace AdvLibTestApp
 		public frmMain()
 		{
 			InitializeComponent();
+
+		    AdvError.ShowMessageBoxErrorMessage = true;
 		}
 
 		private void button1_Click(object sender, EventArgs e)
