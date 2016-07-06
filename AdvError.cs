@@ -27,25 +27,28 @@ namespace Adv
         public static bool ShowMessageBoxErrorMessage = false;
         public static bool ThrowError = true;
 
-        public const int E_ADV_NOFILE                                     = unchecked((int)0x81000001);
-        public const int E_ADV_IO_ERROR                                   = unchecked((int)0x81000002);
+        public const int E_ADV_NOFILE                                           = unchecked((int)0x81000001);
+        public const int E_ADV_IO_ERROR                                         = unchecked((int)0x81000002);
 
-        public const int E_ADV_STATUS_ENTRY_ALREADY_ADDED                 = unchecked((int)0x81001001);
-        public const int E_ADV_INVALID_STATUS_TAG_ID                      = unchecked((int)0x81001002);
-        public const int E_ADV_INVALID_STATUS_TAG_TYPE                    = unchecked((int)0x81001003);
-        public const int E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME              = unchecked((int)0x81001004);
-        public const int E_ADV_FRAME_STATUS_NOT_LOADED                    = unchecked((int)0x81001005);
-        public const int E_ADV_FRAME_NOT_STARTED                          = unchecked((int)0x81001006);
-        public const int E_ADV_IMAGE_NOT_ADDED_TO_FRAME                   = unchecked((int)0x81001007);
-        public const int E_ADV_INVALID_STREAM_ID                          = unchecked((int)0x81001008);
-        public const int E_ADV_IMAGE_SECTION_UNDEFINED                    = unchecked((int)0x81001009);
-        public const int E_ADV_STATUS_SECTION_UNDEFINED                   = unchecked((int)0x8100100A);
-        public const int E_ADV_IMAGE_LAYOUTS_UNDEFINED                    = unchecked((int)0x8100100B);
-        public const int E_ADV_INVALID_IMAGE_LAYOUT_ID                    = unchecked((int)0x8100100C);
+        public const int E_ADV_STATUS_ENTRY_ALREADY_ADDED                       = unchecked((int)0x81001001);
+        public const int E_ADV_INVALID_STATUS_TAG_ID                            = unchecked((int)0x81001002);
+        public const int E_ADV_INVALID_STATUS_TAG_TYPE                          = unchecked((int)0x81001003);
+        public const int E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME                    = unchecked((int)0x81001004);
+        public const int E_ADV_FRAME_STATUS_NOT_LOADED                          = unchecked((int)0x81001005);
+        public const int E_ADV_FRAME_NOT_STARTED                                = unchecked((int)0x81001006);
+        public const int E_ADV_IMAGE_NOT_ADDED_TO_FRAME                         = unchecked((int)0x81001007);
+        public const int E_ADV_INVALID_STREAM_ID                                = unchecked((int)0x81001008);
+        public const int E_ADV_IMAGE_SECTION_UNDEFINED                          = unchecked((int)0x81001009);
+        public const int E_ADV_STATUS_SECTION_UNDEFINED                         = unchecked((int)0x8100100A);
+        public const int E_ADV_IMAGE_LAYOUTS_UNDEFINED                          = unchecked((int)0x8100100B);
+        public const int E_ADV_INVALID_IMAGE_LAYOUT_ID                          = unchecked((int)0x8100100C);
+        public const int E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW                     = unchecked((int)0x8100100D);
 
-        public const int S_OK                                             = 0;
-        public const int E_FAIL                                           = unchecked((int)0x80004005);
-        public const int E_NOTIMPL                                        = unchecked((int)0x80004001);
+        public const int S_OK                                                   = 0;
+        public const int S_ADV_TAG_REPLACED                                     = 0x71000001;
+
+        public const int E_FAIL                                                 = unchecked((int)0x80004005);
+        public const int E_NOTIMPL                                              = unchecked((int)0x80004001);
 
 
         public static bool Check(int errorCode)
@@ -130,35 +133,45 @@ namespace Adv
             switch (errorCode)
             {
                 case E_ADV_STATUS_ENTRY_ALREADY_ADDED:
-                    return "This Status TagId Has Been Already Added To The Current Frame.";
+                    return "This status TagId has been already added to the current frame.";
                case E_ADV_INVALID_STATUS_TAG_ID:
-                    return "Unknown Status TagId";         
+                    return "Unknown status TagId";         
                case E_ADV_INVALID_STATUS_TAG_TYPE:
-                    return "The Type Of The Status TagId Doesn't Match The Currently Called Method.";
+                    return "The type of the status TagId doesn't match the currently called method.";
                case E_ADV_STATUS_TAG_NOT_FOUND_IN_FRAME:
-                    return "The Requested Status TagId Is Not Present In The Current Frame.";
+                    return "The requested status TagId is not present in the current frame.";
                case E_ADV_FRAME_STATUS_NOT_LOADED:
-                    return "No Status Has Been Loaded. Call GetFramePixels() first.";
+                    return "No status has been loaded. Call GetFramePixels() first.";
                case E_ADV_FRAME_NOT_STARTED:
-                    return "Frame Not Started. Call BeginFrame() first.";
+                    return "Frame not started. Call BeginFrame() first.";
                case E_ADV_IMAGE_NOT_ADDED_TO_FRAME:
-                    return "No Image Has Been Added To The Started Frame.";
+                    return "No image has been added to the started frame.";
                case E_ADV_INVALID_STREAM_ID:
                     return "Invalid StreamId. Must be 0 for MAIN or 1 for CALIBRATION.";
                case E_ADV_IMAGE_SECTION_UNDEFINED:
-                    return "No Image Section Has Been Defined.";
+                    return "No image section has been defined.";
                case E_ADV_STATUS_SECTION_UNDEFINED:
-                    return "No Status Section Has Been Defined.";
+                    return "No status section has been defined.";
                case E_ADV_IO_ERROR:
-                    return "An I/O Error Has Occured.";
+                    return "An I/O error has occured.";
                case E_ADV_INVALID_IMAGE_LAYOUT_ID:
-                    return "Invalid Image LayoutId.";
-               case S_OK:
-                    return "Success.";                          
+                    return "Invalid image LayoutId.";
+               case E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW:
+                    return "This change is not allowed on an existing file or once a frame insertion has started.";
+
+
                case E_FAIL:
                     return "Error.";
                case E_NOTIMPL:
                     return "Not Implemented.";
+
+
+               case S_OK:
+                    return "Success.";                          
+               case S_ADV_TAG_REPLACED:
+                    return "An existing tag with the same name has been replaced."; 
+
+
                 default:
                     return null;
             }

@@ -46,12 +46,18 @@ namespace AdvLib.Tests.Adv_V2
             Adv.AdvLib.DefineStatusSection(5000000 /* 5ms */);
             Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
 
-            uint idx1 = Adv.AdvLib.DefineStatusSectionTag("Int8", Adv2TagType.Int8);
-            uint idx2 = Adv.AdvLib.DefineStatusSectionTag("Int16", Adv2TagType.Int16);
-            uint idx3 = Adv.AdvLib.DefineStatusSectionTag("Int32", Adv2TagType.Int32);
-            uint idx4 = Adv.AdvLib.DefineStatusSectionTag("Long64", Adv2TagType.Long64);
-            uint idx5 = Adv.AdvLib.DefineStatusSectionTag("Real", Adv2TagType.Real);
-            uint idx6 = Adv.AdvLib.DefineStatusSectionTag("UTF8String", Adv2TagType.UTF8String);
+            uint idx1;
+            Adv.AdvLib.DefineStatusSectionTag("Int8", Adv2TagType.Int8, out idx1);
+            uint idx2;
+            Adv.AdvLib.DefineStatusSectionTag("Int16", Adv2TagType.Int16, out idx2);
+            uint idx3;
+            Adv.AdvLib.DefineStatusSectionTag("Int32", Adv2TagType.Int32, out idx3);
+            uint idx4;
+            Adv.AdvLib.DefineStatusSectionTag("Long64", Adv2TagType.Long64, out idx4);
+            uint idx5;
+            Adv.AdvLib.DefineStatusSectionTag("Real", Adv2TagType.Real, out idx5);
+            uint idx6;
+            Adv.AdvLib.DefineStatusSectionTag("UTF8String", Adv2TagType.UTF8String, out idx6);
 
             int errorCode = Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
             AdvError.Check(errorCode);
@@ -104,12 +110,18 @@ namespace AdvLib.Tests.Adv_V2
             Adv.AdvLib.DefineStatusSection(5000000 /* 5ms */);
             Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
 
-            uint idx1 = Adv.AdvLib.DefineStatusSectionTag("Int8", Adv2TagType.Int8);
-            uint idx2 = Adv.AdvLib.DefineStatusSectionTag("Int16", Adv2TagType.Int16);
-            uint idx3 = Adv.AdvLib.DefineStatusSectionTag("Int32", Adv2TagType.Int32);
-            uint idx4 = Adv.AdvLib.DefineStatusSectionTag("Long64", Adv2TagType.Long64);
-            uint idx5 = Adv.AdvLib.DefineStatusSectionTag("Real", Adv2TagType.Real);
-            uint idx6 = Adv.AdvLib.DefineStatusSectionTag("UTF8String", Adv2TagType.UTF8String);
+            uint idx1;
+            Adv.AdvLib.DefineStatusSectionTag("Int8", Adv2TagType.Int8, out idx1);
+            uint idx2;
+            Adv.AdvLib.DefineStatusSectionTag("Int16", Adv2TagType.Int16, out idx2);
+            uint idx3;
+            Adv.AdvLib.DefineStatusSectionTag("Int32", Adv2TagType.Int32, out idx3);
+            uint idx4;
+            Adv.AdvLib.DefineStatusSectionTag("Long64", Adv2TagType.Long64, out idx4);
+            uint idx5;
+            Adv.AdvLib.DefineStatusSectionTag("Real", Adv2TagType.Real, out idx5);
+            uint idx6;
+            Adv.AdvLib.DefineStatusSectionTag("UTF8String", Adv2TagType.UTF8String, out idx6);
 
             int errorCode = Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
             AdvError.Check(errorCode);
@@ -202,18 +214,30 @@ namespace AdvLib.Tests.Adv_V2
             Adv.AdvLib.DefineStatusSection(5000000 /* 5ms */);
             Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
 
-            uint idx1 = Adv.AdvLib.DefineStatusSectionTag("Int8", Adv2TagType.Int8);
-            uint idx1a = Adv.AdvLib.DefineStatusSectionTag("Int8-2", Adv2TagType.Int8);
-            uint idx2 = Adv.AdvLib.DefineStatusSectionTag("Int16", Adv2TagType.Int16);
-            uint idx2a = Adv.AdvLib.DefineStatusSectionTag("Int16-2", Adv2TagType.Int16);
-            uint idx3 = Adv.AdvLib.DefineStatusSectionTag("Int32", Adv2TagType.Int32);
-            uint idx3a = Adv.AdvLib.DefineStatusSectionTag("Int32-2", Adv2TagType.Int32);
-            uint idx4 = Adv.AdvLib.DefineStatusSectionTag("Long64", Adv2TagType.Long64);
-            uint idx4a = Adv.AdvLib.DefineStatusSectionTag("Long64-2", Adv2TagType.Long64);
-            uint idx5 = Adv.AdvLib.DefineStatusSectionTag("Real", Adv2TagType.Real);
-            uint idx5a = Adv.AdvLib.DefineStatusSectionTag("Real-2", Adv2TagType.Real);
-            uint idx6 = Adv.AdvLib.DefineStatusSectionTag("UTF8String", Adv2TagType.UTF8String);
-            uint idx6a = Adv.AdvLib.DefineStatusSectionTag("UTF8String-2", Adv2TagType.UTF8String);
+            uint idx1;
+            Adv.AdvLib.DefineStatusSectionTag("Int8", Adv2TagType.Int8, out idx1);
+            uint idx1a;
+            Adv.AdvLib.DefineStatusSectionTag("Int8-2", Adv2TagType.Int8, out idx1a);
+            uint idx2;
+            Adv.AdvLib.DefineStatusSectionTag("Int16", Adv2TagType.Int16, out idx2);
+            uint idx2a;
+            Adv.AdvLib.DefineStatusSectionTag("Int16-2", Adv2TagType.Int16, out idx2a);
+            uint idx3;
+            Adv.AdvLib.DefineStatusSectionTag("Int32", Adv2TagType.Int32, out idx3);
+            uint idx3a;
+            Adv.AdvLib.DefineStatusSectionTag("Int32-2", Adv2TagType.Int32, out idx3a);
+            uint idx4;
+            Adv.AdvLib.DefineStatusSectionTag("Long64", Adv2TagType.Long64, out idx4);
+            uint idx4a;
+            Adv.AdvLib.DefineStatusSectionTag("Long64-2", Adv2TagType.Long64, out idx4a);
+            uint idx5;
+            Adv.AdvLib.DefineStatusSectionTag("Real", Adv2TagType.Real, out idx5);
+            uint idx5a;
+            Adv.AdvLib.DefineStatusSectionTag("Real-2", Adv2TagType.Real, out idx5a);
+            uint idx6;
+            Adv.AdvLib.DefineStatusSectionTag("UTF8String", Adv2TagType.UTF8String, out idx6);
+            uint idx6a;
+            Adv.AdvLib.DefineStatusSectionTag("UTF8String-2", Adv2TagType.UTF8String, out idx6a);
 
             int errorCode = Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
             AdvError.Check(errorCode);
@@ -437,6 +461,9 @@ namespace AdvLib.Tests.Adv_V2
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
             errorCode = Adv.AdvLib.EndFile();
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+
+            errorCode = Adv.AdvLib.AddOrUpdateImageSectionTag("N", "V");
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
         }
 
         [Test]
@@ -479,6 +506,8 @@ namespace AdvLib.Tests.Adv_V2
             Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_ID, errorCode);
             errorCode = Adv.AdvLib.FrameAddImageBytes(1, new byte[100], 0);
             Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_ID, errorCode);
+
+
 
             Adv.AdvLib.AdvCloseFile();
         }

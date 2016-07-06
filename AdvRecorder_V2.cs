@@ -543,20 +543,69 @@ namespace Adv
             //UserCommand - A list of commands issued by the user during the generation of the current video frame. The commands are saved as free text (for example: Changed gain)
             //SystemError - A list of errors that were detected by the system during the generation of the current video frame. 
 
-            if (StatusSectionConfig.RecordSystemTime) m_TAGID_SystemTime = AdvLib.DefineStatusSectionTag("SystemTime", Adv2TagType.Long64);
+            int errorCode;
+            if (StatusSectionConfig.RecordSystemTime)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("SystemTime", Adv2TagType.Long64, out m_TAGID_SystemTime);
+                AdvError.Check(errorCode);
+            }
 
-            if (StatusSectionConfig.RecordTrackedSatellites) m_TAGID_TrackedSatellites = AdvLib.DefineStatusSectionTag("TrackedSatellites", Adv2TagType.Int8);
-            if (StatusSectionConfig.RecordAlmanacStatus) m_TAGID_AlmanacStatus = AdvLib.DefineStatusSectionTag("AlmanacStatus", Adv2TagType.Int8);
-            if (StatusSectionConfig.RecordAlmanacOffset) m_TAGID_AlmanacOffset = AdvLib.DefineStatusSectionTag("AlmanacOffset", Adv2TagType.Int8);
-            if (StatusSectionConfig.RecordFixStatus) m_TAGID_FixStatus = AdvLib.DefineStatusSectionTag("SatelliteFixStatus", Adv2TagType.Int8);
-            if (StatusSectionConfig.RecordGamma) m_TAGID_Gamma = AdvLib.DefineStatusSectionTag("Gamma", Adv2TagType.Real);
-            if (StatusSectionConfig.RecordGain) m_TAGID_Gain = AdvLib.DefineStatusSectionTag("Gain", Adv2TagType.Real);
-            if (StatusSectionConfig.RecordShutter) m_TAGID_Shutter = AdvLib.DefineStatusSectionTag("Shutter", Adv2TagType.Real);
-            if (StatusSectionConfig.RecordCameraOffset) m_TAGID_Offset = AdvLib.DefineStatusSectionTag("Offset", Adv2TagType.Real);
+            if (StatusSectionConfig.RecordTrackedSatellites)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("TrackedSatellites", Adv2TagType.Int8, out m_TAGID_TrackedSatellites);
+                AdvError.Check(errorCode);
+            }
+            if (StatusSectionConfig.RecordAlmanacStatus)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("AlmanacStatus", Adv2TagType.Int8, out m_TAGID_AlmanacStatus);
+                AdvError.Check(errorCode);
+            }
+            if (StatusSectionConfig.RecordAlmanacOffset)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("AlmanacOffset", Adv2TagType.Int8, out m_TAGID_AlmanacOffset);
+                AdvError.Check(errorCode);
+            }
+            if (StatusSectionConfig.RecordFixStatus)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("SatelliteFixStatus", Adv2TagType.Int8, out m_TAGID_FixStatus);
+                AdvError.Check(errorCode);
+            }
+            if (StatusSectionConfig.RecordGamma)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("Gamma", Adv2TagType.Real, out m_TAGID_Gamma);
+                AdvError.Check(errorCode);
+            }
+            if (StatusSectionConfig.RecordGain)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("Gain", Adv2TagType.Real, out m_TAGID_Gain);
+                AdvError.Check(errorCode);
+            }
+            if (StatusSectionConfig.RecordShutter)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("Shutter", Adv2TagType.Real, out m_TAGID_Shutter);
+                AdvError.Check(errorCode);
+            }
+            if (StatusSectionConfig.RecordCameraOffset)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("Offset", Adv2TagType.Real, out m_TAGID_Offset);
+                AdvError.Check(errorCode);
+            }
 
-            if (StatusSectionConfig.RecordVideoCameraFrameId) m_TAGID_VideoCameraFrameId = AdvLib.DefineStatusSectionTag("VideoCameraFrameId", Adv2TagType.Long64);
-            if (StatusSectionConfig.RecordHardwareTimerFrameId) m_TAGID_HardwareTimerFrameId = AdvLib.DefineStatusSectionTag("HardwareTimerFrameId", Adv2TagType.Long64);
-            if (StatusSectionConfig.RecordSystemErrors) m_TAGID_SystemError = AdvLib.DefineStatusSectionTag("Error", Adv2TagType.UTF8String);
+            if (StatusSectionConfig.RecordVideoCameraFrameId)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("VideoCameraFrameId", Adv2TagType.Long64, out m_TAGID_VideoCameraFrameId);
+                AdvError.Check(errorCode);
+            }
+            if (StatusSectionConfig.RecordHardwareTimerFrameId)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("HardwareTimerFrameId", Adv2TagType.Long64, out m_TAGID_HardwareTimerFrameId);
+                AdvError.Check(errorCode);
+            }
+            if (StatusSectionConfig.RecordSystemErrors)
+            {
+                errorCode = AdvLib.DefineStatusSectionTag("Error", Adv2TagType.UTF8String, out m_TAGID_SystemError);
+                AdvError.Check(errorCode);
+            }
 
             m_AdditionalStatusSectionTagIds.Clear();
 
@@ -564,7 +613,9 @@ namespace Adv
             {
                 foreach (string tagName in StatusSectionConfig.AdditionalStatusTags.Keys)
                 {
-                    uint tagId = AdvLib.DefineStatusSectionTag(tagName, StatusSectionConfig.AdditionalStatusTags[tagName]);
+                    uint tagId;
+                    errorCode = AdvLib.DefineStatusSectionTag(tagName, StatusSectionConfig.AdditionalStatusTags[tagName], out tagId);
+                    AdvError.Check(errorCode);
                     m_AdditionalStatusSectionTagIds.Add(tagName, tagId);
                 }
             }
