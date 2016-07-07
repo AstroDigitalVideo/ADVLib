@@ -432,16 +432,16 @@ namespace Adv
         private static extern int AdvVer2_BeginFrame32(uint streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageSection")]
-        //void AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
-        private static extern void AdvVer2_DefineImageSection32(ushort width, ushort height, byte dataBpp);
+        //ADVRESULT AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
+        private static extern int AdvVer2_DefineImageSection32(ushort width, ushort height, byte dataBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSection")]
-        //void AdvVer2_DefineStatusSection(__int64 utcTimestampAccuracyInNanoseconds);
-        private static extern void AdvVer2_DefineStatusSection32(long utcTimestampAccuracyInNanoseconds);
+        //ADVRESULT AdvVer2_DefineStatusSection(__int64 utcTimestampAccuracyInNanoseconds);
+        private static extern int AdvVer2_DefineStatusSection32(long utcTimestampAccuracyInNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageLayout")]
-        //void AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp);
-        private static extern void AdvVer2_DefineImageLayout32(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp);
+        //ADVRESULT AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp);
+        private static extern int AdvVer2_DefineImageLayout32(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSectionTag")]
         //ADVRESULT AdvVer2_DefineStatusSectionTag(const char* tagName, int tagType, unsigned int* addedTagId);
@@ -688,16 +688,16 @@ namespace Adv
         private static extern int AdvVer2_BeginFrame64(uint streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageSection")]
-        //void AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
-        private static extern void AdvVer2_DefineImageSection64(ushort width, ushort height, byte dataBpp);
+        //ADVRESULT AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
+        private static extern int AdvVer2_DefineImageSection64(ushort width, ushort height, byte dataBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSection")]
-        //void AdvVer2_DefineStatusSection(__int64 utcTimestampAccuracyInNanoseconds);
-        private static extern void AdvVer2_DefineStatusSection64(long utcTimestampAccuracyInNanoseconds);
+        //ADVRESULT AdvVer2_DefineStatusSection(__int64 utcTimestampAccuracyInNanoseconds);
+        private static extern int AdvVer2_DefineStatusSection64(long utcTimestampAccuracyInNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageLayout")]
-        //void AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp);
-        private static extern void AdvVer2_DefineImageLayout64(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp);
+        //ADVRESULT AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp);
+        private static extern int AdvVer2_DefineImageLayout64(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSectionTag")]
         //ADVRESULT AdvVer2_DefineStatusSectionTag(const char* tagName, int tagType, unsigned int* addedTagId);
@@ -944,16 +944,16 @@ namespace Adv
         private static extern int AdvVer2_BeginFrameUnix(uint streamId, ulong utcStartTimeNanosecondsSinceAdvZeroEpoch, uint utcExposureNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageSection")]
-        //void AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
-        private static extern void AdvVer2_DefineImageSectionUnix(ushort width, ushort height, byte dataBpp);
+        //ADVRESULT AdvVer2_DefineImageSection(unsigned short width, unsigned short height, unsigned char dataBpp);
+        private static extern int AdvVer2_DefineImageSectionUnix(ushort width, ushort height, byte dataBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSection")]
-        //void AdvVer2_DefineStatusSection(__int64 utcTimestampAccuracyInNanoseconds);
-        private static extern void AdvVer2_DefineStatusSectionUnix(long utcTimestampAccuracyInNanoseconds);
+        //ADVRESULT AdvVer2_DefineStatusSection(__int64 utcTimestampAccuracyInNanoseconds);
+        private static extern int AdvVer2_DefineStatusSectionUnix(long utcTimestampAccuracyInNanoseconds);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineImageLayout")]
-        //void AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp);
-        private static extern void AdvVer2_DefineImageLayoutUnix(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp);
+        //ADVRESULT AdvVer2_DefineImageLayout(unsigned char layoutId, const char* layoutType, const char* compression, unsigned char layoutBpp);
+        private static extern int AdvVer2_DefineImageLayoutUnix(byte layoutId, [MarshalAs(UnmanagedType.LPStr)]string layoutType, [MarshalAs(UnmanagedType.LPStr)]string compression, byte layoutBpp);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_DefineStatusSectionTag")]
         //ADVRESULT AdvVer2_DefineStatusSectionTag(const char* tagName, int tagType, unsigned int* addedTagId);
@@ -1384,7 +1384,7 @@ namespace Adv
                 AdvVer2_SetTicksTimingPrecision32(mainAccuracy, calibrationAccuracy);
         }
 
-        public static int AddMainStreamTag(string tagName, string tagValue)
+        public static int AddOrUpdateMainStreamTag(string tagName, string tagValue)
         {
             if (!CrossPlatform.IsWindows)
                 return AdvVer2_AddMainStreamTagUnix(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
@@ -1394,7 +1394,7 @@ namespace Adv
                 return AdvVer2_AddMainStreamTag32(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
         }
 
-        public static int AddCalibrationStreamTag(string tagName, string tagValue)
+        public static int AddOrUpdateCalibrationStreamTag(string tagName, string tagValue)
         {
             if (!CrossPlatform.IsWindows)
                 return AdvVer2_AddCalibrationStreamTagUnix(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
@@ -1462,34 +1462,34 @@ namespace Adv
                 AdvVer2_DefineExternalClockForCalibrationStream32(clockFrequency, ticksTimingAccuracy);
         }
 
-        public static void DefineImageSection(ushort width, ushort height, byte dataBpp)
+        public static int DefineImageSection(ushort width, ushort height, byte dataBpp)
         {
             if (!CrossPlatform.IsWindows)
-                AdvVer2_DefineImageSectionUnix(width, height, dataBpp);
+                return AdvVer2_DefineImageSectionUnix(width, height, dataBpp);
             else if (Is64Bit())
-                AdvVer2_DefineImageSection64(width, height, dataBpp);
+                return AdvVer2_DefineImageSection64(width, height, dataBpp);
             else
-                AdvVer2_DefineImageSection32(width, height, dataBpp);
+                return AdvVer2_DefineImageSection32(width, height, dataBpp);
         }
 
-        public static void DefineStatusSection(long utcTimestampAccuracyInNanoseconds)
+        public static int DefineStatusSection(long utcTimestampAccuracyInNanoseconds)
         {
             if (!CrossPlatform.IsWindows)
-                AdvVer2_DefineStatusSectionUnix(utcTimestampAccuracyInNanoseconds);
+                return AdvVer2_DefineStatusSectionUnix(utcTimestampAccuracyInNanoseconds);
             else if (Is64Bit())
-                AdvVer2_DefineStatusSection64(utcTimestampAccuracyInNanoseconds);
+                return AdvVer2_DefineStatusSection64(utcTimestampAccuracyInNanoseconds);
             else
-                AdvVer2_DefineStatusSection32(utcTimestampAccuracyInNanoseconds);
+                return AdvVer2_DefineStatusSection32(utcTimestampAccuracyInNanoseconds);
         }
 
-        public static void DefineImageLayout(byte layoutId, string layoutType, string compression, byte layoutBpp)
+        public static int DefineImageLayout(byte layoutId, string layoutType, string compression, byte layoutBpp)
         {
             if (!CrossPlatform.IsWindows)
-                AdvVer2_DefineImageLayoutUnix(layoutId, layoutType, compression, layoutBpp);
+                return AdvVer2_DefineImageLayoutUnix(layoutId, layoutType, compression, layoutBpp);
             else if (Is64Bit())
-                AdvVer2_DefineImageLayout64(layoutId, layoutType, compression, layoutBpp);
+                return AdvVer2_DefineImageLayout64(layoutId, layoutType, compression, layoutBpp);
             else
-                AdvVer2_DefineImageLayout32(layoutId, layoutType, compression, layoutBpp);
+                return AdvVer2_DefineImageLayout32(layoutId, layoutType, compression, layoutBpp);
         }
 
         public static int DefineStatusSectionTag(string tagName, Adv2TagType tagType, out uint addedTagId)
@@ -1504,7 +1504,7 @@ namespace Adv
                 return AdvVer2_DefineStatusSectionTag32(StringToUTF8Bytes(tagName), tagType, ref addedTagId);
         }
 
-        public static int AddFileTag(string tagName, string tagValue)
+        public static int AddOrUpdateFileTag(string tagName, string tagValue)
         {
             if (!CrossPlatform.IsWindows)
                 return AdvVer2_AddFileTagUnix(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
@@ -1514,7 +1514,7 @@ namespace Adv
                 return AdvVer2_AddFileTag32(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));
         }
 
-        public static int AddUserTag(string tagName, string tagValue)
+        public static int AddOrUpdateUserTag(string tagName, string tagValue)
         {
             if (!CrossPlatform.IsWindows)
                 return AdvVer2_AddUserTagUnix(StringToUTF8Bytes(tagName), StringToUTF8Bytes(tagValue));

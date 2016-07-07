@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -464,6 +465,108 @@ namespace AdvLib.Tests.Adv_V2
 
             errorCode = Adv.AdvLib.AddOrUpdateImageSectionTag("N", "V");
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateCalibrationStreamTag("N", "V");
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateMainStreamTag("N", "V");
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateFileTag("N", "V");
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateUserTag("N", "V");
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            uint tagId;
+            errorCode = Adv.AdvLib.DefineStatusSectionTag("N", Adv2TagType.Int8, out tagId);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageSection(600, 800, 16);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.DefineStatusSection(0);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "TYPE", "COMP", 16);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+        }
+
+        [Test]
+        public void TestNoImageOrStatusSectionErrorCode()
+        {
+            Adv.AdvLib.NewFile(m_FileName);
+
+            int errorCode = Adv.AdvLib.FrameAddImage(0, new ushort[100], 0);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+            errorCode = Adv.AdvLib.FrameAddImageBytes(0, new byte[100], 0);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+
+            errorCode = Adv.AdvLib.FrameAddStatusTagUInt8(0, 42);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
+            errorCode = Adv.AdvLib.FrameAddStatusTagInt16(0, 42);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
+            errorCode = Adv.AdvLib.FrameAddStatusTagInt32(0, 42);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
+            errorCode = Adv.AdvLib.FrameAddStatusTagInt64(0, 42);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
+            errorCode = Adv.AdvLib.FrameAddStatusTagFloat(0, 42);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
+            errorCode = Adv.AdvLib.FrameAddStatusTagUTF8String(0, "42");
+            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
+
+            AdvImageLayoutInfo imageLayoutInfo;
+            errorCode = Adv.AdvLib.GetImageLayoutInfo(0, out imageLayoutInfo);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+
+
+            string tagName;
+            string tagValue;
+            errorCode = Adv.AdvLib.GetImageSectionTag(0, out tagName, out tagValue);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+            errorCode = Adv.AdvLib.GetImageLayoutTag(0, 0, out tagName, out tagValue);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+
+            errorCode = Adv.AdvLib.AddOrUpdateImageSectionTag("N", "V");
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+            uint tagId;
+            errorCode = Adv.AdvLib.DefineStatusSectionTag("N", Adv2TagType.Int8, out tagId);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
+        }
+
+        [Test]
+        public void TestSectionDefinitionErrors()
+        {
+            Adv.AdvLib.NewFile(m_FileName);
+
+            int errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "", "", 16);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageSection(600, 800, 16);
+            AdvError.Check(errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageSection(600, 800, 16);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_ALREADY_DEFINED, errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "", "", 16);
+            AdvError.Check(errorCode);
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "", "", 16);
+            Assert.AreEqual(AdvError.E_ADV_IMAGE_LAYOUT_ALREADY_DEFINED, errorCode);
+
+            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
+            
+            errorCode = Adv.AdvLib.DefineStatusSection(0);
+            AdvError.Check(errorCode);
+
+            errorCode = Adv.AdvLib.DefineStatusSection(0);
+            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_ALREADY_DEFINED, errorCode);
+
+            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
+            AdvError.Check(errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageSection(600, 800, 16);
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
+            errorCode = Adv.AdvLib.DefineStatusSection(0);
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "", "", 16);
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
         }
 
         [Test]
@@ -471,43 +574,58 @@ namespace AdvLib.Tests.Adv_V2
         {
             Adv.AdvLib.NewFile(m_FileName);
 
-            int errorCode = Adv.AdvLib.EndFrame();
-            Assert.AreEqual(AdvError.E_ADV_FRAME_NOT_STARTED, errorCode);
+            int errorCode = Adv.AdvLib.DefineImageSection(600, 800, 16);
+            AdvError.Check(errorCode);
 
-            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
-            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
+            errorCode = Adv.AdvLib.DefineStatusSection(0);
+            AdvError.Check(errorCode);
 
-            errorCode = Adv.AdvLib.FrameAddImage(0, new ushort[100], 0);
-            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
-            errorCode = Adv.AdvLib.FrameAddImageBytes(0, new byte[100], 0);
-            Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
-
-            Adv.AdvLib.DefineImageSection(640, 480, 16);
-
-            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
-            Assert.AreEqual(AdvError.E_ADV_STATUS_SECTION_UNDEFINED, errorCode);
-
-            Adv.AdvLib.DefineStatusSection(5000000 /* 5ms */);
-
-            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
-            Assert.AreEqual(AdvError.E_ADV_IMAGE_LAYOUTS_UNDEFINED, errorCode);
-            
-            Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
-
-            errorCode = Adv.AdvLib.FrameAddImage(0, new ushort[100], 0);
-            Assert.AreEqual(AdvError.E_ADV_FRAME_NOT_STARTED, errorCode);
-            errorCode = Adv.AdvLib.FrameAddImageBytes(0, new byte[100], 0);
-            Assert.AreEqual(AdvError.E_ADV_FRAME_NOT_STARTED, errorCode);
-
-            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
+            #region Tags
+            errorCode = Adv.AdvLib.AddOrUpdateImageSectionTag("Tag1", "V");
+            Assert.AreEqual(AdvError.S_OK, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateCalibrationStreamTag("Tag2", "V");
+            Assert.AreEqual(AdvError.S_OK, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateMainStreamTag("Tag3", "V");
+            Assert.AreEqual(AdvError.S_OK, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateFileTag("Tag4", "V");
+            Assert.AreEqual(AdvError.S_OK, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateUserTag("Tag5", "V");
+            Assert.AreEqual(AdvError.S_OK, errorCode);
+            uint tagId;
+            errorCode = Adv.AdvLib.DefineStatusSectionTag("Tag6", Adv2TagType.Int8, out tagId);
             Assert.AreEqual(AdvError.S_OK, errorCode);
 
-            errorCode = Adv.AdvLib.FrameAddImage(1, new ushort[100], 0);
-            Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_ID, errorCode);
-            errorCode = Adv.AdvLib.FrameAddImageBytes(1, new byte[100], 0);
-            Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_ID, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateImageSectionTag("Tag1", "V");
+            Assert.AreEqual(AdvError.S_ADV_TAG_REPLACED, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateCalibrationStreamTag("Tag2", "V");
+            Assert.AreEqual(AdvError.S_ADV_TAG_REPLACED, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateMainStreamTag("Tag3", "V");
+            Assert.AreEqual(AdvError.S_ADV_TAG_REPLACED, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateFileTag("Tag4", "V");
+            Assert.AreEqual(AdvError.S_ADV_TAG_REPLACED, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateUserTag("Tag5", "V");
+            Assert.AreEqual(AdvError.S_ADV_TAG_REPLACED, errorCode);
+            errorCode = Adv.AdvLib.DefineStatusSectionTag("Tag6", Adv2TagType.Int8, out tagId);
+            Assert.AreEqual(AdvError.S_ADV_TAG_REPLACED, errorCode);
+            #endregion
 
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
+            AdvError.Check(errorCode);
+            errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
+            AdvError.Check(errorCode);
 
+            errorCode = Adv.AdvLib.AddOrUpdateImageSectionTag("Tag1", "V");
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateCalibrationStreamTag("Tag2", "V");
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateMainStreamTag("Tag3", "V");
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateFileTag("Tag4", "V");
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
+            errorCode = Adv.AdvLib.AddOrUpdateUserTag("Tag5", "V");
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
+            errorCode = Adv.AdvLib.DefineStatusSectionTag("Tag6", Adv2TagType.Int8, out tagId);
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
 
             Adv.AdvLib.AdvCloseFile();
         }

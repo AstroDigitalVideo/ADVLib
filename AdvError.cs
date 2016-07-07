@@ -43,6 +43,9 @@ namespace Adv
         public const int E_ADV_IMAGE_LAYOUTS_UNDEFINED                          = unchecked((int)0x8100100B);
         public const int E_ADV_INVALID_IMAGE_LAYOUT_ID                          = unchecked((int)0x8100100C);
         public const int E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW                     = unchecked((int)0x8100100D);
+        public const int E_ADV_IMAGE_SECTION_ALREADY_DEFINED                    = unchecked((int)0x8100100E);
+        public const int E_ADV_STATUS_SECTION_ALREADY_DEFINED                   = unchecked((int)0x8100100F);
+        public const int E_ADV_IMAGE_LAYOUT_ALREADY_DEFINED                     = unchecked((int)0x81001010);
 
         public const int S_OK                                                   = 0;
         public const int S_ADV_TAG_REPLACED                                     = 0x71000001;
@@ -149,16 +152,21 @@ namespace Adv
                case E_ADV_INVALID_STREAM_ID:
                     return "Invalid StreamId. Must be 0 for MAIN or 1 for CALIBRATION.";
                case E_ADV_IMAGE_SECTION_UNDEFINED:
-                    return "No image section has been defined.";
+                    return "No Image Section has been defined.";
                case E_ADV_STATUS_SECTION_UNDEFINED:
-                    return "No status section has been defined.";
+                    return "No Status Section has been defined.";
                case E_ADV_IO_ERROR:
                     return "An I/O error has occured.";
                case E_ADV_INVALID_IMAGE_LAYOUT_ID:
                     return "Invalid image LayoutId.";
                case E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW:
                     return "This change is not allowed on an existing file or once a frame insertion has started.";
-
+               case E_ADV_IMAGE_SECTION_ALREADY_DEFINED:
+                    return "The Image Section can be only defined once per file";
+               case E_ADV_STATUS_SECTION_ALREADY_DEFINED:
+                    return "The Status Section can be only defined once per file";
+               case E_ADV_IMAGE_LAYOUT_ALREADY_DEFINED:
+                    return "An Image Layout with this LayoutId has been already defined.";
 
                case E_FAIL:
                     return "Error.";

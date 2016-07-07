@@ -448,56 +448,56 @@ namespace Adv
             if (string.IsNullOrEmpty(FileMetaData.CameraModel)) throw new ArgumentException("FileMetaData.CameraModel must be specified.");
             if (string.IsNullOrEmpty(FileMetaData.CameraSensorInfo)) throw new ArgumentException("FileMetaData.CameraSensorInfo must be specified.");
 
-            AdvLib.AddFileTag("FSTF-TYPE", "ADV");
-            AdvLib.AddFileTag("ADV-VERSION", "2");
+            AdvLib.AddOrUpdateFileTag("FSTF-TYPE", "ADV");
+            AdvLib.AddOrUpdateFileTag("ADV-VERSION", "2");
 
-            AdvLib.AddFileTag("RECORDER-SOFTWARE", FileMetaData.RecorderSoftwareName);
-            AdvLib.AddFileTag("RECORDER-SOFTWARE-VERSION", FileMetaData.RecorderSoftwareVersion);
-            if (!string.IsNullOrEmpty(FileMetaData.RecorderHardwareName)) AdvLib.AddFileTag("RECORDER-HARDWARE", FileMetaData.RecorderHardwareName);
-            if (!string.IsNullOrEmpty(FileMetaData.RecorderHardwareVersion)) AdvLib.AddFileTag("RECORDER-HARDWARE-VERSION", FileMetaData.RecorderHardwareVersion);
-            AdvLib.AddFileTag("ADVLIB-VERSION", "2.0");
+            AdvLib.AddOrUpdateFileTag("RECORDER-SOFTWARE", FileMetaData.RecorderSoftwareName);
+            AdvLib.AddOrUpdateFileTag("RECORDER-SOFTWARE-VERSION", FileMetaData.RecorderSoftwareVersion);
+            if (!string.IsNullOrEmpty(FileMetaData.RecorderHardwareName)) AdvLib.AddOrUpdateFileTag("RECORDER-HARDWARE", FileMetaData.RecorderHardwareName);
+            if (!string.IsNullOrEmpty(FileMetaData.RecorderHardwareVersion)) AdvLib.AddOrUpdateFileTag("RECORDER-HARDWARE-VERSION", FileMetaData.RecorderHardwareVersion);
+            AdvLib.AddOrUpdateFileTag("ADVLIB-VERSION", "2.0");
 
-            if (!double.IsNaN(LocationData.Longitude)) AdvLib.AddFileTag("LONGITUDE", LocationData.Longitude.ToString(CultureInfo.InvariantCulture));
-            if (!double.IsNaN(LocationData.Latitude)) AdvLib.AddFileTag("LATITUDE", LocationData.Latitude.ToString(CultureInfo.InvariantCulture));
-            if (!double.IsNaN(LocationData.Altitude)) AdvLib.AddFileTag("ALTITUDE", LocationData.Altitude.ToString(CultureInfo.InvariantCulture));
-            if (!string.IsNullOrEmpty(LocationData.SiteName)) AdvLib.AddFileTag("POSITION-SITE-NAME", LocationData.SiteName);
-            if (!string.IsNullOrEmpty(LocationData.PositionReference)) AdvLib.AddFileTag("POSITION-REFERENCE", LocationData.PositionReference);
-            if (!string.IsNullOrEmpty(LocationData.PositionAccuracy)) AdvLib.AddFileTag("POSITION-ACCURACY", LocationData.PositionAccuracy);
+            if (!double.IsNaN(LocationData.Longitude)) AdvLib.AddOrUpdateFileTag("LONGITUDE", LocationData.Longitude.ToString(CultureInfo.InvariantCulture));
+            if (!double.IsNaN(LocationData.Latitude)) AdvLib.AddOrUpdateFileTag("LATITUDE", LocationData.Latitude.ToString(CultureInfo.InvariantCulture));
+            if (!double.IsNaN(LocationData.Altitude)) AdvLib.AddOrUpdateFileTag("ALTITUDE", LocationData.Altitude.ToString(CultureInfo.InvariantCulture));
+            if (!string.IsNullOrEmpty(LocationData.SiteName)) AdvLib.AddOrUpdateFileTag("POSITION-SITE-NAME", LocationData.SiteName);
+            if (!string.IsNullOrEmpty(LocationData.PositionReference)) AdvLib.AddOrUpdateFileTag("POSITION-REFERENCE", LocationData.PositionReference);
+            if (!string.IsNullOrEmpty(LocationData.PositionAccuracy)) AdvLib.AddOrUpdateFileTag("POSITION-ACCURACY", LocationData.PositionAccuracy);
 
-            if (!string.IsNullOrEmpty(FileMetaData.CameraModel)) AdvLib.AddFileTag("CAMERA-MODEL", FileMetaData.CameraModel);
-            if (!string.IsNullOrEmpty(FileMetaData.CameraSensorInfo)) AdvLib.AddFileTag("CAMERA-SENSOR-INFO", FileMetaData.CameraSensorInfo);
+            if (!string.IsNullOrEmpty(FileMetaData.CameraModel)) AdvLib.AddOrUpdateFileTag("CAMERA-MODEL", FileMetaData.CameraModel);
+            if (!string.IsNullOrEmpty(FileMetaData.CameraSensorInfo)) AdvLib.AddOrUpdateFileTag("CAMERA-SENSOR-INFO", FileMetaData.CameraSensorInfo);
 
-            if (FileMetaData.BinningX > 0) AdvLib.AddFileTag("BINNING-X", FileMetaData.BinningX.ToString(CultureInfo.InvariantCulture));
-            if (FileMetaData.BinningY > 0) AdvLib.AddFileTag("BINNING-Y", FileMetaData.BinningY.ToString(CultureInfo.InvariantCulture));
-            if (!double.IsNaN(FileMetaData.EffectivePixelSizeX)) AdvLib.AddFileTag("EFFECTIVE-PIXEL-SIZE-X", FileMetaData.EffectivePixelSizeX.ToString(CultureInfo.InvariantCulture));
-            if (!double.IsNaN(FileMetaData.EffectivePixelSizeY)) AdvLib.AddFileTag("EFFECTIVE-PIXEL-SIZE-Y", FileMetaData.EffectivePixelSizeY.ToString(CultureInfo.InvariantCulture));
+            if (FileMetaData.BinningX > 0) AdvLib.AddOrUpdateFileTag("BINNING-X", FileMetaData.BinningX.ToString(CultureInfo.InvariantCulture));
+            if (FileMetaData.BinningY > 0) AdvLib.AddOrUpdateFileTag("BINNING-Y", FileMetaData.BinningY.ToString(CultureInfo.InvariantCulture));
+            if (!double.IsNaN(FileMetaData.EffectivePixelSizeX)) AdvLib.AddOrUpdateFileTag("EFFECTIVE-PIXEL-SIZE-X", FileMetaData.EffectivePixelSizeX.ToString(CultureInfo.InvariantCulture));
+            if (!double.IsNaN(FileMetaData.EffectivePixelSizeY)) AdvLib.AddOrUpdateFileTag("EFFECTIVE-PIXEL-SIZE-Y", FileMetaData.EffectivePixelSizeY.ToString(CultureInfo.InvariantCulture));
 
-            if (FileMetaData.GainResponseMode != ResponseMode.Unknown) AdvLib.AddFileTag("RESPONSE-MODE-GAIN", FileMetaData.GainResponseMode.ToString());
-            if (FileMetaData.OffsetResponseMode != ResponseMode.Unknown) AdvLib.AddFileTag("RESPONSE-MODE-OFFSET", FileMetaData.OffsetResponseMode.ToString());
+            if (FileMetaData.GainResponseMode != ResponseMode.Unknown) AdvLib.AddOrUpdateFileTag("RESPONSE-MODE-GAIN", FileMetaData.GainResponseMode.ToString());
+            if (FileMetaData.OffsetResponseMode != ResponseMode.Unknown) AdvLib.AddOrUpdateFileTag("RESPONSE-MODE-OFFSET", FileMetaData.OffsetResponseMode.ToString());
 
-            if (FileMetaData.NativeVideoStandard != VideoStandard.Unknown) AdvLib.AddFileTag("NATIVE-VIDEO-STANDARD", FileMetaData.NativeVideoStandard.ToString());
-            if (!double.IsNaN(FileMetaData.NativeFrameRate)) AdvLib.AddFileTag("NATIVE-FRAME-RATE", FileMetaData.NativeFrameRate.ToString(CultureInfo.InvariantCulture));
-            if (!double.IsNaN(FileMetaData.EffectiveFrameRate)) AdvLib.AddFileTag("EFFECTIVE-FRAME-RATE", FileMetaData.EffectiveFrameRate.ToString(CultureInfo.InvariantCulture));
+            if (FileMetaData.NativeVideoStandard != VideoStandard.Unknown) AdvLib.AddOrUpdateFileTag("NATIVE-VIDEO-STANDARD", FileMetaData.NativeVideoStandard.ToString());
+            if (!double.IsNaN(FileMetaData.NativeFrameRate)) AdvLib.AddOrUpdateFileTag("NATIVE-FRAME-RATE", FileMetaData.NativeFrameRate.ToString(CultureInfo.InvariantCulture));
+            if (!double.IsNaN(FileMetaData.EffectiveFrameRate)) AdvLib.AddOrUpdateFileTag("EFFECTIVE-FRAME-RATE", FileMetaData.EffectiveFrameRate.ToString(CultureInfo.InvariantCulture));
 
-            if (FileMetaData.OsdPositionTop != 0) AdvLib.AddFileTag("OSD-POSITION-TOP", FileMetaData.OsdPositionTop.ToString());
-            if (FileMetaData.OsdPositionLeft != 0) AdvLib.AddFileTag("OSD-POSITION-LEFT", FileMetaData.OsdPositionLeft.ToString());
-            if (FileMetaData.OsdPositionBottom != 0) AdvLib.AddFileTag("OSD-POSITION-BOTTOM", FileMetaData.OsdPositionBottom.ToString());
-            if (FileMetaData.OsdPositionRight != 0) AdvLib.AddFileTag("OSD-POSITION-RIGHT", FileMetaData.OsdPositionRight.ToString());
+            if (FileMetaData.OsdPositionTop != 0) AdvLib.AddOrUpdateFileTag("OSD-POSITION-TOP", FileMetaData.OsdPositionTop.ToString());
+            if (FileMetaData.OsdPositionLeft != 0) AdvLib.AddOrUpdateFileTag("OSD-POSITION-LEFT", FileMetaData.OsdPositionLeft.ToString());
+            if (FileMetaData.OsdPositionBottom != 0) AdvLib.AddOrUpdateFileTag("OSD-POSITION-BOTTOM", FileMetaData.OsdPositionBottom.ToString());
+            if (FileMetaData.OsdPositionRight != 0) AdvLib.AddOrUpdateFileTag("OSD-POSITION-RIGHT", FileMetaData.OsdPositionRight.ToString());
 
             if (FileMetaData.NtpServers.Hosts.Count > 0)
             {
-                AdvLib.AddFileTag("NTP-SERVER-LIST", string.Join(";", FileMetaData.NtpServers.Hosts.ToArray()));
-                AdvLib.AddFileTag("NTP-SERVER-DETAILS", string.Join(";", FileMetaData.NtpServers.ServerDetails.ToArray()));
+                AdvLib.AddOrUpdateFileTag("NTP-SERVER-LIST", string.Join(";", FileMetaData.NtpServers.Hosts.ToArray()));
+                AdvLib.AddOrUpdateFileTag("NTP-SERVER-DETAILS", string.Join(";", FileMetaData.NtpServers.ServerDetails.ToArray()));
             }
 
             foreach (string key in FileMetaData.MainStreamMetaData.Keys)
-                AdvLib.AddMainStreamTag(key, FileMetaData.MainStreamMetaData[key]);
+                AdvLib.AddOrUpdateMainStreamTag(key, FileMetaData.MainStreamMetaData[key]);
 
             foreach (string key in FileMetaData.CalibrationStreamMetaData.Keys)
-                AdvLib.AddCalibrationStreamTag(key, FileMetaData.CalibrationStreamMetaData[key]);
+                AdvLib.AddOrUpdateCalibrationStreamTag(key, FileMetaData.CalibrationStreamMetaData[key]);
 
             foreach (string key in FileMetaData.UserMetaData.Keys)
-                AdvLib.AddUserTag(key, FileMetaData.UserMetaData[key]);
+                AdvLib.AddOrUpdateUserTag(key, FileMetaData.UserMetaData[key]);
 
             AdvLib.DefineImageSection(ImageConfig.ImageWidth, ImageConfig.ImageHeight, ImageConfig.ImageBitsPerPixel);
             AdvLib.DefineStatusSection(utcTimestampAccuracyInNanoseconds);

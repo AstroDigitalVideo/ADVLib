@@ -243,15 +243,15 @@ namespace AdvLib.Tests.Generators
             Adv.AdvLib.DefineExternalClockForMainStream(76900, 77);
             Adv.AdvLib.DefineExternalClockForCalibrationStream(76900, 77);
 
-            Adv.AdvLib.AddMainStreamTag("Name1", "Христо");
-            Adv.AdvLib.AddMainStreamTag("Name2", "Frédéric");
-            Adv.AdvLib.AddCalibrationStreamTag("Name1", "好的茶");
+            Adv.AdvLib.AddOrUpdateMainStreamTag("Name1", "Христо");
+            Adv.AdvLib.AddOrUpdateMainStreamTag("Name2", "Frédéric");
+            Adv.AdvLib.AddOrUpdateCalibrationStreamTag("Name1", "好的茶");
 
             Adv.AdvLib.DefineImageSection(640, 480, 16);
             Adv.AdvLib.DefineStatusSection(5000000 /* 5ms */);
             Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
 
-            Adv.AdvLib.AddUserTag("Example", "Value");
+            Adv.AdvLib.AddOrUpdateUserTag("Example", "Value");
 
             Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
             Adv.AdvLib.EndFile();
