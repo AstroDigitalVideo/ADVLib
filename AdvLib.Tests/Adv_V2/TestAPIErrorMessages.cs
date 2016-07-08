@@ -483,6 +483,13 @@ namespace AdvLib.Tests.Adv_V2
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
             errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+
+            errorCode = Adv.AdvLib.DefineExternalClockForMainStream(0, 0);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.DefineExternalClockForCalibrationStream(0, 0);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+            errorCode = Adv.AdvLib.SetTimingPrecision(0, 0);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
         }
 
         [Test]
@@ -652,6 +659,13 @@ namespace AdvLib.Tests.Adv_V2
             errorCode = Adv.AdvLib.AddOrUpdateUserTag("Tag5", "V");
             Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
             errorCode = Adv.AdvLib.DefineStatusSectionTag("Tag6", Adv2TagType.Int8, out tagId);
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
+
+            errorCode = Adv.AdvLib.DefineExternalClockForMainStream(0, 0);
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
+            errorCode = Adv.AdvLib.DefineExternalClockForCalibrationStream(0, 0);
+            Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
+            errorCode = Adv.AdvLib.SetTimingPrecision(0, 0);
             Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
 
             Adv.AdvLib.AdvCloseFile();

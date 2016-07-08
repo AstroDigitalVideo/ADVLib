@@ -438,10 +438,10 @@ namespace Adv
             AdvLib.NewFile(fileName);
 
             if (m_GetMainClockTicksCallback != null)
-                AdvLib.DefineExternalClockForMainStream(m_MainClockFrequency, m_MainTicksTimingAccuracy);
+                AdvError.Check(AdvLib.DefineExternalClockForMainStream(m_MainClockFrequency, m_MainTicksTimingAccuracy));
             
             if (m_GetCalibrationClockTicksCallback != null)
-                AdvLib.DefineExternalClockForCalibrationStream(m_CalibrationClockFrequency, m_CalibrationTicksTimingAccuracy);
+                AdvError.Check(AdvLib.DefineExternalClockForCalibrationStream(m_CalibrationClockFrequency, m_CalibrationTicksTimingAccuracy));
 
             if (string.IsNullOrEmpty(FileMetaData.RecorderSoftwareName)) throw new ArgumentException("FileMetaData.RecorderSoftwareName must be specified.");
             if (string.IsNullOrEmpty(FileMetaData.RecorderSoftwareVersion)) throw new ArgumentException("FileMetaData.RecorderSoftwareVersion must be specified.");
