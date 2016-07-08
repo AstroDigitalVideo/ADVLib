@@ -46,6 +46,9 @@ namespace Adv
         public const int E_ADV_IMAGE_SECTION_ALREADY_DEFINED                    = unchecked((int)0x8100100E);
         public const int E_ADV_STATUS_SECTION_ALREADY_DEFINED                   = unchecked((int)0x8100100F);
         public const int E_ADV_IMAGE_LAYOUT_ALREADY_DEFINED                     = unchecked((int)0x81001010);
+        public const int E_ADV_INVALID_IMAGE_LAYOUT_TYPE                        = unchecked((int)0x81001011);
+        public const int E_ADV_INVALID_IMAGE_LAYOUT_COMPRESSION                 = unchecked((int)0x81001012);
+        public const int E_ADV_INVALID_IMAGE_LAYOUT_BPP                         = unchecked((int)0x81001013);
 
         public const int S_OK                                                   = 0;
         public const int S_ADV_TAG_REPLACED                                     = 0x71000001;
@@ -167,6 +170,12 @@ namespace Adv
                     return "The Status Section can be only defined once per file";
                case E_ADV_IMAGE_LAYOUT_ALREADY_DEFINED:
                     return "An Image Layout with this LayoutId has been already defined.";
+               case E_ADV_INVALID_IMAGE_LAYOUT_TYPE:
+                    return "Invalid Image Layout type. Accepted values are FULL-IMAGE-RAW, 12BIT-IMAGE-PACKED and 8BIT-COLOR-IMAGE.";
+               case E_ADV_INVALID_IMAGE_LAYOUT_COMPRESSION:
+                    return "Invalid Image Layout compression. Accepted values are UNCOMPRESSED, LAGARITH16 and QUICKLZ.";
+               case E_ADV_INVALID_IMAGE_LAYOUT_BPP:
+                    return "Invalid Image Layout bits per pixel value. Accepted range is from 1 to 32.";
 
                case E_FAIL:
                     return "Error.";

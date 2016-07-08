@@ -481,8 +481,35 @@ namespace AdvLib.Tests.Adv_V2
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
             errorCode = Adv.AdvLib.DefineStatusSection(0);
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
-            errorCode = Adv.AdvLib.DefineImageLayout(0, "TYPE", "COMP", 16);
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+        }
+
+        [Test]
+        public void TestImageLayoutErrorCode()
+        {
+            Adv.AdvLib.NewFile(m_FileName);
+
+            int errorCode = Adv.AdvLib.DefineImageSection(600, 800, 16);
+            AdvError.Check(errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 0);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_BPP, errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 33);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_BPP, errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "NEW-TYPE", "UNCOMPRESSED", 16);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_TYPE, errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageLayout(0, null, "UNCOMPRESSED", 16);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_TYPE, errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "NEW-COMPRESSION", 16);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_COMPRESSION, errorCode);
+
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", null, 16);
+            Assert.AreEqual(AdvError.E_ADV_INVALID_IMAGE_LAYOUT_COMPRESSION, errorCode); 
         }
 
         [Test]
@@ -535,7 +562,7 @@ namespace AdvLib.Tests.Adv_V2
             int errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
             Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
 
-            errorCode = Adv.AdvLib.DefineImageLayout(0, "", "", 16);
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
             Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_UNDEFINED, errorCode);
 
             errorCode = Adv.AdvLib.DefineImageSection(600, 800, 16);
@@ -544,9 +571,9 @@ namespace AdvLib.Tests.Adv_V2
             errorCode = Adv.AdvLib.DefineImageSection(600, 800, 16);
             Assert.AreEqual(AdvError.E_ADV_IMAGE_SECTION_ALREADY_DEFINED, errorCode);
 
-            errorCode = Adv.AdvLib.DefineImageLayout(0, "", "", 16);
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
             AdvError.Check(errorCode);
-            errorCode = Adv.AdvLib.DefineImageLayout(0, "", "", 16);
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
             Assert.AreEqual(AdvError.E_ADV_IMAGE_LAYOUT_ALREADY_DEFINED, errorCode);
 
             errorCode = Adv.AdvLib.BeginFrame(0, 0, 0);
@@ -565,7 +592,7 @@ namespace AdvLib.Tests.Adv_V2
             Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
             errorCode = Adv.AdvLib.DefineStatusSection(0);
             Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
-            errorCode = Adv.AdvLib.DefineImageLayout(0, "", "", 16);
+            errorCode = Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
             Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
         }
 
