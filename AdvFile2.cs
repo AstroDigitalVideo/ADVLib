@@ -46,7 +46,7 @@ namespace Adv
         public AdvFile2(string fileName)
         {
             AdvFileInfo fileInfo;
-            int fileVersionOrErrorCode = AdvLib.AdvOpenFile(fileName, out fileInfo);
+            int fileVersionOrErrorCode = AdvLib.OpenFile(fileName, out fileInfo);
             if (fileVersionOrErrorCode == 0)
                 throw new AdvLibException(string.Format("'{0}' is not an ADV file.", fileName));
             else if (fileVersionOrErrorCode < 0)
@@ -224,7 +224,7 @@ namespace Adv
 
         public bool Close()
         {
-            uint closedVer = AdvLib.AdvCloseFile();
+            uint closedVer = AdvLib.CloseFile();
             return closedVer > 1;
         }
 

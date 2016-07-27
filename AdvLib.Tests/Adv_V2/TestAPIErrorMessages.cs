@@ -256,7 +256,7 @@ namespace AdvLib.Tests.Adv_V2
             Adv.AdvLib.EndFile();
 
             AdvFileInfo fileInfo;
-            Adv.AdvLib.AdvOpenFile(m_FileName, out fileInfo);
+            Adv.AdvLib.OpenFile(m_FileName, out fileInfo);
 
             byte? val8;
             short? val16;
@@ -391,7 +391,7 @@ namespace AdvLib.Tests.Adv_V2
         [Test]
         public void TestNoFileErrorCode()
         {
-            Adv.AdvLib.AdvCloseFile();
+            Adv.AdvLib.CloseFile();
 
             int errorCode = Adv.AdvLib.FrameAddImage(0, new ushort[100], 0);
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
@@ -668,7 +668,7 @@ namespace AdvLib.Tests.Adv_V2
             errorCode = Adv.AdvLib.SetTimingPrecision(0, 0);
             Assert.AreEqual(AdvError.E_ADV_CHANGE_NOT_ALLOWED_RIGHT_NOW, errorCode);
 
-            Adv.AdvLib.AdvCloseFile();
+            Adv.AdvLib.CloseFile();
         }
     }
 }

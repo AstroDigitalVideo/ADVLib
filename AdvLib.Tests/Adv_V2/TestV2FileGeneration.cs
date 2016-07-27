@@ -489,7 +489,7 @@ namespace AdvLib.Tests.Adv_V2
 		[TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Lagarith16, "2B137AE29578EF9803FD941DDA5BCF90")]
 		[TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Lagarith16, "2B137AE29578EF9803FD941DDA5BCF90")]
 		[TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.Lagarith16, "1D4D1A051EAC7C3544CD9230A208EC37")]
-		[TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Lagarith16, "9654F23B16D341B617E33E3A8C42BA6A")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Lagarith16, "B45D0AFF61E71129CB9B2D5BB63B6FCA")]
 		[TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Lagarith16, "5DBDE91E67E87D64DA46885C028CCC1D")]
 #endif
         public void TestFileHashesOfZeroTimestampFiles(AdvSourceDataFormat dataFormat, byte dynaBits, CompressionType compression, string expectedHash)

@@ -1065,7 +1065,7 @@ namespace Adv
 
         #endregion
 
-        public static string AdvGetCurrentFilePath()
+        public static string GetCurrentFilePath()
         {
             if (!CrossPlatform.IsWindows)
                 return AdvGetCurrentFilePathUnix();
@@ -1300,7 +1300,7 @@ namespace Adv
             return bitness > 0 ? string.Format(" ({0} bit)", bitness) : string.Empty;
         }
 
-        public static int AdvOpenFile(string fileName, out AdvFileInfo fileInfo)
+        public static int OpenFile(string fileName, out AdvFileInfo fileInfo)
         {
             fileInfo = new AdvFileInfo();
 
@@ -1312,7 +1312,7 @@ namespace Adv
                 return AdvOpenFile32(fileName, ref fileInfo);
         }
 
-        public static uint AdvCloseFile()
+        public static uint CloseFile()
         {
             if (!CrossPlatform.IsWindows)
                 return AdvCloseFileUnix();
@@ -1322,7 +1322,7 @@ namespace Adv
                 return AdvCloseFile32();
         }
 
-        public static uint AdvGetFileVersion(string fileName)
+        public static uint GetAdvFileVersion(string fileName)
         {
             if (!CrossPlatform.IsWindows)
                 return AdvGetFileVersionUnix(fileName);
