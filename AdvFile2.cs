@@ -34,7 +34,7 @@ namespace Adv
         public Dictionary<string, string> UserMetadataTags = new Dictionary<string, string>();
         public Dictionary<string, string> ImageSectionTags = new Dictionary<string, string>();
 
-        private List<Tuple<string, uint, Adv2TagType>> m_StatusTagDefinitions = new List<Tuple<string, uint, Adv2TagType>>(); 
+        public List<Tuple<string, uint, Adv2TagType>> StatusTagDefinitions = new List<Tuple<string, uint, Adv2TagType>>(); 
 
         public int Width;
         public int Height;
@@ -156,7 +156,7 @@ namespace Adv
                     !string.IsNullOrEmpty(tagName) &&
                     tagType != null)
                 {
-                    m_StatusTagDefinitions.Add(new Tuple<string, uint, Adv2TagType>(tagName, i, tagType.Value));
+                    StatusTagDefinitions.Add(new Tuple<string, uint, Adv2TagType>(tagName, i, tagType.Value));
                 }                    
             }            
         }
@@ -168,7 +168,7 @@ namespace Adv
                 uint[] pixels;
                 int errorCode = AdvLib.GetFramePixels(0, (int)frameNo, Width, Height, out frameInfo, out pixels);
                 AdvError.Check(errorCode); 
-                foreach (var entry in m_StatusTagDefinitions)
+                foreach (var entry in StatusTagDefinitions)
                 {
                     byte? val8;
                     short? val16;

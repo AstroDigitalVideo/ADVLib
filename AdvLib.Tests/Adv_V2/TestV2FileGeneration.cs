@@ -485,13 +485,14 @@ namespace AdvLib.Tests.Adv_V2
 		[TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.QuickLZ, "9442BFC815E41B9AC3D790BB323636E9")]
 		[TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Uncompressed, "864750F8D86DB745BAF791B0BE4B7478")]
 		[TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.QuickLZ, "F329344DAFC35C37E9500C44C901301D")]
-#if !__linux__
+/* Lagarith16 produces different hashes at different times so the hash level check has been removed
+ * Lagarith16 is still tested at pixel level to ensure decompression produces exactly the originally compressed pixels
 		[TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Lagarith16, "2B137AE29578EF9803FD941DDA5BCF90")]
 		[TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Lagarith16, "2B137AE29578EF9803FD941DDA5BCF90")]
 		[TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.Lagarith16, "1D4D1A051EAC7C3544CD9230A208EC37")]
         [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Lagarith16, "B45D0AFF61E71129CB9B2D5BB63B6FCA")]
 		[TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Lagarith16, "5DBDE91E67E87D64DA46885C028CCC1D")]
-#endif
+*/
         public void TestFileHashesOfZeroTimestampFiles(AdvSourceDataFormat dataFormat, byte dynaBits, CompressionType compression, string expectedHash)
         {
             var fileGen = new AdvGenerator();

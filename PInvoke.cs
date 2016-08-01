@@ -118,6 +118,9 @@ namespace Adv
             HardwareTimerFrameIdHi = native.HardwareTimerFrameIdHi;
             SystemTimestampLo = native.SystemTimestampLo;
             SystemTimestampHi = native.SystemTimestampHi;
+
+            RawDataBlockSize = native.RawDataBlockSize;
+            ImageLayoutId = native.ImageLayoutId;
         }
 
         public ulong HardwareTimerFrameId
@@ -233,6 +236,9 @@ namespace Adv
 
             SystemTimestampLo = 0;
             SystemTimestampHi = 0;
+
+            ImageLayoutId = 0;
+            RawDataBlockSize = 0;
         }
 
         [FieldOffset(0)]
@@ -277,6 +283,10 @@ namespace Adv
         public uint SystemTimestampLo;
         [FieldOffset(68)]
         public uint SystemTimestampHi;
+        [FieldOffset(72)]
+        public uint ImageLayoutId;
+        [FieldOffset(76)]
+        public uint RawDataBlockSize;
     }
 
 
