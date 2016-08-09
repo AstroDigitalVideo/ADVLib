@@ -490,6 +490,11 @@ namespace AdvLib.Tests.Adv_V2
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
             errorCode = Adv.AdvLib.SetTimingPrecision(0, 0);
             Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
+
+            AdvIndexEntry[] mainIndex;
+            AdvIndexEntry[] calibIndex;
+            errorCode = Adv.AdvLib.GetIndexEntries(1, 1, out mainIndex, out calibIndex);
+            Assert.AreEqual(AdvError.E_ADV_NOFILE, errorCode);
         }
 
         [Test]

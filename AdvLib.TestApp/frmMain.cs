@@ -295,19 +295,19 @@ namespace AdvLibTestApp
 		private int GetTotalImages()
 		{
 			// TODO: In this file conversion example, return the number of images to be recorded
-			return 1;
+			return 10;
 		}
 
 		private uint GetCurrentImageExposure(int frameId)
 		{
 			// TODO: Get the image exposure in 1/10-th of milliseconds
-			return 400;
+			return 10000;
 		}
 
 		private DateTime GetCurrentImageTimeStamp(int frameId)
 		{
 			// TODO: Get the image timestamp. Alternatevly return windows Ticks or year/month/day/hour/min/sec/milliseconds
-		    return new DateTime(2016, 06, 06, 0, 24, 15);
+		    return new DateTime(2016, 06, 06, 0, 24, 15).AddSeconds(frameId);
 		}
 
 		private float GetCurrentImageGamma(int frameId)

@@ -49,6 +49,7 @@
             this.cbxADV1 = new System.Windows.Forms.CheckBox();
             this.tcTabs = new System.Windows.Forms.TabControl();
             this.tabRecorder = new System.Windows.Forms.TabPage();
+            this.cbxCopyToClipboard = new System.Windows.Forms.CheckBox();
             this.btnGenSpecExample = new System.Windows.Forms.Button();
             this.lblLibVersion = new System.Windows.Forms.Label();
             this.lblRanTests = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@
             this.tabStructureViewer = new System.Windows.Forms.TabPage();
             this.tabPlayer = new System.Windows.Forms.TabPage();
             this.pbar = new AdvLib.TestApp.UnitTestProgressBar();
-            this.cbxCopyToClipboard = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxPixelValue)).BeginInit();
@@ -313,6 +313,18 @@
             this.tabRecorder.Text = "Recorder";
             this.tabRecorder.UseVisualStyleBackColor = true;
             // 
+            // cbxCopyToClipboard
+            // 
+            this.cbxCopyToClipboard.AutoSize = true;
+            this.cbxCopyToClipboard.Checked = true;
+            this.cbxCopyToClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxCopyToClipboard.Location = new System.Drawing.Point(16, 340);
+            this.cbxCopyToClipboard.Name = "cbxCopyToClipboard";
+            this.cbxCopyToClipboard.Size = new System.Drawing.Size(147, 17);
+            this.cbxCopyToClipboard.TabIndex = 20;
+            this.cbxCopyToClipboard.Text = "Copy Results to Clipboard";
+            this.cbxCopyToClipboard.UseVisualStyleBackColor = true;
+            // 
             // btnGenSpecExample
             // 
             this.btnGenSpecExample.Location = new System.Drawing.Point(387, 244);
@@ -419,18 +431,6 @@
             this.pbar.Size = new System.Drawing.Size(372, 23);
             this.pbar.TabIndex = 16;
             this.pbar.Visible = false;
-            // 
-            // cbxCopyToClipboard
-            // 
-            this.cbxCopyToClipboard.AutoSize = true;
-            this.cbxCopyToClipboard.Checked = true;
-            this.cbxCopyToClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbxCopyToClipboard.Location = new System.Drawing.Point(16, 340);
-            this.cbxCopyToClipboard.Name = "cbxCopyToClipboard";
-            this.cbxCopyToClipboard.Size = new System.Drawing.Size(147, 17);
-            this.cbxCopyToClipboard.TabIndex = 20;
-            this.cbxCopyToClipboard.Text = "Copy Results to Clipboard";
-            this.cbxCopyToClipboard.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 

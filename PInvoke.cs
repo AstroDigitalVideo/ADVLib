@@ -81,6 +81,14 @@ namespace Adv
         public int ErrorStatusTagId;
     };
 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct AdvIndexEntry
+    {
+        public long ElapsedTicks;
+        public long FrameOffset;
+        public int BytesCount;
+    }
+
     public class AdvFrameInfo : AdvFrameInfoNative
     {
         public Dictionary<string, object> Status = new Dictionary<string, object>();
@@ -557,6 +565,10 @@ namespace Adv
         //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
         private static extern int AdvVer2_GetImageLayoutInfo32(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
 
+        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetIndexEntries")]
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetIndexEntries(AdvLib2::AdvIndexEntry* mainIndex, AdvLib2::AdvIndexEntry* calibrationIndex)
+        private static extern int AdvVer2_GetIndexEntries32([In, Out] AdvIndexEntry[] mainIndex, [In, Out] AdvIndexEntry[] calibrationIndex);
+
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetLastSystemSpecificFileError")]       
         //DLL_PUBLIC int AdvVer2_GetLastSystemSpecificFileError();
         private static extern int AdvVer2_GetLastSystemSpecificFileError32();
@@ -813,6 +825,10 @@ namespace Adv
         //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
         private static extern int AdvVer2_GetImageLayoutInfo64(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
 
+        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetIndexEntries")]
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetIndexEntries(AdvLib2::AdvIndexEntry* mainIndex, AdvLib2::AdvIndexEntry* calibrationIndex)
+        private static extern int AdvVer2_GetIndexEntries64([In, Out] AdvIndexEntry[] mainIndex, [In, Out] AdvIndexEntry[] calibrationIndex);
+
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetLastSystemSpecificFileError")]
         //DLL_PUBLIC int AdvVer2_GetLastSystemSpecificFileError();
         private static extern int AdvVer2_GetLastSystemSpecificFileError64();
@@ -1068,6 +1084,10 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetImageLayoutInfo")]
         //DLL_PUBLIC ADVRESULT AdvVer2_GetImageLayoutInfo(int layoutIndex, AdvLib2::AdvImageLayoutInfo* imageLayoutInfo);
         private static extern int AdvVer2_GetImageLayoutInfoUnix(int layoutIndex, ref AdvImageLayoutInfo imageLayoutInfo);
+
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetIndexEntries")]
+        //DLL_PUBLIC ADVRESULT AdvVer2_GetIndexEntries(AdvLib2::AdvIndexEntry* mainIndex, AdvLib2::AdvIndexEntry* calibrationIndex)
+        private static extern int AdvVer2_GetIndexEntriesUnix([In, Out] AdvIndexEntry[] mainIndex, [In, Out] AdvIndexEntry[] calibrationIndex);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetLastSystemSpecificFileError")]
         //DLL_PUBLIC int AdvVer2_GetLastSystemSpecificFileError();
@@ -1936,6 +1956,24 @@ namespace Adv
             }
 
             return AdvError.S_OK;
+        }
+
+        public static int GetIndexEntries(int mainFramesCount, int calibrationFramesCount, out AdvIndexEntry[] mainIndex, out AdvIndexEntry[] calibrationIndex)
+        {
+            mainIndex = new AdvIndexEntry[mainFramesCount];
+            for (int i = 0; i < mainFramesCount; i++)
+                mainIndex[i] = new AdvIndexEntry();
+                
+            calibrationIndex = new AdvIndexEntry[calibrationFramesCount];
+            for (int i = 0; i < calibrationFramesCount; i++)
+                calibrationIndex[i] = new AdvIndexEntry();
+
+            if (!CrossPlatform.IsWindows)
+                return AdvVer2_GetIndexEntriesUnix(mainIndex, calibrationIndex);
+            else if (Is64Bit())
+                return AdvVer2_GetIndexEntries64(mainIndex, calibrationIndex);
+            else
+                return AdvVer2_GetIndexEntries32(mainIndex, calibrationIndex);            
         }
 
         public static int GetLastSystemSpecificFileError()
