@@ -254,6 +254,7 @@ namespace AdvLib.Tests.Generators
             Adv.AdvLib.AddOrUpdateUserTag("Example", "Value");
 
             Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
+            Adv.AdvLib.EndFrame();
             Adv.AdvLib.EndFile();
             
         }

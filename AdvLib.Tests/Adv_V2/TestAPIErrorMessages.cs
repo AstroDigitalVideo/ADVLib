@@ -331,7 +331,9 @@ namespace AdvLib.Tests.Adv_V2
             Assert.AreEqual(Adv2TagType.UTF8String, tagType);
             Assert.AreEqual("UTF8String-2", tagName);
 
-            Adv.AdvLib.GetFramePixels(0, 0, 640, 480);
+            AdvFrameInfo frameInfo;
+            uint[] outPix;
+            AdvError.Check(Adv.AdvLib.GetFramePixels(0, 0, 640, 480, out frameInfo, out outPix));
 
             errorCode = Adv.AdvLib.GetStatusTagUInt8(idx1, out val8);
             Assert.AreEqual(AdvError.S_OK, errorCode);

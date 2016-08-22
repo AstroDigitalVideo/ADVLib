@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -49,6 +50,9 @@ namespace Adv
         public const int E_ADV_INVALID_IMAGE_LAYOUT_TYPE                        = unchecked((int)0x81001011);
         public const int E_ADV_INVALID_IMAGE_LAYOUT_COMPRESSION                 = unchecked((int)0x81001012);
         public const int E_ADV_INVALID_IMAGE_LAYOUT_BPP                         = unchecked((int)0x81001013);
+        public const int E_ADV_FRAME_MISSING_FROM_INDEX                         = unchecked((int)0x81001014);
+        public const int E_ADV_FRAME_CORRUPTED                                  = unchecked((int)0x81001015);
+        public const int E_ADV_FILE_NOT_OPEN                                    = unchecked((int)0x81001016);
 
         public const int S_OK                                                   = 0;
         public const int S_ADV_TAG_REPLACED                                     = 0x71000001;
@@ -176,6 +180,12 @@ namespace Adv
                     return "Invalid Image Layout compression. Accepted values are UNCOMPRESSED, LAGARITH16 and QUICKLZ.";
                case E_ADV_INVALID_IMAGE_LAYOUT_BPP:
                     return "Invalid Image Layout bits per pixel value. Accepted range is from 1 to 32.";
+                case E_ADV_FRAME_MISSING_FROM_INDEX:
+                    return "The requested frame cannot be located in the index. The file may be have been corrupted. Try rebuilding it.";
+                case E_ADV_FRAME_CORRUPTED:
+                    return "The frame binary data appears to be corrupted.";
+                case E_ADV_FILE_NOT_OPEN:
+                    return "File system file is not open.";
 
                case E_FAIL:
                     return "Error.";

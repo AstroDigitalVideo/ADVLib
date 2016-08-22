@@ -10,6 +10,7 @@ using Adv;
 using AdvLib.Tests.Generators;
 using AdvLib.Tests.Util;
 using NUnit.Framework;
+using AdvLib = Adv.AdvLib;
 
 namespace AdvLib.Tests.Adv_V2
 {
