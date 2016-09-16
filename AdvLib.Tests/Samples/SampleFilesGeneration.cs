@@ -16,13 +16,13 @@ namespace Samples
         private string fileName;
 
         [SetUp]
-        private void Setup()
+        public void Setup()
         {
             fileName = Path.GetTempFileName();
         }
 
         [TearDown]
-        private void TearDown()
+        public void TearDown()
         {
             if (File.Exists(fileName))
                 File.Delete(fileName);
@@ -43,6 +43,7 @@ namespace Samples
             AdvError.Check(Adv.AdvLib.NewFile(fileName));
             AdvError.Check(Adv.AdvLib.AddOrUpdateFileTag("FSTF-TYPE", "ADV"));
             AdvError.Check(Adv.AdvLib.AddOrUpdateFileTag("ADV-VERSION", "2"));
+            AdvError.Check(Adv.AdvLib.AddOrUpdateFileTag("OBJNAME", "Sample Generated Object"));
             AdvError.Check(Adv.AdvLib.DefineImageSection(WIDTH, HEIGHT, 16));
             AdvError.Check(Adv.AdvLib.DefineImageLayout(IMAGE_LAYOUT_ID, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16));
             AdvError.Check(Adv.AdvLib.DefineStatusSection(1 * MILLI_TO_NANO /* 1ms */));

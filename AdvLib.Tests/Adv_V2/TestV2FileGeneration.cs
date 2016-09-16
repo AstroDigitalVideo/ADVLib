@@ -476,16 +476,16 @@ namespace AdvLib.Tests.Adv_V2
 
 
 		[Test]
-		[TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Uncompressed, "0D84C84AA463630603707CDA4523F4C6")]
-		[TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.QuickLZ, "0C4EC5D518D85CEBB2FF5C8A133F131E")]
-		[TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Uncompressed, "0D84C84AA463630603707CDA4523F4C6")]
-		[TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.QuickLZ, "0C4EC5D518D85CEBB2FF5C8A133F131E")]
-		[TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.Uncompressed, "881D22CD0C836D8AE04ECFBFC3BC904A")]
-		[TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.QuickLZ, "BA49B36DD5A49F22933FD8403D36FFB5")]
-		[TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Uncompressed, "564D184F2FE38268C0B044695F7A57FE")]
-		[TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.QuickLZ, "9442BFC815E41B9AC3D790BB323636E9")]
-		[TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Uncompressed, "864750F8D86DB745BAF791B0BE4B7478")]
-		[TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.QuickLZ, "F329344DAFC35C37E9500C44C901301D")]
+        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Uncompressed, "D450D3A66B915430031ABC5E7618B060")]
+        [TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.QuickLZ, "A8739B5F89D078AD4D15B285FEE0E4C4")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.Uncompressed, "D450D3A66B915430031ABC5E7618B060")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 16, CompressionType.QuickLZ, "A8739B5F89D078AD4D15B285FEE0E4C4")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.Uncompressed, "C9354A7E1543A3727DC76112E0231581")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 12, CompressionType.QuickLZ, "0CDB68FEE3FEEFF5EF180FD64B8BFA40")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.Uncompressed, "94EA4FC79D196B98CBA19CA6EAC6A7B7")]
+        [TestCase(AdvSourceDataFormat.Format16BitUShort, 8, CompressionType.QuickLZ, "20F6084BE0750090B77AC9430393CE1A")]
+        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.Uncompressed, "922BC97A409C57D38B6E134AC6D21875")]
+        [TestCase(AdvSourceDataFormat.Format8BitByte, 8, CompressionType.QuickLZ, "7F16F7373F69BA58F76526130D902608")]
 /* Lagarith16 produces different hashes at different times so the hash level check has been removed
  * Lagarith16 is still tested at pixel level to ensure decompression produces exactly the originally compressed pixels
 		[TestCase(AdvSourceDataFormat.Format16BitLittleEndianByte, 16, CompressionType.Lagarith16, "2B137AE29578EF9803FD941DDA5BCF90")]
@@ -527,6 +527,54 @@ namespace AdvLib.Tests.Adv_V2
                     Trace.WriteLine(ex);
                 }
             }            
+        }
+
+        [Test]
+        public void TestReadingFileWithErrorMessageInTheStatusChannel()
+        {
+            var fileGen = new AdvGenerator();
+            var cfg = new AdvGenerationConfig()
+            {
+                DynaBits = 16,
+                SourceFormat = AdvSourceDataFormat.Format16BitUShort,
+                NumberOfFrames = 1,
+                Compression = CompressionType.Uncompressed,
+                NormalPixelValue = null,
+                SystemErrorsCallback = delegate(int id) { return "Sample Error Message"; }
+            };
+
+            string fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+            if (File.Exists(fileName)) File.Delete(fileName);
+            AdvFile2 file = null;
+            try
+            {
+                // Generate
+                fileGen.GenerateaAdv_V2(cfg, fileName);
+
+                // Verify
+                using (file = new AdvFile2(fileName))
+                {
+                    uint[] pixels = file.GetMainFramePixels(0);
+
+                    var imageGenerator = new ImageGenerator();
+                    var verified = imageGenerator.VerifyImagePattern1UInt32(pixels, cfg.DynaBits);
+                    Assert.IsTrue(verified);
+                }
+            }
+            finally
+            {
+                try
+                {
+                    if (file != null) file.Close();
+                    if (File.Exists(fileName))
+                        File.Delete(fileName);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    Trace.WriteLine(ex);
+                }
+            }
         }
     }
 }

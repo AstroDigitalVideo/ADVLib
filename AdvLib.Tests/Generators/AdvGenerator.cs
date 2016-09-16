@@ -23,6 +23,8 @@ namespace AdvLib.Tests.Generators
 
     public delegate float GetCurrentImageGainCallback(int frameId);
 
+    public delegate string GetCurrentSystemErrorsCallback(int frameId);
+
     public delegate string[] GetCurrentExampleMassagesCallback(int frameId);
 
     public delegate uint GetCurrentExampleCustomGainCallback(int frameId);
@@ -58,6 +60,7 @@ namespace AdvLib.Tests.Generators
         public GetCurrentImageTimeStampCallback TimeStampCallback;
         public GetCurrentImageGammaCallback GammaCallback;
         public GetCurrentImageGainCallback GainCallback;
+        public GetCurrentSystemErrorsCallback SystemErrorsCallback;
 
         public CustomClockConfig MainStreamCustomClock;
         public CustomClockConfig CalibrationStreamCustomClock;
@@ -83,6 +86,10 @@ namespace AdvLib.Tests.Generators
             recorder.FileMetaData.CameraModel = "Flea3 FL3-FW-03S3M";
             recorder.FileMetaData.CameraSensorInfo = "Sony ICX414AL (1/2\" 648x488 CCD)";
 
+            recorder.FileMetaData.ObjectName = "Generated File Object";
+            recorder.FileMetaData.Telescope = "Generated File Telescope";
+            recorder.FileMetaData.Observer = "Generated File Observer";
+
             if (config.SaveLocationData)
             {
                 recorder.LocationData.SetLocation(
@@ -97,6 +104,7 @@ namespace AdvLib.Tests.Generators
             // can also define additional status parameters to be recorded with each video frame
             recorder.StatusSectionConfig.RecordGain = true;
             recorder.StatusSectionConfig.RecordGamma = true;
+            recorder.StatusSectionConfig.RecordSystemErrors = true;
 
             if (config.MainStreamCustomClock != null)
                 recorder.DefineCustomClock(AdvRecorder.AdvStream.MainStream, config.MainStreamCustomClock.ClockFrequency, config.MainStreamCustomClock.TicksTimingAccuracy, config.MainStreamCustomClock.ClockTicksCallback);
@@ -141,6 +149,7 @@ namespace AdvLib.Tests.Generators
 
                 status.Gain = config.GainCallback != null ? config.GainCallback(i) : 0;
                 status.Gamma = config.GammaCallback != null ? config.GammaCallback(i) : 0;
+                status.SystemErrors = config.SystemErrorsCallback != null ? config.SystemErrorsCallback(i) : null;
                 if (config.SaveCustomStatusSectionTags)
                 {
                     status.AdditionalStatusTags = new object[]

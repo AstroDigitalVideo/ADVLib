@@ -106,6 +106,7 @@ namespace AdvLibTestApp
             config.TimeStampCallback = GetCurrentImageTimeStamp;
             config.GainCallback = GetCurrentImageGain;
             config.GammaCallback = GetCurrentImageGamma;
+		    config.SystemErrorsCallback = GetCurrentSystemErrors;
             config.MainStreamMetadata.Add("Name1", "Христо");
             config.MainStreamMetadata.Add("Name2", "Frédéric");
             config.MainStreamMetadata.Add("Name3", "好的茶");
@@ -297,6 +298,14 @@ namespace AdvLibTestApp
 			// TODO: In this file conversion example, return the number of images to be recorded
 			return 10;
 		}
+
+        private string GetCurrentSystemErrors(int frameId)
+        {
+            if (frameId % 2 == 1)
+                return "Odd Frames Sample Error Message";
+            else
+                return null;
+        }
 
 		private uint GetCurrentImageExposure(int frameId)
 		{

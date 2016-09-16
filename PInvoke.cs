@@ -515,7 +515,7 @@ namespace Adv
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
-        private static extern int AdvVer2_GetFramePixels32(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] int systemErrorLen);
+        private static extern int AdvVer2_GetFramePixels32(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, ref int systemErrorLen);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
         //ADVRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
@@ -775,7 +775,7 @@ namespace Adv
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
-        private static extern int AdvVer2_GetFramePixels64(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] int systemErrorLen);
+        private static extern int AdvVer2_GetFramePixels64(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, ref int systemErrorLen);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
         //ADVRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
@@ -1035,7 +1035,7 @@ namespace Adv
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
-        private static extern int AdvVer2_GetFramePixelsUnix(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, [In, Out] int systemErrorLen);
+        private static extern int AdvVer2_GetFramePixelsUnix(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, ref int systemErrorLen);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
         //ADVRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
@@ -1680,11 +1680,11 @@ namespace Adv
             int errorMessageLen = 0;
             int errorCode = -1;
             if (!CrossPlatform.IsWindows)
-                errorCode = AdvVer2_GetFramePixelsUnix(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
+                errorCode = AdvVer2_GetFramePixelsUnix(streamId, frameNo, pixels, frameInfoNative, ref errorMessageLen);
             else if (Is64Bit())
-                errorCode = AdvVer2_GetFramePixels64(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
+                errorCode = AdvVer2_GetFramePixels64(streamId, frameNo, pixels, frameInfoNative, ref errorMessageLen);
             else
-                errorCode = AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfoNative, errorMessageLen);
+                errorCode = AdvVer2_GetFramePixels32(streamId, frameNo, pixels, frameInfoNative, ref errorMessageLen);
 
             if (errorCode != AdvError.S_OK)
             {

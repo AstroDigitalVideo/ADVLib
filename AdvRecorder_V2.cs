@@ -291,6 +291,18 @@ namespace Adv
             public string CameraModel { get; set; }
             public string CameraSensorInfo { get; set; }
 
+            public string Author { get; set; }
+            public string Comment { get; set; }
+            public string ObjectName { get; set; }
+            public string Telescope { get; set; }
+            public string Observer { get; set; }
+            public string Instrument { get; set; }
+
+            public double? RAHours { get; set; }
+            public double? DEDeg { get; set; }
+            public double? Epoch { get; set; }
+            public double? Equinox { get; set; }
+
             public int BinningX { get; set; }
             public int BinningY { get; set; }
 
@@ -466,6 +478,18 @@ namespace Adv
 
             if (!string.IsNullOrEmpty(FileMetaData.CameraModel)) AdvLib.AddOrUpdateFileTag("CAMERA-MODEL", FileMetaData.CameraModel);
             if (!string.IsNullOrEmpty(FileMetaData.CameraSensorInfo)) AdvLib.AddOrUpdateFileTag("CAMERA-SENSOR-INFO", FileMetaData.CameraSensorInfo);
+
+            if (!string.IsNullOrEmpty(FileMetaData.Author)) AdvLib.AddOrUpdateFileTag("AUTHOR", FileMetaData.Author);
+            if (!string.IsNullOrEmpty(FileMetaData.Comment)) AdvLib.AddOrUpdateFileTag("COMMENT", FileMetaData.Comment);
+            if (!string.IsNullOrEmpty(FileMetaData.ObjectName)) AdvLib.AddOrUpdateFileTag("OBJNAME", FileMetaData.ObjectName);
+            if (!string.IsNullOrEmpty(FileMetaData.Telescope)) AdvLib.AddOrUpdateFileTag("TELESCOPE", FileMetaData.Telescope);
+            if (!string.IsNullOrEmpty(FileMetaData.Observer)) AdvLib.AddOrUpdateFileTag("OBSERVER", FileMetaData.Observer);
+            if (!string.IsNullOrEmpty(FileMetaData.Instrument)) AdvLib.AddOrUpdateFileTag("INSTRUMENT", FileMetaData.Instrument);
+
+            if (FileMetaData.RAHours.HasValue) AdvLib.AddOrUpdateFileTag("RA", FileMetaData.RAHours.Value.ToString(CultureInfo.InvariantCulture));
+            if (FileMetaData.DEDeg.HasValue) AdvLib.AddOrUpdateFileTag("DEC", FileMetaData.DEDeg.Value.ToString(CultureInfo.InvariantCulture));
+            if (FileMetaData.Epoch.HasValue) AdvLib.AddOrUpdateFileTag("EPOCH", FileMetaData.Epoch.Value.ToString(CultureInfo.InvariantCulture));
+            if (FileMetaData.Equinox.HasValue) AdvLib.AddOrUpdateFileTag("EQUINOX", FileMetaData.Equinox.Value.ToString(CultureInfo.InvariantCulture));
 
             if (FileMetaData.BinningX > 0) AdvLib.AddOrUpdateFileTag("BINNING-X", FileMetaData.BinningX.ToString(CultureInfo.InvariantCulture));
             if (FileMetaData.BinningY > 0) AdvLib.AddOrUpdateFileTag("BINNING-Y", FileMetaData.BinningY.ToString(CultureInfo.InvariantCulture));
