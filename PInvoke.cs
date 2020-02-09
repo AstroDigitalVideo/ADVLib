@@ -106,8 +106,8 @@ namespace Adv
             EndTicksLo = native.EndTicksLo;
             EndTicksHi = native.EndTicksHi;
 
-            UtcTimestampLo = native.UtcTimestampLo;
-            UtcTimestampHi = native.UtcTimestampHi;
+            UtcMidExposureTimestampLo = native.UtcMidExposureTimestampLo;
+            UtcMidExposureTimestampHi = native.UtcMidExposureTimestampHi;
             Exposure = native.Exposure;
 
             Gamma = native.Gamma;
@@ -144,17 +144,17 @@ namespace Adv
 
         public bool HasUtcTimeStamp
         {
-            get { return UtcTimestampLo != 0 && UtcTimestampHi != 0; }
+            get { return UtcMidExposureTimestampLo != 0 && UtcMidExposureTimestampHi != 0; }
         }
 
         public DateTime UtcStartExposureTimeStamp
         {
             get
             {
-                ulong nanosecondsElapsed = (((ulong)UtcTimestampHi) << 32) + (ulong)UtcTimestampLo;
+                ulong nanosecondsElapsedToMidExposure = (((ulong)UtcMidExposureTimestampHi) << 32) + (ulong)UtcMidExposureTimestampLo;
                 try
                 {
-                    return new DateTime(REFERENCE_DATETIME.Ticks + (long)(nanosecondsElapsed / 100)).AddMilliseconds(-0.5 * UtcExposureMilliseconds);
+                    return new DateTime(REFERENCE_DATETIME.Ticks + (long)(nanosecondsElapsedToMidExposure / 100)).AddMilliseconds(-0.5 * UtcExposureMilliseconds);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -167,10 +167,10 @@ namespace Adv
         {
             get
             {
-                ulong nanosecondsElapsed = (((ulong)UtcTimestampHi) << 32) + (ulong)UtcTimestampLo;
+                ulong nanosecondsElapsedToMidExposure = (((ulong)UtcMidExposureTimestampHi) << 32) + (ulong)UtcMidExposureTimestampLo;
                 try
                 {
-                    return new DateTime(REFERENCE_DATETIME.Ticks + (long)(nanosecondsElapsed / 100));
+                    return new DateTime(REFERENCE_DATETIME.Ticks + (long)(nanosecondsElapsedToMidExposure / 100));
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -223,8 +223,8 @@ namespace Adv
             EndTicksLo = 0;
             EndTicksHi = 0;
 
-            UtcTimestampLo = 0;
-            UtcTimestampHi = 0;
+            UtcMidExposureTimestampLo = 0;
+            UtcMidExposureTimestampHi = 0;
             Exposure = 0;
 
             Gamma = 0f;
@@ -258,9 +258,9 @@ namespace Adv
         [FieldOffset(12)]
         public uint EndTicksHi;
         [FieldOffset(16)]
-        public uint UtcTimestampLo;
+        public uint UtcMidExposureTimestampLo;
         [FieldOffset(20)]
-        public uint UtcTimestampHi;
+        public uint UtcMidExposureTimestampHi;
         [FieldOffset(24)]
         public uint Exposure;
         [FieldOffset(28)]
