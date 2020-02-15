@@ -54,6 +54,17 @@ namespace Adv
         public const int E_ADV_FRAME_CORRUPTED                                  = unchecked((int)0x81001015);
         public const int E_ADV_FILE_NOT_OPEN                                    = unchecked((int)0x81001016);
 
+        public const int E_ADV_NOT_AN_ADV_FILE                                  = unchecked((int)0x81002001);
+        public const int E_ADV_VERSION_NOT_SUPPORTED                            = unchecked((int)0x81002002);
+        public const int E_ADV_NO_MAIN_STREAM                                   = unchecked((int)0x81002003);
+        public const int E_ADV_NO_CALIBRATION_STREAM                            = unchecked((int)0x81002004);
+        public const int E_ADV_TWO_SECTIONS_EXPECTED                            = unchecked((int)0x81002005);
+        public const int E_ADV_NO_IMAGE_SECTION                                 = unchecked((int)0x81002006);
+        public const int E_ADV_NO_STATUS_SECTION                                = unchecked((int)0x81002007);
+        public const int E_ADV_IMAGE_SECTION_VERSION_NOT_SUPPORTED              = unchecked((int)0x81002008);
+        public const int E_ADV_IMAGE_LAYOUT_VERSION_NOT_SUPPORTED               = unchecked((int)0x81002009);
+        public const int E_ADV_STATUS_SECTION_VERSION_NOT_SUPPORTED             = unchecked((int)0x8100200A);
+
         public const int S_OK                                                   = 0;
         public const int S_ADV_TAG_REPLACED                                     = 0x71000001;
 
@@ -65,14 +76,7 @@ namespace Adv
         {
             if (errorCode < 0)
             {
-                string errorMessage;
-                if (errorCode == E_ADV_IO_ERROR)
-                {
-                    int systemErrorCode = AdvLib.GetLastSystemSpecificFileError();
-                    errorMessage = string.Format("I/O Error {0}.", systemErrorCode);
-                }
-                else
-                    errorMessage = string.Format("Error {0}. {1}", errorCode, ResolveErrorMessage(errorCode));
+                var errorMessage = ResolveErrorMessage(errorCode);
 
                 RaiseError(new StackFrame(1).ToString() + "\r\n" + errorMessage);
 
@@ -138,7 +142,23 @@ namespace Adv
             }
         }
 
-        private static string ResolveErrorMessage(int errorCode)
+        public static string ResolveErrorMessage(int errorCode)
+        {
+            if (errorCode == E_ADV_IO_ERROR)
+            {
+                int systemErrorCode = AdvLib.GetLastSystemSpecificFileError();
+                return string.Format("I/O Error {0}.", systemErrorCode);
+            }
+            else
+            {
+                if (errorCode < 0)
+                    return string.Format("Error 0x{0}. {1}", Convert.ToString(errorCode, 16).PadLeft(8, '0'), ResolveCoreCodeMessage(errorCode));
+                else
+                    return ResolveCoreCodeMessage(errorCode);
+            }
+        }
+
+        private static string ResolveCoreCodeMessage(int errorCode)
         {
             switch (errorCode)
             {
@@ -187,6 +207,27 @@ namespace Adv
                 case E_ADV_FILE_NOT_OPEN:
                     return "File system file is not open.";
 
+                case E_ADV_NOT_AN_ADV_FILE:
+                    return "This is not a valid ADV file.";
+                case E_ADV_VERSION_NOT_SUPPORTED:
+                    return "ADV version not supported.";
+                case E_ADV_NO_MAIN_STREAM:
+                    return "'MAIN' stream is missing.";
+                case E_ADV_NO_CALIBRATION_STREAM:
+                    return "'CALIBRATION' stream is missing.";
+                case E_ADV_TWO_SECTIONS_EXPECTED:
+                    return "ADV files must have two sections.";
+                case E_ADV_NO_IMAGE_SECTION:
+                    return "First section must be 'IMAGE'.";
+                case E_ADV_NO_STATUS_SECTION:
+                    return "Second section must be 'STATUS'.";
+                case E_ADV_IMAGE_SECTION_VERSION_NOT_SUPPORTED:
+                    return "'IMAGE' section version is not supported.";
+                case E_ADV_IMAGE_LAYOUT_VERSION_NOT_SUPPORTED:
+                    return "Image Layout version is not supported.";
+                case E_ADV_STATUS_SECTION_VERSION_NOT_SUPPORTED:
+                    return "'STATUS' section version is not supported.";
+
                case E_FAIL:
                     return "Error.";
                case E_NOTIMPL:
@@ -194,7 +235,7 @@ namespace Adv
 
 
                case S_OK:
-                    return "Success.";                          
+                    return "Success.";
                case S_ADV_TAG_REPLACED:
                     return "An existing tag with the same name has been replaced."; 
 

@@ -496,5 +496,185 @@ namespace AdvLibTestApp
                 Trace.WriteLine(loadedFile.Width);
             }
         }
+
+	    private AdvFile2 loadedFile;
+
+        private void btnOpenFile_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog2.ShowDialog(this) == DialogResult.OK)
+            {
+                if (loadedFile != null)
+                {
+                    loadedFile.Dispose();
+                    loadedFile = null;
+                }
+                loadedFile = new AdvFile2(openFileDialog2.FileName);
+                tbxFileName.Text = openFileDialog2.FileName;
+                lblWidth.Text = loadedFile.Width.ToString();
+                lblHeight.Text = loadedFile.Height.ToString();
+                lblBPP.Text = string.Format("{0} bit, {1}", loadedFile.DataBpp, loadedFile.IsColourImage ? "Colour" : "Monochrome");
+                lblMaxPixelValue.Text = loadedFile.MaxPixelValue.ToString();
+                lblUtcAccuracy.Text = GetUtcAccuracy(loadedFile.UtcTimestampAccuracyInNanoseconds);
+
+                lblMainFrames.Text = loadedFile.MainSteamInfo.FrameCount.ToString();
+                lblMainClockFreq.Text = string.Format("{0} Hz", loadedFile.MainSteamInfo.ClockFrequency);
+                lblMainFrameTSAccu.Text = GetFrameTimeStampAccuracy(loadedFile.MainSteamInfo.TimingAccuracy * 1.0 / loadedFile.MainSteamInfo.ClockFrequency, loadedFile.MainSteamInfo.TimingAccuracy);
+                LoadMetadata(lvMainStream, loadedFile.MainSteamInfo.MetadataTags);
+
+                lblCalibFrames.Text = loadedFile.CalibrationSteamInfo.FrameCount.ToString();
+                lblCalibClockFreq.Text = string.Format("{0} Hz", loadedFile.CalibrationSteamInfo.ClockFrequency);
+                lblCalibFrameTSAccu.Text = GetFrameTimeStampAccuracy(loadedFile.CalibrationSteamInfo.TimingAccuracy * 1.0 / loadedFile.CalibrationSteamInfo.ClockFrequency, loadedFile.MainSteamInfo.TimingAccuracy);
+                LoadMetadata(lvCalibStream, loadedFile.CalibrationSteamInfo.MetadataTags);
+
+                LoadMetadata(lvImageSectionTags, loadedFile.ImageSectionTags);
+                lblCountLayouts.Text = loadedFile.ImageLayouts.Count.ToString();
+                lvImageLayoutTags.Tag = loadedFile.ImageLayouts;
+                LoadImageLayoutTags(loadedFile.ImageLayouts.Count - 1);
+
+                LoadStatusTags(loadedFile.StatusTagDefinitions);
+
+                LoadMetadata(lvSystemMedata, loadedFile.SystemMetadataTags);
+                LoadMetadata(lvUserMetadata, loadedFile.UserMetadataTags);
+
+                if (loadedFile.MainSteamInfo.FrameCount > 0)
+                {
+                    // Make sure we can read a frame, if any
+                    AdvFrameInfo frameInfo;
+                    loadedFile.GetMainFramePixels(0, out frameInfo);
+                }
+
+                if (loadedFile.MainIndex.Count > 0)
+                {
+                    var sb = new StringBuilder();
+                    sb.AppendFormat("FrameOffset\t\tBytesCount\tElapsedTicks\r\n");
+                    foreach (var ie in loadedFile.MainIndex)
+                    {
+                        sb.AppendFormat("0x{0}\t0x{1}\t{2}\r\n",
+                            Convert.ToString(ie.FrameOffset, 16).PadLeft(16, '0'),
+                            Convert.ToString(ie.BytesCount, 16).PadLeft(8, '0'), ie.ElapsedTicks);
+                    }
+                    tbxMainIndex.Text = sb.ToString();
+                }
+
+                if (loadedFile.CalibrationIndex.Count > 0)
+                {
+                    var sb = new StringBuilder();
+                    sb.AppendFormat("FrameOffset\t\tBytesCount\tElapsedTicks\r\n");
+                    foreach (var ie in loadedFile.CalibrationIndex)
+                    {
+                        sb.AppendFormat("0x{0}\t0x{1}\t{2}\r\n", Convert.ToString(ie.FrameOffset, 16).PadLeft(16, '0'), Convert.ToString(ie.BytesCount, 16).PadLeft(8, '0'), ie.ElapsedTicks);
+                    }
+                    tbxCalibIndex.Text = sb.ToString();
+                }
+            }
+        }
+
+	    private int currLayoutId;
+
+	    private void LoadImageLayoutTags(int imageLayoutId)
+	    {
+	        var layoutData = lvImageLayoutTags.Tag as List<ImageLayoutDefinition>;
+            lvImageLayoutTags.Items.Clear();
+	        lblImageLayoutId.Text = "";
+            lblImageLayoutBPP.Text = "";
+
+	        if (layoutData != null)
+	        {
+	            currLayoutId = imageLayoutId;
+	            if (currLayoutId >= 0 && currLayoutId < layoutData.Count)
+	            {
+                    lblImageLayoutId.Text = layoutData[currLayoutId].LayoutId.ToString();
+                    lblImageLayoutBPP.Text = string.Format("{0} bit", layoutData[currLayoutId].Bpp);
+	                LoadMetadata(lvImageLayoutTags, layoutData[currLayoutId].ImageLayoutTags);
+	            }
+
+                btnPrevLayout.Enabled = currLayoutId > 0;
+                btnNextLayout.Enabled = currLayoutId < layoutData.Count -1;
+	        }
+	        else
+	        {
+	            btnPrevLayout.Enabled = false;
+                btnNextLayout.Enabled = false;
+	        }
+	    }
+
+        private void btnPrevLayout_Click(object sender, EventArgs e)
+        {
+            LoadImageLayoutTags(Math.Max(0, currLayoutId - 1));
+        }
+
+        private void btnNextLayout_Click(object sender, EventArgs e)
+        {
+            var layoutData = lvImageLayoutTags.Tag as List<ImageLayoutDefinition>;
+            if (layoutData != null)
+            {
+                LoadImageLayoutTags(Math.Min(layoutData.Count - 1, currLayoutId + 1));
+            }
+        }
+
+	    private void LoadMetadata(ListView lv, Dictionary<string, string> data)
+	    {
+            lv.Items.Clear();
+
+	        foreach (var entry in data)
+	        {
+	            var itm = lv.Items.Add(entry.Key);
+	            itm.SubItems.Add(entry.Value);
+	        }
+	    }
+
+        private void LoadStatusTags(List<Tuple<string, uint, Adv2TagType>> data)
+        {
+            lvlStatusTags.Items.Clear();
+
+            foreach (var entry in data)
+            {
+                var itm = lvlStatusTags.Items.Add(entry.Item1);
+                itm.SubItems.Add(entry.Item2.ToString());
+                itm.SubItems.Add(entry.Item3.ToString());
+            }
+        }
+
+	    private string GetUtcAccuracy(long nanoSecs)
+	    {
+            var secs = nanoSecs / 1e9;
+            if (secs >= 0.1)
+            {
+                return string.Format("{0} sec ({1})", secs.ToString("0.00").TrimEnd(new char[] { '0', '.' }), nanoSecs);
+            }
+	        var miliSecs = nanoSecs /1e6;
+	        if (miliSecs >= 0.01)
+	        {
+                return string.Format("{0} ms ({1})", miliSecs.ToString("0.00").TrimEnd(new char[] { '0', '.' }), nanoSecs);
+	        }
+            var microSec = nanoSecs / 1e3;
+            if (microSec >= 0.01)
+            {
+                return string.Format("{0} micro sec ({1})", microSec.ToString("0.00").TrimEnd(new char[] { '0', '.' }), nanoSecs);
+            }
+
+            return string.Format("{0} ns", nanoSecs);
+	    }
+
+	    private string GetFrameTimeStampAccuracy(double accuSec, int timeAccuTicks)
+	    {
+            if (accuSec >= 0.1)
+            {
+                return string.Format("{0} sec ({1})", accuSec.ToString("0.00").TrimEnd(new char[] { '0', '.' }), timeAccuTicks);
+            }
+            var miliSecs = accuSec * 1e3;
+            if (miliSecs >= 0.01)
+            {
+                return string.Format("{0} ms ({1})", miliSecs.ToString("0.00").TrimEnd(new char[] { '0', '.' }), timeAccuTicks);
+            }
+            var microSec = accuSec * 1e6;
+            if (microSec >= 0.01)
+            {
+                return string.Format("{0} micro sec ({1})", microSec.ToString("0.00").TrimEnd(new char[] { '0', '.' }), timeAccuTicks);
+            }
+
+            var nanoSec = accuSec * 1e9;
+            return string.Format("{0} ns ({1})", nanoSec.ToString("0.000000").TrimEnd(new char[] { '0', '.' }), timeAccuTicks);
+	    }
 	}
 }

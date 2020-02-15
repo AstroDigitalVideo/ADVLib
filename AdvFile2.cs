@@ -53,7 +53,7 @@ namespace Adv
             if (fileVersionOrErrorCode == 0)
                 throw new AdvLibException(string.Format("'{0}' is not an ADV file.", fileName));
             else if (fileVersionOrErrorCode < 0)
-                throw new AdvLibException(string.Format("There was an error opening '{0}'. Error code is: {1}", fileName, fileVersionOrErrorCode));
+                throw new AdvLibException(string.Format("There was an error opening '{0}'. {1}", fileName, AdvError.ResolveErrorMessage(fileVersionOrErrorCode)));
             else if (fileVersionOrErrorCode != 2)
                 throw new AdvLibException(string.Format("'{0}' is not an ADV version 2 file.", fileName));
 
