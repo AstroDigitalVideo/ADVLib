@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Net.Mime;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using Adv;
 
@@ -265,7 +269,121 @@ namespace AdvLib.Tests.Generators
             Adv.AdvLib.BeginFrame(0, 0, 0, 0, 0, 0);
             Adv.AdvLib.EndFrame();
             Adv.AdvLib.EndFile();
-            
         }
+
+        public void GenerateAllInOneTestFile(string fileName)
+        {
+            Adv.AdvLib.NewFile(fileName);
+
+            Adv.AdvLib.DefineExternalClockForMainStream(76900, 77);
+            Adv.AdvLib.DefineExternalClockForCalibrationStream(76900, 77);
+
+            Adv.AdvLib.AddOrUpdateMainStreamTag("Name1", "Христо");
+            Adv.AdvLib.AddOrUpdateMainStreamTag("Name2", "Frédéric");
+            Adv.AdvLib.AddOrUpdateCalibrationStreamTag("Name1", "好的茶");
+
+            Adv.AdvLib.DefineImageSection(12, 12, 12);
+            Adv.AdvLib.DefineStatusSection(5000000 /* 5ms */);
+            Adv.AdvLib.DefineImageLayout(0, "FULL-IMAGE-RAW", "UNCOMPRESSED", 16);
+            Adv.AdvLib.DefineImageLayout(1, "FULL-IMAGE-RAW", "LAGARITH16", 16);
+            Adv.AdvLib.DefineImageLayout(2, "FULL-IMAGE-RAW", "QUICKLZ", 16);
+            Adv.AdvLib.DefineImageLayout(3, "12BIT-IMAGE-PACKED", "UNCOMPRESSED", 12);
+            Adv.AdvLib.DefineImageLayout(4, "12BIT-IMAGE-PACKED", "LAGARITH16", 12);
+            Adv.AdvLib.DefineImageLayout(5, "12BIT-IMAGE-PACKED", "QUICKLZ", 12);
+
+            Adv.AdvLib.AddOrUpdateUserTag("Example", "Value");
+
+            DateTime simulatedStartTime = new DateTime(2020, 1, 2, 3, 4, 5);
+
+            for (int i = 0; i < 6; i++)
+            {
+                // Simulate 1 sec exposure
+                var time = simulatedStartTime.AddSeconds(i);
+
+                Adv.AdvLib.BeginFrame(0, 76900 * i, 76900 * (i + 1), 76900 * i, AdvTimeStamp.FromDateTime(time).NanosecondsAfterAdvZeroEpoch, MILLI_TO_NANO * 1000);
+                Adv.AdvLib.FrameAddImage((byte)i, GetImagePixels12X12(), 16);
+                Adv.AdvLib.EndFrame();
+            }
+
+            Adv.AdvLib.EndFile();
+        }
+
+        private const uint MILLI_TO_NANO = 1000000;
+
+        public ushort[] GetImagePixels11X11()
+        {
+            if (unitTestPatternImagePixels11x11 == null)
+            {
+                unitTestPatternImagePixels11x11 = new ushort[11 * 11];
+
+                var img = ReadUnitTestPatternImage11X11();
+                for (int y = 0; y < 11; y++)
+                {
+                    for (int x = 0; x < 11; x++)
+                    {
+                        var clr = img.GetPixel(x, y);
+                        if (clr.R + clr.G + clr.B == 0)
+                        {
+                            unitTestPatternImagePixels11x11[(y * 11) + x] = 0x00;
+                        }
+                        else
+                        {
+                            unitTestPatternImagePixels11x11[(y * 11) + x] = 0x0FFF;
+                        }
+                    }
+                }
+            }
+
+            return unitTestPatternImagePixels11x11;
+        }
+
+        public ushort[] GetImagePixels12X12()
+        {
+            if (unitTestPatternImagePixels12x12 == null)
+            {
+                unitTestPatternImagePixels12x12 = new ushort[12 * 12];
+
+                var img = ReadUnitTestPatternImage12X12();
+                for (int y = 0; y < 12; y++)
+                {
+                    for (int x = 0; x < 12; x++)
+                    {
+                        var clr = img.GetPixel(x, y);
+                        if (clr.R + clr.G + clr.B == 0)
+                        {
+                            unitTestPatternImagePixels12x12[(y * 12) + x] = 0x00;
+                        }
+                        else
+                        {
+                            unitTestPatternImagePixels12x12[(y * 12) + x] = 0x0FFF;
+                        }
+                    }
+                }
+            }
+
+            return unitTestPatternImagePixels12x12;
+        }
+
+        private static ushort[] unitTestPatternImagePixels11x11 = null;
+        private static ushort[] unitTestPatternImagePixels12x12 = null;
+
+        public static Bitmap ReadUnitTestPatternImage11X11()
+        {
+            var resourceName = Assembly.GetExecutingAssembly().GetManifestResourceNames().FirstOrDefault(x => x.Contains("UnitTestPattern.png"));
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            {
+                return new Bitmap(stream);
+            }
+        }
+
+        public static Bitmap ReadUnitTestPatternImage12X12()
+        {
+            var resourceName = Assembly.GetExecutingAssembly().GetManifestResourceNames().FirstOrDefault(x => x.Contains("UnitTestPattern12x12.png"));
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            {
+                return new Bitmap(stream);
+            }
+        }
+
     }
 }

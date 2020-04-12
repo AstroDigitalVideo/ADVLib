@@ -53,43 +53,16 @@
             this.btnGenSpecExample = new System.Windows.Forms.Button();
             this.lblLibVersion = new System.Windows.Forms.Label();
             this.lblRanTests = new System.Windows.Forms.Label();
+            this.pbar = new AdvLib.TestApp.UnitTestProgressBar();
             this.btnRunTests = new System.Windows.Forms.Button();
             this.gbxCompression = new System.Windows.Forms.GroupBox();
             this.rbLagarith16 = new System.Windows.Forms.RadioButton();
             this.rbQuickLZ = new System.Windows.Forms.RadioButton();
             this.cbxZeroTicks = new System.Windows.Forms.CheckBox();
             this.tabStructureViewer = new System.Windows.Forms.TabPage();
-            this.btnOpenFile = new System.Windows.Forms.Button();
-            this.tabPlayer = new System.Windows.Forms.TabPage();
-            this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.tcStructureViewer = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
-            this.tabImageSection = new System.Windows.Forms.TabPage();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lblWidth = new System.Windows.Forms.Label();
-            this.lblHeight = new System.Windows.Forms.Label();
-            this.lblBPP = new System.Windows.Forms.Label();
-            this.lblMaxPixelValue = new System.Windows.Forms.Label();
-            this.lblUtcAccuracy = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tbxFileName = new System.Windows.Forms.TextBox();
-            this.tabStatusSection = new System.Windows.Forms.TabPage();
-            this.tabMetadata = new System.Windows.Forms.TabPage();
-            this.tabMainIndex = new System.Windows.Forms.TabPage();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.lvMainStream = new System.Windows.Forms.ListView();
-            this.lblMainFrames = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.lblMainClockFreq = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.tagName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tagValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.lblMainFrameTSAccu = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.lblCalibFrameTSAccu = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.lblCalibClockFreq = new System.Windows.Forms.Label();
@@ -99,36 +72,64 @@
             this.lvCalibStream = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.lvImageLayoutTags = new System.Windows.Forms.ListView();
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblMainFrameTSAccu = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.lblMainClockFreq = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblMainFrames = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lvMainStream = new System.Windows.Forms.ListView();
+            this.tagName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tagValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tbxFileName = new System.Windows.Forms.TextBox();
+            this.lblUtcAccuracy = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lblMaxPixelValue = new System.Windows.Forms.Label();
+            this.lblBPP = new System.Windows.Forms.Label();
+            this.lblHeight = new System.Windows.Forms.Label();
+            this.lblWidth = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnOpenFile = new System.Windows.Forms.Button();
+            this.tabImageSection = new System.Windows.Forms.TabPage();
+            this.lblCountLayouts = new System.Windows.Forms.Label();
+            this.lblImageLayoutBPP = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.lblImageLayoutId = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.btnNextLayout = new System.Windows.Forms.Button();
+            this.btnPrevLayout = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
             this.lvImageSectionTags = new System.Windows.Forms.ListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label12 = new System.Windows.Forms.Label();
-            this.btnPrevLayout = new System.Windows.Forms.Button();
-            this.btnNextLayout = new System.Windows.Forms.Button();
-            this.lblImageLayoutId = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.lblImageLayoutBPP = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.lblCountLayouts = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lvImageLayoutTags = new System.Windows.Forms.ListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabStatusSection = new System.Windows.Forms.TabPage();
+            this.label14 = new System.Windows.Forms.Label();
             this.lvlStatusTags = new System.Windows.Forms.ListView();
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label14 = new System.Windows.Forms.Label();
-            this.lvSystemMedata = new System.Windows.Forms.ListView();
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabMetadata = new System.Windows.Forms.TabPage();
             this.lvUserMetadata = new System.Windows.Forms.ListView();
             this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvSystemMedata = new System.Windows.Forms.ListView();
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabMainIndex = new System.Windows.Forms.TabPage();
             this.tbxMainIndex = new System.Windows.Forms.TextBox();
-            this.pbar = new AdvLib.TestApp.UnitTestProgressBar();
             this.tabCalibrationIndex = new System.Windows.Forms.TabPage();
             this.tbxCalibIndex = new System.Windows.Forms.TextBox();
+            this.tabPlayer = new System.Windows.Forms.TabPage();
+            this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
+            this.btnGenUnitTestsFile = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxPixelValue)).BeginInit();
@@ -138,12 +139,12 @@
             this.tabStructureViewer.SuspendLayout();
             this.tcStructureViewer.SuspendLayout();
             this.tabGeneral.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.tabImageSection.SuspendLayout();
             this.tabStatusSection.SuspendLayout();
             this.tabMetadata.SuspendLayout();
             this.tabMainIndex.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.tabCalibrationIndex.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -368,6 +369,7 @@
             // 
             // tabRecorder
             // 
+            this.tabRecorder.Controls.Add(this.btnGenUnitTestsFile);
             this.tabRecorder.Controls.Add(this.cbxCopyToClipboard);
             this.tabRecorder.Controls.Add(this.btnGenSpecExample);
             this.tabRecorder.Controls.Add(this.lblLibVersion);
@@ -428,6 +430,15 @@
             this.lblRanTests.Name = "lblRanTests";
             this.lblRanTests.Size = new System.Drawing.Size(0, 13);
             this.lblRanTests.TabIndex = 17;
+            // 
+            // pbar
+            // 
+            this.pbar.Error = false;
+            this.pbar.Location = new System.Drawing.Point(167, 313);
+            this.pbar.Name = "pbar";
+            this.pbar.Size = new System.Drawing.Size(372, 23);
+            this.pbar.TabIndex = 16;
+            this.pbar.Visible = false;
             // 
             // btnRunTests
             // 
@@ -493,31 +504,6 @@
             this.tabStructureViewer.Text = "Structure Viewer";
             this.tabStructureViewer.UseVisualStyleBackColor = true;
             // 
-            // btnOpenFile
-            // 
-            this.btnOpenFile.Location = new System.Drawing.Point(9, 6);
-            this.btnOpenFile.Name = "btnOpenFile";
-            this.btnOpenFile.Size = new System.Drawing.Size(132, 23);
-            this.btnOpenFile.TabIndex = 10;
-            this.btnOpenFile.Text = "Open File";
-            this.btnOpenFile.UseVisualStyleBackColor = true;
-            this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
-            // 
-            // tabPlayer
-            // 
-            this.tabPlayer.Location = new System.Drawing.Point(4, 22);
-            this.tabPlayer.Name = "tabPlayer";
-            this.tabPlayer.Size = new System.Drawing.Size(558, 360);
-            this.tabPlayer.TabIndex = 2;
-            this.tabPlayer.Text = "Player";
-            this.tabPlayer.UseVisualStyleBackColor = true;
-            // 
-            // openFileDialog2
-            // 
-            this.openFileDialog2.DefaultExt = "adv";
-            this.openFileDialog2.FileName = "openFileDialog2";
-            this.openFileDialog2.Filter = "ADV (*.adv)|*.adv";
-            // 
             // tcStructureViewer
             // 
             this.tcStructureViewer.Controls.Add(this.tabGeneral);
@@ -557,173 +543,6 @@
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
             // 
-            // tabImageSection
-            // 
-            this.tabImageSection.Controls.Add(this.lblCountLayouts);
-            this.tabImageSection.Controls.Add(this.lblImageLayoutBPP);
-            this.tabImageSection.Controls.Add(this.label18);
-            this.tabImageSection.Controls.Add(this.lblImageLayoutId);
-            this.tabImageSection.Controls.Add(this.label16);
-            this.tabImageSection.Controls.Add(this.btnNextLayout);
-            this.tabImageSection.Controls.Add(this.btnPrevLayout);
-            this.tabImageSection.Controls.Add(this.label12);
-            this.tabImageSection.Controls.Add(this.lvImageSectionTags);
-            this.tabImageSection.Controls.Add(this.label6);
-            this.tabImageSection.Controls.Add(this.lvImageLayoutTags);
-            this.tabImageSection.Location = new System.Drawing.Point(4, 22);
-            this.tabImageSection.Name = "tabImageSection";
-            this.tabImageSection.Padding = new System.Windows.Forms.Padding(3);
-            this.tabImageSection.Size = new System.Drawing.Size(544, 328);
-            this.tabImageSection.TabIndex = 1;
-            this.tabImageSection.Text = "Image Section";
-            this.tabImageSection.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 65);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Width:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 88);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 13);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "Height:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(367, 65);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(31, 13);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "BPP:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(130, 65);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 13);
-            this.label5.TabIndex = 15;
-            this.label5.Text = "Max Pixel Value:";
-            // 
-            // lblWidth
-            // 
-            this.lblWidth.AutoSize = true;
-            this.lblWidth.ForeColor = System.Drawing.Color.Navy;
-            this.lblWidth.Location = new System.Drawing.Point(47, 65);
-            this.lblWidth.Name = "lblWidth";
-            this.lblWidth.Size = new System.Drawing.Size(0, 13);
-            this.lblWidth.TabIndex = 16;
-            // 
-            // lblHeight
-            // 
-            this.lblHeight.AutoSize = true;
-            this.lblHeight.ForeColor = System.Drawing.Color.Navy;
-            this.lblHeight.Location = new System.Drawing.Point(48, 88);
-            this.lblHeight.Name = "lblHeight";
-            this.lblHeight.Size = new System.Drawing.Size(0, 13);
-            this.lblHeight.TabIndex = 17;
-            // 
-            // lblBPP
-            // 
-            this.lblBPP.AutoSize = true;
-            this.lblBPP.ForeColor = System.Drawing.Color.Navy;
-            this.lblBPP.Location = new System.Drawing.Point(395, 65);
-            this.lblBPP.Name = "lblBPP";
-            this.lblBPP.Size = new System.Drawing.Size(0, 13);
-            this.lblBPP.TabIndex = 18;
-            // 
-            // lblMaxPixelValue
-            // 
-            this.lblMaxPixelValue.AutoSize = true;
-            this.lblMaxPixelValue.ForeColor = System.Drawing.Color.Navy;
-            this.lblMaxPixelValue.Location = new System.Drawing.Point(212, 65);
-            this.lblMaxPixelValue.Name = "lblMaxPixelValue";
-            this.lblMaxPixelValue.Size = new System.Drawing.Size(0, 13);
-            this.lblMaxPixelValue.TabIndex = 19;
-            // 
-            // lblUtcAccuracy
-            // 
-            this.lblUtcAccuracy.AutoSize = true;
-            this.lblUtcAccuracy.ForeColor = System.Drawing.Color.Navy;
-            this.lblUtcAccuracy.Location = new System.Drawing.Point(212, 88);
-            this.lblUtcAccuracy.Name = "lblUtcAccuracy";
-            this.lblUtcAccuracy.Size = new System.Drawing.Size(0, 13);
-            this.lblUtcAccuracy.TabIndex = 21;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(135, 88);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(80, 13);
-            this.label7.TabIndex = 20;
-            this.label7.Text = "UTC Accuracy:";
-            // 
-            // tbxFileName
-            // 
-            this.tbxFileName.Location = new System.Drawing.Point(9, 35);
-            this.tbxFileName.Name = "tbxFileName";
-            this.tbxFileName.ReadOnly = true;
-            this.tbxFileName.Size = new System.Drawing.Size(529, 20);
-            this.tbxFileName.TabIndex = 22;
-            // 
-            // tabStatusSection
-            // 
-            this.tabStatusSection.Controls.Add(this.label14);
-            this.tabStatusSection.Controls.Add(this.lvlStatusTags);
-            this.tabStatusSection.Location = new System.Drawing.Point(4, 22);
-            this.tabStatusSection.Name = "tabStatusSection";
-            this.tabStatusSection.Size = new System.Drawing.Size(544, 328);
-            this.tabStatusSection.TabIndex = 2;
-            this.tabStatusSection.Text = "Status Section";
-            this.tabStatusSection.UseVisualStyleBackColor = true;
-            // 
-            // tabMetadata
-            // 
-            this.tabMetadata.Controls.Add(this.lvUserMetadata);
-            this.tabMetadata.Controls.Add(this.lvSystemMedata);
-            this.tabMetadata.Location = new System.Drawing.Point(4, 22);
-            this.tabMetadata.Name = "tabMetadata";
-            this.tabMetadata.Size = new System.Drawing.Size(544, 328);
-            this.tabMetadata.TabIndex = 3;
-            this.tabMetadata.Text = "File Metadata";
-            this.tabMetadata.UseVisualStyleBackColor = true;
-            // 
-            // tabMainIndex
-            // 
-            this.tabMainIndex.Controls.Add(this.tbxMainIndex);
-            this.tabMainIndex.Location = new System.Drawing.Point(4, 22);
-            this.tabMainIndex.Name = "tabMainIndex";
-            this.tabMainIndex.Size = new System.Drawing.Size(544, 328);
-            this.tabMainIndex.TabIndex = 4;
-            this.tabMainIndex.Text = "Main Index";
-            this.tabMainIndex.UseVisualStyleBackColor = true;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.lblMainFrameTSAccu);
-            this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Controls.Add(this.lblMainClockFreq);
-            this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Controls.Add(this.lblMainFrames);
-            this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Controls.Add(this.lvMainStream);
-            this.groupBox3.Location = new System.Drawing.Point(9, 115);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(265, 204);
-            this.groupBox3.TabIndex = 23;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Main Stream Info";
-            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.lblCalibFrameTSAccu);
@@ -739,82 +558,6 @@
             this.groupBox4.TabIndex = 24;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Calibration Stream Info";
-            // 
-            // lvMainStream
-            // 
-            this.lvMainStream.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.tagName,
-            this.tagValue});
-            this.lvMainStream.Location = new System.Drawing.Point(7, 80);
-            this.lvMainStream.Name = "lvMainStream";
-            this.lvMainStream.Size = new System.Drawing.Size(252, 118);
-            this.lvMainStream.TabIndex = 0;
-            this.lvMainStream.UseCompatibleStateImageBehavior = false;
-            this.lvMainStream.View = System.Windows.Forms.View.Details;
-            // 
-            // lblMainFrames
-            // 
-            this.lblMainFrames.AutoSize = true;
-            this.lblMainFrames.ForeColor = System.Drawing.Color.Navy;
-            this.lblMainFrames.Location = new System.Drawing.Point(55, 25);
-            this.lblMainFrames.Name = "lblMainFrames";
-            this.lblMainFrames.Size = new System.Drawing.Size(0, 13);
-            this.lblMainFrames.TabIndex = 18;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(15, 25);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(44, 13);
-            this.label8.TabIndex = 17;
-            this.label8.Text = "Frames:";
-            // 
-            // lblMainClockFreq
-            // 
-            this.lblMainClockFreq.AutoSize = true;
-            this.lblMainClockFreq.ForeColor = System.Drawing.Color.Navy;
-            this.lblMainClockFreq.Location = new System.Drawing.Point(143, 25);
-            this.lblMainClockFreq.Name = "lblMainClockFreq";
-            this.lblMainClockFreq.Size = new System.Drawing.Size(0, 13);
-            this.lblMainClockFreq.TabIndex = 20;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(107, 25);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(37, 13);
-            this.label9.TabIndex = 19;
-            this.label9.Text = "Clock:";
-            // 
-            // tagName
-            // 
-            this.tagName.Text = "Name";
-            this.tagName.Width = 124;
-            // 
-            // tagValue
-            // 
-            this.tagValue.Text = "Value";
-            this.tagValue.Width = 111;
-            // 
-            // lblMainFrameTSAccu
-            // 
-            this.lblMainFrameTSAccu.AutoSize = true;
-            this.lblMainFrameTSAccu.ForeColor = System.Drawing.Color.Navy;
-            this.lblMainFrameTSAccu.Location = new System.Drawing.Point(143, 46);
-            this.lblMainFrameTSAccu.Name = "lblMainFrameTSAccu";
-            this.lblMainFrameTSAccu.Size = new System.Drawing.Size(0, 13);
-            this.lblMainFrameTSAccu.TabIndex = 22;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(107, 46);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(35, 13);
-            this.label10.TabIndex = 21;
-            this.label10.Text = "Accu:";
             // 
             // lblCalibFrameTSAccu
             // 
@@ -892,36 +635,300 @@
             this.columnHeader2.Text = "Value";
             this.columnHeader2.Width = 111;
             // 
-            // lvImageLayoutTags
+            // groupBox3
             // 
-            this.lvImageLayoutTags.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader3,
-            this.columnHeader4});
-            this.lvImageLayoutTags.Location = new System.Drawing.Point(276, 53);
-            this.lvImageLayoutTags.Name = "lvImageLayoutTags";
-            this.lvImageLayoutTags.Size = new System.Drawing.Size(262, 269);
-            this.lvImageLayoutTags.TabIndex = 1;
-            this.lvImageLayoutTags.UseCompatibleStateImageBehavior = false;
-            this.lvImageLayoutTags.View = System.Windows.Forms.View.Details;
+            this.groupBox3.Controls.Add(this.lblMainFrameTSAccu);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Controls.Add(this.lblMainClockFreq);
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.lblMainFrames);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.lvMainStream);
+            this.groupBox3.Location = new System.Drawing.Point(9, 115);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(265, 204);
+            this.groupBox3.TabIndex = 23;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Main Stream Info";
             // 
-            // columnHeader3
+            // lblMainFrameTSAccu
             // 
-            this.columnHeader3.Text = "Name";
-            this.columnHeader3.Width = 124;
+            this.lblMainFrameTSAccu.AutoSize = true;
+            this.lblMainFrameTSAccu.ForeColor = System.Drawing.Color.Navy;
+            this.lblMainFrameTSAccu.Location = new System.Drawing.Point(143, 46);
+            this.lblMainFrameTSAccu.Name = "lblMainFrameTSAccu";
+            this.lblMainFrameTSAccu.Size = new System.Drawing.Size(0, 13);
+            this.lblMainFrameTSAccu.TabIndex = 22;
             // 
-            // columnHeader4
+            // label10
             // 
-            this.columnHeader4.Text = "Value";
-            this.columnHeader4.Width = 111;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(107, 46);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(35, 13);
+            this.label10.TabIndex = 21;
+            this.label10.Text = "Accu:";
             // 
-            // label6
+            // lblMainClockFreq
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 9);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(102, 13);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Image Section Tags";
+            this.lblMainClockFreq.AutoSize = true;
+            this.lblMainClockFreq.ForeColor = System.Drawing.Color.Navy;
+            this.lblMainClockFreq.Location = new System.Drawing.Point(143, 25);
+            this.lblMainClockFreq.Name = "lblMainClockFreq";
+            this.lblMainClockFreq.Size = new System.Drawing.Size(0, 13);
+            this.lblMainClockFreq.TabIndex = 20;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(107, 25);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(37, 13);
+            this.label9.TabIndex = 19;
+            this.label9.Text = "Clock:";
+            // 
+            // lblMainFrames
+            // 
+            this.lblMainFrames.AutoSize = true;
+            this.lblMainFrames.ForeColor = System.Drawing.Color.Navy;
+            this.lblMainFrames.Location = new System.Drawing.Point(55, 25);
+            this.lblMainFrames.Name = "lblMainFrames";
+            this.lblMainFrames.Size = new System.Drawing.Size(0, 13);
+            this.lblMainFrames.TabIndex = 18;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(15, 25);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(44, 13);
+            this.label8.TabIndex = 17;
+            this.label8.Text = "Frames:";
+            // 
+            // lvMainStream
+            // 
+            this.lvMainStream.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.tagName,
+            this.tagValue});
+            this.lvMainStream.Location = new System.Drawing.Point(7, 80);
+            this.lvMainStream.Name = "lvMainStream";
+            this.lvMainStream.Size = new System.Drawing.Size(252, 118);
+            this.lvMainStream.TabIndex = 0;
+            this.lvMainStream.UseCompatibleStateImageBehavior = false;
+            this.lvMainStream.View = System.Windows.Forms.View.Details;
+            // 
+            // tagName
+            // 
+            this.tagName.Text = "Name";
+            this.tagName.Width = 124;
+            // 
+            // tagValue
+            // 
+            this.tagValue.Text = "Value";
+            this.tagValue.Width = 111;
+            // 
+            // tbxFileName
+            // 
+            this.tbxFileName.Location = new System.Drawing.Point(9, 35);
+            this.tbxFileName.Name = "tbxFileName";
+            this.tbxFileName.ReadOnly = true;
+            this.tbxFileName.Size = new System.Drawing.Size(529, 20);
+            this.tbxFileName.TabIndex = 22;
+            // 
+            // lblUtcAccuracy
+            // 
+            this.lblUtcAccuracy.AutoSize = true;
+            this.lblUtcAccuracy.ForeColor = System.Drawing.Color.Navy;
+            this.lblUtcAccuracy.Location = new System.Drawing.Point(212, 88);
+            this.lblUtcAccuracy.Name = "lblUtcAccuracy";
+            this.lblUtcAccuracy.Size = new System.Drawing.Size(0, 13);
+            this.lblUtcAccuracy.TabIndex = 21;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(135, 88);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(80, 13);
+            this.label7.TabIndex = 20;
+            this.label7.Text = "UTC Accuracy:";
+            // 
+            // lblMaxPixelValue
+            // 
+            this.lblMaxPixelValue.AutoSize = true;
+            this.lblMaxPixelValue.ForeColor = System.Drawing.Color.Navy;
+            this.lblMaxPixelValue.Location = new System.Drawing.Point(212, 65);
+            this.lblMaxPixelValue.Name = "lblMaxPixelValue";
+            this.lblMaxPixelValue.Size = new System.Drawing.Size(0, 13);
+            this.lblMaxPixelValue.TabIndex = 19;
+            // 
+            // lblBPP
+            // 
+            this.lblBPP.AutoSize = true;
+            this.lblBPP.ForeColor = System.Drawing.Color.Navy;
+            this.lblBPP.Location = new System.Drawing.Point(395, 65);
+            this.lblBPP.Name = "lblBPP";
+            this.lblBPP.Size = new System.Drawing.Size(0, 13);
+            this.lblBPP.TabIndex = 18;
+            // 
+            // lblHeight
+            // 
+            this.lblHeight.AutoSize = true;
+            this.lblHeight.ForeColor = System.Drawing.Color.Navy;
+            this.lblHeight.Location = new System.Drawing.Point(48, 88);
+            this.lblHeight.Name = "lblHeight";
+            this.lblHeight.Size = new System.Drawing.Size(0, 13);
+            this.lblHeight.TabIndex = 17;
+            // 
+            // lblWidth
+            // 
+            this.lblWidth.AutoSize = true;
+            this.lblWidth.ForeColor = System.Drawing.Color.Navy;
+            this.lblWidth.Location = new System.Drawing.Point(47, 65);
+            this.lblWidth.Name = "lblWidth";
+            this.lblWidth.Size = new System.Drawing.Size(0, 13);
+            this.lblWidth.TabIndex = 16;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(130, 65);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(85, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Max Pixel Value:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(367, 65);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(31, 13);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "BPP:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(10, 88);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Height:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 65);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Width:";
+            // 
+            // btnOpenFile
+            // 
+            this.btnOpenFile.Location = new System.Drawing.Point(9, 6);
+            this.btnOpenFile.Name = "btnOpenFile";
+            this.btnOpenFile.Size = new System.Drawing.Size(132, 23);
+            this.btnOpenFile.TabIndex = 10;
+            this.btnOpenFile.Text = "Open File";
+            this.btnOpenFile.UseVisualStyleBackColor = true;
+            this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
+            // 
+            // tabImageSection
+            // 
+            this.tabImageSection.Controls.Add(this.lblCountLayouts);
+            this.tabImageSection.Controls.Add(this.lblImageLayoutBPP);
+            this.tabImageSection.Controls.Add(this.label18);
+            this.tabImageSection.Controls.Add(this.lblImageLayoutId);
+            this.tabImageSection.Controls.Add(this.label16);
+            this.tabImageSection.Controls.Add(this.btnNextLayout);
+            this.tabImageSection.Controls.Add(this.btnPrevLayout);
+            this.tabImageSection.Controls.Add(this.label12);
+            this.tabImageSection.Controls.Add(this.lvImageSectionTags);
+            this.tabImageSection.Controls.Add(this.label6);
+            this.tabImageSection.Controls.Add(this.lvImageLayoutTags);
+            this.tabImageSection.Location = new System.Drawing.Point(4, 22);
+            this.tabImageSection.Name = "tabImageSection";
+            this.tabImageSection.Padding = new System.Windows.Forms.Padding(3);
+            this.tabImageSection.Size = new System.Drawing.Size(544, 328);
+            this.tabImageSection.TabIndex = 1;
+            this.tabImageSection.Text = "Image Section";
+            this.tabImageSection.UseVisualStyleBackColor = true;
+            // 
+            // lblCountLayouts
+            // 
+            this.lblCountLayouts.AutoSize = true;
+            this.lblCountLayouts.ForeColor = System.Drawing.Color.Navy;
+            this.lblCountLayouts.Location = new System.Drawing.Point(353, 12);
+            this.lblCountLayouts.Name = "lblCountLayouts";
+            this.lblCountLayouts.Size = new System.Drawing.Size(0, 13);
+            this.lblCountLayouts.TabIndex = 23;
+            // 
+            // lblImageLayoutBPP
+            // 
+            this.lblImageLayoutBPP.AutoSize = true;
+            this.lblImageLayoutBPP.ForeColor = System.Drawing.Color.Navy;
+            this.lblImageLayoutBPP.Location = new System.Drawing.Point(384, 35);
+            this.lblImageLayoutBPP.Name = "lblImageLayoutBPP";
+            this.lblImageLayoutBPP.Size = new System.Drawing.Size(0, 13);
+            this.lblImageLayoutBPP.TabIndex = 22;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(356, 35);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(31, 13);
+            this.label18.TabIndex = 21;
+            this.label18.Text = "BPP:";
+            // 
+            // lblImageLayoutId
+            // 
+            this.lblImageLayoutId.AutoSize = true;
+            this.lblImageLayoutId.ForeColor = System.Drawing.Color.Navy;
+            this.lblImageLayoutId.Location = new System.Drawing.Point(304, 35);
+            this.lblImageLayoutId.Name = "lblImageLayoutId";
+            this.lblImageLayoutId.Size = new System.Drawing.Size(0, 13);
+            this.lblImageLayoutId.TabIndex = 20;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(276, 35);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(19, 13);
+            this.label16.TabIndex = 19;
+            this.label16.Text = "Id:";
+            // 
+            // btnNextLayout
+            // 
+            this.btnNextLayout.Location = new System.Drawing.Point(506, 7);
+            this.btnNextLayout.Name = "btnNextLayout";
+            this.btnNextLayout.Size = new System.Drawing.Size(32, 23);
+            this.btnNextLayout.TabIndex = 17;
+            this.btnNextLayout.Text = ">";
+            this.btnNextLayout.UseVisualStyleBackColor = true;
+            this.btnNextLayout.Click += new System.EventHandler(this.btnNextLayout_Click);
+            // 
+            // btnPrevLayout
+            // 
+            this.btnPrevLayout.Location = new System.Drawing.Point(468, 7);
+            this.btnPrevLayout.Name = "btnPrevLayout";
+            this.btnPrevLayout.Size = new System.Drawing.Size(32, 23);
+            this.btnPrevLayout.TabIndex = 16;
+            this.btnPrevLayout.Text = "<";
+            this.btnPrevLayout.UseVisualStyleBackColor = true;
+            this.btnPrevLayout.Click += new System.EventHandler(this.btnPrevLayout_Click);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(276, 12);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(79, 13);
+            this.label12.TabIndex = 15;
+            this.label12.Text = "Image Layouts:";
             // 
             // lvImageSectionTags
             // 
@@ -945,79 +952,56 @@
             this.columnHeader6.Text = "Value";
             this.columnHeader6.Width = 111;
             // 
-            // label12
+            // label6
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(276, 12);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(79, 13);
-            this.label12.TabIndex = 15;
-            this.label12.Text = "Image Layouts:";
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(102, 13);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Image Section Tags";
             // 
-            // btnPrevLayout
+            // lvImageLayoutTags
             // 
-            this.btnPrevLayout.Location = new System.Drawing.Point(468, 7);
-            this.btnPrevLayout.Name = "btnPrevLayout";
-            this.btnPrevLayout.Size = new System.Drawing.Size(32, 23);
-            this.btnPrevLayout.TabIndex = 16;
-            this.btnPrevLayout.Text = "<";
-            this.btnPrevLayout.UseVisualStyleBackColor = true;
-            this.btnPrevLayout.Click += new System.EventHandler(this.btnPrevLayout_Click);
+            this.lvImageLayoutTags.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3,
+            this.columnHeader4});
+            this.lvImageLayoutTags.Location = new System.Drawing.Point(276, 53);
+            this.lvImageLayoutTags.Name = "lvImageLayoutTags";
+            this.lvImageLayoutTags.Size = new System.Drawing.Size(262, 269);
+            this.lvImageLayoutTags.TabIndex = 1;
+            this.lvImageLayoutTags.UseCompatibleStateImageBehavior = false;
+            this.lvImageLayoutTags.View = System.Windows.Forms.View.Details;
             // 
-            // btnNextLayout
+            // columnHeader3
             // 
-            this.btnNextLayout.Location = new System.Drawing.Point(506, 7);
-            this.btnNextLayout.Name = "btnNextLayout";
-            this.btnNextLayout.Size = new System.Drawing.Size(32, 23);
-            this.btnNextLayout.TabIndex = 17;
-            this.btnNextLayout.Text = ">";
-            this.btnNextLayout.UseVisualStyleBackColor = true;
-            this.btnNextLayout.Click += new System.EventHandler(this.btnNextLayout_Click);
+            this.columnHeader3.Text = "Name";
+            this.columnHeader3.Width = 124;
             // 
-            // lblImageLayoutId
+            // columnHeader4
             // 
-            this.lblImageLayoutId.AutoSize = true;
-            this.lblImageLayoutId.ForeColor = System.Drawing.Color.Navy;
-            this.lblImageLayoutId.Location = new System.Drawing.Point(304, 35);
-            this.lblImageLayoutId.Name = "lblImageLayoutId";
-            this.lblImageLayoutId.Size = new System.Drawing.Size(0, 13);
-            this.lblImageLayoutId.TabIndex = 20;
+            this.columnHeader4.Text = "Value";
+            this.columnHeader4.Width = 111;
             // 
-            // label16
+            // tabStatusSection
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(276, 35);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(19, 13);
-            this.label16.TabIndex = 19;
-            this.label16.Text = "Id:";
+            this.tabStatusSection.Controls.Add(this.label14);
+            this.tabStatusSection.Controls.Add(this.lvlStatusTags);
+            this.tabStatusSection.Location = new System.Drawing.Point(4, 22);
+            this.tabStatusSection.Name = "tabStatusSection";
+            this.tabStatusSection.Size = new System.Drawing.Size(544, 328);
+            this.tabStatusSection.TabIndex = 2;
+            this.tabStatusSection.Text = "Status Section";
+            this.tabStatusSection.UseVisualStyleBackColor = true;
             // 
-            // lblImageLayoutBPP
+            // label14
             // 
-            this.lblImageLayoutBPP.AutoSize = true;
-            this.lblImageLayoutBPP.ForeColor = System.Drawing.Color.Navy;
-            this.lblImageLayoutBPP.Location = new System.Drawing.Point(384, 35);
-            this.lblImageLayoutBPP.Name = "lblImageLayoutBPP";
-            this.lblImageLayoutBPP.Size = new System.Drawing.Size(0, 13);
-            this.lblImageLayoutBPP.TabIndex = 22;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(356, 35);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(31, 13);
-            this.label18.TabIndex = 21;
-            this.label18.Text = "BPP:";
-            // 
-            // lblCountLayouts
-            // 
-            this.lblCountLayouts.AutoSize = true;
-            this.lblCountLayouts.ForeColor = System.Drawing.Color.Navy;
-            this.lblCountLayouts.Location = new System.Drawing.Point(353, 12);
-            this.lblCountLayouts.Name = "lblCountLayouts";
-            this.lblCountLayouts.Size = new System.Drawing.Size(0, 13);
-            this.lblCountLayouts.TabIndex = 23;
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 9);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(102, 13);
+            this.label14.TabIndex = 16;
+            this.label14.Text = "Image Section Tags";
             // 
             // lvlStatusTags
             // 
@@ -1047,36 +1031,16 @@
             this.columnHeader9.Text = "Type";
             this.columnHeader9.Width = 154;
             // 
-            // label14
+            // tabMetadata
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(6, 9);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(102, 13);
-            this.label14.TabIndex = 16;
-            this.label14.Text = "Image Section Tags";
-            // 
-            // lvSystemMedata
-            // 
-            this.lvSystemMedata.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader10,
-            this.columnHeader11});
-            this.lvSystemMedata.Location = new System.Drawing.Point(3, 3);
-            this.lvSystemMedata.Name = "lvSystemMedata";
-            this.lvSystemMedata.Size = new System.Drawing.Size(538, 244);
-            this.lvSystemMedata.TabIndex = 15;
-            this.lvSystemMedata.UseCompatibleStateImageBehavior = false;
-            this.lvSystemMedata.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "Name";
-            this.columnHeader10.Width = 240;
-            // 
-            // columnHeader11
-            // 
-            this.columnHeader11.Text = "Value";
-            this.columnHeader11.Width = 274;
+            this.tabMetadata.Controls.Add(this.lvUserMetadata);
+            this.tabMetadata.Controls.Add(this.lvSystemMedata);
+            this.tabMetadata.Location = new System.Drawing.Point(4, 22);
+            this.tabMetadata.Name = "tabMetadata";
+            this.tabMetadata.Size = new System.Drawing.Size(544, 328);
+            this.tabMetadata.TabIndex = 3;
+            this.tabMetadata.Text = "File Metadata";
+            this.tabMetadata.UseVisualStyleBackColor = true;
             // 
             // lvUserMetadata
             // 
@@ -1100,6 +1064,38 @@
             this.columnHeader13.Text = "Value";
             this.columnHeader13.Width = 274;
             // 
+            // lvSystemMedata
+            // 
+            this.lvSystemMedata.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader10,
+            this.columnHeader11});
+            this.lvSystemMedata.Location = new System.Drawing.Point(3, 3);
+            this.lvSystemMedata.Name = "lvSystemMedata";
+            this.lvSystemMedata.Size = new System.Drawing.Size(538, 244);
+            this.lvSystemMedata.TabIndex = 15;
+            this.lvSystemMedata.UseCompatibleStateImageBehavior = false;
+            this.lvSystemMedata.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "Name";
+            this.columnHeader10.Width = 240;
+            // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "Value";
+            this.columnHeader11.Width = 274;
+            // 
+            // tabMainIndex
+            // 
+            this.tabMainIndex.Controls.Add(this.tbxMainIndex);
+            this.tabMainIndex.Location = new System.Drawing.Point(4, 22);
+            this.tabMainIndex.Name = "tabMainIndex";
+            this.tabMainIndex.Size = new System.Drawing.Size(544, 328);
+            this.tabMainIndex.TabIndex = 4;
+            this.tabMainIndex.Text = "Main Index";
+            this.tabMainIndex.UseVisualStyleBackColor = true;
+            // 
             // tbxMainIndex
             // 
             this.tbxMainIndex.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1110,15 +1106,6 @@
             this.tbxMainIndex.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tbxMainIndex.Size = new System.Drawing.Size(544, 328);
             this.tbxMainIndex.TabIndex = 0;
-            // 
-            // pbar
-            // 
-            this.pbar.Error = false;
-            this.pbar.Location = new System.Drawing.Point(167, 313);
-            this.pbar.Name = "pbar";
-            this.pbar.Size = new System.Drawing.Size(372, 23);
-            this.pbar.TabIndex = 16;
-            this.pbar.Visible = false;
             // 
             // tabCalibrationIndex
             // 
@@ -1140,6 +1127,31 @@
             this.tbxCalibIndex.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tbxCalibIndex.Size = new System.Drawing.Size(544, 328);
             this.tbxCalibIndex.TabIndex = 1;
+            // 
+            // tabPlayer
+            // 
+            this.tabPlayer.Location = new System.Drawing.Point(4, 22);
+            this.tabPlayer.Name = "tabPlayer";
+            this.tabPlayer.Size = new System.Drawing.Size(558, 360);
+            this.tabPlayer.TabIndex = 2;
+            this.tabPlayer.Text = "Player";
+            this.tabPlayer.UseVisualStyleBackColor = true;
+            // 
+            // openFileDialog2
+            // 
+            this.openFileDialog2.DefaultExt = "adv";
+            this.openFileDialog2.FileName = "openFileDialog2";
+            this.openFileDialog2.Filter = "ADV (*.adv)|*.adv";
+            // 
+            // btnGenUnitTestsFile
+            // 
+            this.btnGenUnitTestsFile.Location = new System.Drawing.Point(387, 215);
+            this.btnGenUnitTestsFile.Name = "btnGenUnitTestsFile";
+            this.btnGenUnitTestsFile.Size = new System.Drawing.Size(152, 23);
+            this.btnGenUnitTestsFile.TabIndex = 21;
+            this.btnGenUnitTestsFile.Text = "Generate Unit Tests File";
+            this.btnGenUnitTestsFile.UseVisualStyleBackColor = true;
+            this.btnGenUnitTestsFile.Click += new System.EventHandler(this.btnGenUnitTestsFile_Click);
             // 
             // frmMain
             // 
@@ -1163,6 +1175,10 @@
             this.tcStructureViewer.ResumeLayout(false);
             this.tabGeneral.ResumeLayout(false);
             this.tabGeneral.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.tabImageSection.ResumeLayout(false);
             this.tabImageSection.PerformLayout();
             this.tabStatusSection.ResumeLayout(false);
@@ -1170,10 +1186,6 @@
             this.tabMetadata.ResumeLayout(false);
             this.tabMainIndex.ResumeLayout(false);
             this.tabMainIndex.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.tabCalibrationIndex.ResumeLayout(false);
             this.tabCalibrationIndex.PerformLayout();
             this.ResumeLayout(false);
@@ -1283,6 +1295,7 @@
         private System.Windows.Forms.TextBox tbxMainIndex;
         private System.Windows.Forms.TabPage tabCalibrationIndex;
         private System.Windows.Forms.TextBox tbxCalibIndex;
+        private System.Windows.Forms.Button btnGenUnitTestsFile;
 	}
 }
 

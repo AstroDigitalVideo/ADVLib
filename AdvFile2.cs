@@ -231,6 +231,17 @@ namespace Adv
                 throw new AdvLibException(string.Format("Main frame number must be bwtween 0 and {0}", MainSteamInfo.FrameCount - 1));
         }
 
+        public uint[] GetStackedMainFramePixels(uint frameNo, uint framesToStack, bool isSlidingIntegration, out AdvFrameInfo frameInfo)
+        {
+            if (frameNo < MainSteamInfo.FrameCount)
+            {
+                uint[] pixels = AdvLib.GetStackedFramePixels(0, (int)frameNo, (int)framesToStack, Width, Height, isSlidingIntegration, out frameInfo);
+                return pixels;
+            }
+            else
+                throw new AdvLibException(string.Format("Main frame number must be bwtween 0 and {0}", MainSteamInfo.FrameCount - 1));
+        }
+
         public uint[] GetCalibrationFramePixels(uint frameNo, out AdvFrameInfo frameInfo)
         {
             if (frameNo < CalibrationSteamInfo.FrameCount)

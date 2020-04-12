@@ -541,6 +541,8 @@ namespace AdvLibTestApp
                     // Make sure we can read a frame, if any
                     AdvFrameInfo frameInfo;
                     loadedFile.GetMainFramePixels(0, out frameInfo);
+
+                    loadedFile.GetStackedMainFramePixels(0, 100, false, out frameInfo);
                 }
 
                 if (loadedFile.MainIndex.Count > 0)
@@ -676,5 +678,44 @@ namespace AdvLibTestApp
             var nanoSec = accuSec * 1e9;
             return string.Format("{0} ns ({1})", nanoSec.ToString("0.000000").TrimEnd(new char[] { '0', '.' }), timeAccuTicks);
 	    }
+
+        private void btnGenUnitTestsFile_Click(object sender, EventArgs e)
+        {
+            string fileName = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + @"UnitTestSample.adv");
+
+            if (File.Exists(fileName))
+            {
+                if (MessageBox.Show(string.Format("Output file exists:\r\n\r\n{0}\r\n\r\nOverwrite?", fileName), "Confirmation", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    return;
+
+                File.Delete(fileName);
+            }
+
+            var advGen = new AdvGenerator();
+            advGen.GenerateAllInOneTestFile(fileName);
+
+            var origPixels = advGen.GetImagePixels12X12();
+            using (var loadedFile = new AdvFile2(fileName))
+            {
+                for (uint frameNo = 0; frameNo < loadedFile.MainSteamInfo.FrameCount; frameNo++)
+                {
+                    var pixels = loadedFile.GetMainFramePixels(frameNo);
+
+                    for (int i = 0; i < origPixels.Length; i++)
+                    {
+                        if (origPixels[i] != pixels[i])
+                        {
+                            MessageBox.Show(
+                                string.Format("Bad pixel in frame {0} at position {1}. Expected value: {2}, actual read value: {3}", frameNo, i, origPixels[i], pixels[i]),
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+
+                            return;
+                        }
+                    }
+                }
+            }
+        }
 	}
 }

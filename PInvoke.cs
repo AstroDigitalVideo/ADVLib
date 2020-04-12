@@ -414,7 +414,7 @@ namespace Adv
 
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_NewFile")]
-        //ADVRESULT AdvVer2_NewFile(const char* fileName);
+        //ADVRESULT AdvVer2_NewFile(const char* fileName, bool overwriteExisting);
         private static extern int AdvVer2_NewFile32(string fileName, bool overwriteExisting);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFile")]
@@ -516,6 +516,10 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
         private static extern int AdvVer2_GetFramePixels32(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, ref int systemErrorLen);
+
+        [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStackedFramePixels")]
+        //ADVRESULT AdvVer2_GetStackedFramePixels(int streamId, int frameNo, int framesToStack, bool isSlidingIntegration, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo);
+        private static extern int AdvVer2_GetStackedFramePixels32(int streamId, int frameNo, int framesToStack, bool isSlidingIntegration, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo);
 
         [DllImport(LIBRARY_ADVLIB_CORE32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
         //ADVRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
@@ -674,7 +678,7 @@ namespace Adv
         private static extern void AdvVer1_EndFrame64();
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_NewFile")]
-        //ADVRESULT AdvVer2_NewFile(const char* fileName);
+        //ADVRESULT AdvVer2_NewFile(const char* fileName, bool overwriteExisting);
         private static extern int AdvVer2_NewFile64(string fileName, bool overwriteExisting);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFile")]
@@ -776,6 +780,10 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
         private static extern int AdvVer2_GetFramePixels64(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, ref int systemErrorLen);
+
+        [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStackedFramePixels")]
+        //ADVRESULT AdvVer2_GetStackedFramePixels(int streamId, int frameNo, int framesToStack, bool isSlidingIntegration, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo);
+        private static extern int AdvVer2_GetStackedFramePixels64(int streamId, int frameNo, int framesToStack, bool isSlidingIntegration, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo);
 
         [DllImport(LIBRARY_ADVLIB_CORE64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
         //ADVRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
@@ -934,7 +942,7 @@ namespace Adv
         private static extern int AdvVer1_EndFrameUnix();
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_NewFile")]
-        //ADVRESULT AdvVer2_NewFile(const char* fileName);
+        //ADVRESULT AdvVer2_NewFile(const char* fileName, bool overwriteExisting);
         private static extern int AdvVer2_NewFileUnix(string fileName, bool overwriteExisting);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_EndFile")]
@@ -1036,6 +1044,10 @@ namespace Adv
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetFramePixels")]
         //ADVRESULT AdvVer2_GetFramePixels(int streamId, int frameNo, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo, int* systemErrorLen);
         private static extern int AdvVer2_GetFramePixelsUnix(int streamId, int frameNo, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo, ref int systemErrorLen);
+
+        [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetStackedFramePixels")]
+        //ADVRESULT AdvVer2_GetStackedFramePixels(int streamId, int frameNo, int framesToStack, bool isSlidingIntegration, unsigned int* pixels, AdvLib2::AdvFrameInfo* frameInfo);
+        private static extern int AdvVer2_GetStackedFramePixelsUnix(int streamId, int frameNo, int framesToStack, bool isSlidingIntegration, [In, Out] uint[] pixels, [In, Out] AdvFrameInfoNative frameInfo);
 
         [DllImport(LIBRARY_ADVLIB_CORE_UNIX, CallingConvention = CallingConvention.Cdecl, EntryPoint = "AdvVer2_GetTagPairValues")]
         //ADVRESULT AdvVer2_GetTagPairValues(TagPairType tagPairType, int tagId, char* tagName, char* tagValue)
@@ -1698,6 +1710,30 @@ namespace Adv
                 frameInfo.ErrorMessageStrLen = errorMessageLen;
 
             return AdvError.S_OK;
+        }
+
+
+        public static uint[] GetStackedFramePixels(int streamId, int frameNo, int framesToStack, int width, int height, bool isSlidingIntegration, out AdvFrameInfo frameInfo)
+        {
+            uint[] pixels = new uint[width * height];
+            var frameInfoNative = new AdvFrameInfoNative();
+
+            int errorCode;
+            if (!CrossPlatform.IsWindows)
+                errorCode = AdvVer2_GetStackedFramePixelsUnix(streamId, frameNo, framesToStack, isSlidingIntegration, pixels, frameInfoNative);
+            else if (Is64Bit())
+                errorCode = AdvVer2_GetStackedFramePixels64(streamId, frameNo, framesToStack, isSlidingIntegration, pixels, frameInfoNative);
+            else
+                errorCode = AdvVer2_GetStackedFramePixels32(streamId, frameNo, framesToStack, isSlidingIntegration, pixels, frameInfoNative);
+
+            frameInfo = new AdvFrameInfo(frameInfoNative);
+
+            if (errorCode != AdvError.S_OK)
+            {
+                return null;
+            }
+
+            return pixels;
         }
 
         public static int GetMainStreamTag(int tagId, out string tagName, out string tagValue)

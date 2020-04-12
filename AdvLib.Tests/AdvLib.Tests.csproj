@@ -50,6 +50,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,6 +75,12 @@
       <Project>{2F43D637-ABE8-4DF9-B227-6990E02EDB2D}</Project>
       <Name>AdvLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\UnitTestPattern.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\UnitTestPattern12x12.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
