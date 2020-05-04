@@ -69,5 +69,13 @@ namespace Adv
         {
             return AdvTimeStamp.FromWindowsTicks((ulong)new DateTime(year, month, day, hours, minutes, seconds, milliseconds).Ticks);
         }
+
+        /// <summary>
+        /// Use to represent a missing timestamp
+        /// </summary>
+        public static AdvTimeStamp Missing
+        {
+            get { return FromWindowsTicks(ADV_EPOCH_ZERO_TICKS); }
+        }
     }
 }

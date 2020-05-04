@@ -39,6 +39,7 @@ namespace Adv
         LRGB, // Camera produces Kodak TRUESENSE Bayer LRGB array images. Defined in ASCOM. 
         GRBG, // Variant of RGGB. Defined for SER files.
         GBRG, // Variant of RGGB. Defined for SER files.
+        BGGR, // Variant of RGGB. Defined for SER files.
         YCMY, // Variant of CMY. Defined for SER files.
         YMCY, // Variant of CMY. Defined for SER files.
         MYYC, // Variant of CMY. Defined for SER files.
